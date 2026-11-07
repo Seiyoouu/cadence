@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.session.PlaybackState
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -134,6 +136,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
             startActivity(intent)
         }
+
+        binding.btnFixRestricted.setOnClickListener {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent)
+        }
     }
 
     private fun observeSearchState() {
@@ -252,8 +260,15 @@ class MainActivity : AppCompatActivity() {
         if (isGranted) {
             binding.tvPermissionStatus.text = getString(R.string.permission_notification_granted)
             binding.btnPermissionNotification.isEnabled = false
+            binding.btnFixRestricted.visibility = View.GONE
         } else {
-            binding.tvPermissionStatus.text = getString(R.string.permission_notification_missing)
+            if (Build.VERSION.SDK_INT >= 33) {
+                binding.btnFixRestricted.visibility = View.VISIBLE
+                binding.tvPermissionStatus.text = getString(R.string.restricted_instructions)
+            } else {
+                binding.btnFixRestricted.visibility = View.GONE
+                binding.tvPermissionStatus.text = getString(R.string.permission_notification_missing)
+            }
             binding.btnPermissionNotification.isEnabled = true
         }
     }

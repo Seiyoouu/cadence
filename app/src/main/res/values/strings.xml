@@ -61,4 +61,8 @@
     <string name="onboard_done_title">You\'re All Set!</string>
     <string name="onboard_done_body">Put on your helmet, connect your TWS, and say \"Hey Cade\" or \"Hai Cade\" followed by your command.</string>
     <string name="onboard_finish">Get Started</string>
+
+    <!-- Restricted Settings strings -->
+    <string name="fix_restricted_settings">Fix Restricted Settings</string>
+    <string name="restricted_instructions">Tap button -> 3-dot menu -> Allow restricted settings, then enable Notification Access.</string>
 </resources>

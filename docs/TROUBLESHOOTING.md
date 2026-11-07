@@ -1,6 +1,28 @@
 # Troubleshooting Guide
 
-Common issues and remediation procedures for Cadence. Detailed step-by-step guides will be finalized in Phase 8.
+Common issues and remediation procedures for Cadence.
+
+---
+
+# Installation & Sideloading Issues
+
+## 1. Google Play Protect Blocked
+Google Play Protect mungkin memblokir instalasi karena aplikasi meminta akses Notification dan Mikrofon.
+**Solusi:**
+1. Saat muncul popup "App blocked to protect your device", ketuk **"More details"**.
+2. Ketuk **"Install anyway"** (atau "Install without scanning").
+3. Jika tombol tidak muncul, buka Play Store → klik profil → Play Protect → Gear (Pengaturan) → Matikan "Scan apps with Play Protect" sementara, instal APK, lalu nyalakan kembali.
+
+## 2. "Controlled by Restricted Setting" (Android 13+)
+Android 13+ memblokir aplikasi sideload dari mengaktifkan izin sensitif (Notification Access, Accessibility). Toggle akan abu-abu.
+**Solusi (Manual di HP):**
+1. Buka Settings → Apps → Cadence.
+2. Ketuk menu 3-titik di pojok kanan atas (atau "Advanced").
+3. Ketuk **"Allow restricted settings"** dan konfirmasi dengan PIN.
+4. Kembali ke menu Notification Access dan nyalakan toggle.
+
+**Solusi (Via ADB):**
+Jika pengguna memiliki PC: `adb shell appops set dev.cadence.app ACCESS_RESTRICTED_SETTINGS allow`
 
 ---
 

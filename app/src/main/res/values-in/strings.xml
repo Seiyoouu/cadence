@@ -61,4 +61,8 @@
     <string name="onboard_done_title">Semua Siap!</string>
     <string name="onboard_done_body">Kenakan helm, sambungkan TWS, lalu ucapkan \"Hai Cade\" atau \"Hey Cade\" diikuti perintah lagu Anda.</string>
     <string name="onboard_finish">Mulai</string>
+
+    <!-- Restricted Settings strings -->
+    <string name="fix_restricted_settings">Perbaiki Setelan Terbatas</string>
+    <string name="restricted_instructions">Tekan tombol -> menu 3-titik -> Izinkan setelan terbatas, lalu aktifkan Akses Notifikasi.</string>
 </resources>
