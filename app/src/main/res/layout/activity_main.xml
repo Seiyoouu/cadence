@@ -6,21 +6,113 @@
     android:orientation="vertical"
     android:padding="24dp">
 
+    <!-- App / Target Status -->
     <TextView
-        android:id="@+id/textStatusPlaceholder"
+        android:id="@+id/tv_target_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/main_status_placeholder"
-        android:textColor="@color/onBackground"
-        android:textSize="20sp"
+        android:text="@string/target_disconnected"
+        android:textColor="@color/primary"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/buttonCheckPermissions"
+    <!-- Current Track Title -->
+    <TextView
+        android:id="@+id/tv_current_track"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/no_track_playing"
+        android:textColor="@color/onBackground"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Current Track Artist -->
+    <TextView
+        android:id="@+id/tv_current_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/unknown_artist"
+        android:textColor="#9E9E9E"
+        android:textSize="16sp" />
+
+    <!-- Playback State -->
+    <TextView
+        android:id="@+id/tv_playback_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/status_unknown"
+        android:textColor="@color/onBackground"
+        android:textSize="14sp" />
+
+    <!-- Transport Controls Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/main_button_check_permissions" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_previous"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:text="@string/btn_previous" />
+
+        <Button
+            android:id="@+id/btn_play_pause"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:text="@string/btn_play" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:text="@string/btn_next" />
+
+    </LinearLayout>
+
+    <!-- Permission Management Section -->
+    <TextView
+        android:id="@+id/tv_permission_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:text="@string/permission_notification_missing"
+        android:textColor="#B0B0B0"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_permission_notification"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/btn_permission_notification" />
 
 </LinearLayout>

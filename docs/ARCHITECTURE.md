@@ -8,7 +8,15 @@ Cadence is a 100% rootless Android application designed to deliver an entirely h
 
 ## Layer 1: Transport Engine
 
-<!-- Implementation details to follow in Phase 2 -->
+The Transport Engine provides zero-latency rootless playback controls by hooking into Android's `MediaSessionManager` via `MediaNotificationListenerService` (`NotificationListenerService`).
+
+- **Target Package**: `com.google.android.apps.youtube.music` (YouTube Music Morphe).
+- **Core Controller**: `dev.cadence.app.engine.TransportEngine`.
+- **Operations**:
+  - `play()`, `pause()`, `togglePlayPause()`
+  - `next()`, `previous()`
+  - Real-time reactive state updates via Kotlin Coroutines `StateFlow<PlaybackInfo>` (Title, Artist, PlaybackState, ConnectionStatus).
+- **Fallback**: Secondary hardware media key emulation via `AudioManager.dispatchMediaKeyEvent()` when controller callbacks are delayed or unbound.
 
 ---
 

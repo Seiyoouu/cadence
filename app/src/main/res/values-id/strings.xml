@@ -4,4 +4,23 @@
     <string name="main_button_check_permissions">Periksa Izin</string>
     <string name="main_permission_granted">Diberikan</string>
     <string name="main_permission_missing">Belum diberikan</string>
+
+    <string name="notification_listener_service_name">Pemantau Notifikasi Media Cadence</string>
+    <string name="target_connected">Terhubung ke YouTube Music Morphe</string>
+    <string name="target_disconnected">Menunggu YouTube Music Morphe...</string>
+    <string name="status_playing">Sedang Memutar</string>
+    <string name="status_paused">Dijeda</string>
+    <string name="status_stopped">Berhenti</string>
+    <string name="status_unknown">Tidak Ada Lagu</string>
+    <string name="no_track_playing">Tidak Ada Lagu</string>
+    <string name="unknown_artist">Artis Tidak Diketahui</string>
+
+    <string name="btn_play">Putar</string>
+    <string name="btn_pause">Jeda</string>
+    <string name="btn_next">Maju</string>
+    <string name="btn_previous">Mundur</string>
+
+    <string name="btn_permission_notification">Berikan Akses Notifikasi</string>
+    <string name="permission_notification_granted">Akses Notifikasi Diberikan</string>
+    <string name="permission_notification_missing">Akses Notifikasi Diperlukan</string>
 </resources>

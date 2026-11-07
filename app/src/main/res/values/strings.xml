@@ -4,4 +4,23 @@
     <string name="main_button_check_permissions">Check Permissions</string>
     <string name="main_permission_granted">Granted</string>
     <string name="main_permission_missing">Missing</string>
+
+    <string name="notification_listener_service_name">Cadence Media Notification Listener</string>
+    <string name="target_connected">Connected to YouTube Music Morphe</string>
+    <string name="target_disconnected">Waiting for YouTube Music Morphe...</string>
+    <string name="status_playing">Playing</string>
+    <string name="status_paused">Paused</string>
+    <string name="status_stopped">Stopped</string>
+    <string name="status_unknown">Not Playing</string>
+    <string name="no_track_playing">No Track Playing</string>
+    <string name="unknown_artist">Unknown Artist</string>
+
+    <string name="btn_play">Play</string>
+    <string name="btn_pause">Pause</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_previous">Prev</string>
+
+    <string name="btn_permission_notification">Grant Notification Access</string>
+    <string name="permission_notification_granted">Notification Access Granted</string>
+    <string name="permission_notification_missing">Notification Access Required</string>
 </resources>
