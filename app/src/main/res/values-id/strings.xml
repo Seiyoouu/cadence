@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cadence</string>
+    <string name="main_status_placeholder">Cadence sedang dalam pengembangan</string>
+    <string name="main_button_check_permissions">Periksa Izin</string>
+    <string name="main_permission_granted">Diberikan</string>
+    <string name="main_permission_missing">Belum diberikan</string>
+</resources>

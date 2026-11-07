@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cadence</string>
+    <string name="main_status_placeholder">Cadence is under development</string>
+    <string name="main_button_check_permissions">Check Permissions</string>
+    <string name="main_permission_granted">Granted</string>
+    <string name="main_permission_missing">Missing</string>
+</resources>
