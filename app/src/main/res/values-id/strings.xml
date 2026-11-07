@@ -23,4 +23,10 @@
     <string name="btn_permission_notification">Berikan Akses Notifikasi</string>
     <string name="permission_notification_granted">Akses Notifikasi Diberikan</string>
     <string name="permission_notification_missing">Akses Notifikasi Diperlukan</string>
+
+    <string name="search_hint">Nama lagu (mis. Bohemian Rhapsody)</string>
+    <string name="search_button">Cari &amp; Putar</string>
+    <string name="search_state_searching">Mencari: %1$s...</string>
+    <string name="search_state_playing">Sedang diputar: %1$s</string>
+    <string name="search_state_failed">Gagal: %1$s</string>
 </resources>

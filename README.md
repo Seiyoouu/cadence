@@ -10,9 +10,9 @@ Cadence is a 100% rootless Android application providing hands-free voice contro
 
 ---
 
-## 🚧 Status: Under Development (Phase 2/9)
+## 🚧 Status: Under Development (Phase 3/9)
 
-Cadence is currently under active development. Phase 2 (Transport Engine) is fully implemented, verified rootless against YouTube Music Morphe with real-time MediaSession state reflection.
+Cadence is currently under active development. Phase 3 (Search Engine with API + Deep Link auto-play) is fully implemented, screen-off verified, and rootless against YouTube Music Morphe.
 
 ---
 

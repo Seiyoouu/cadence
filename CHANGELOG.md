@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Phase 3: Search Engine implementation with lightweight Piped/Invidious API and deep link auto-play.
+- Hands-free song search capability supporting pocket / screen-off operation without AccessibilityService overhead.
+- Dual-instance API resilience: primary `api.piped.private.coffee` with fallback to `yt.chocolatemoo53.com`.
+- Full UI search query input and reactive search status feedback (`Idle`, `Searching`, `Playing`, `Failed`).
+- Bilingual localization for search controls and statuses across English and Bahasa Indonesia.
 - Phase 2: Transport Engine implementation with zero-latency `MediaNotificationListener` hook.
 - Real-time `StateFlow` playback updates (`TransportEngine.playbackInfo`) reflecting track title, artist, and playback status.
 - UI bilingual controls (`values/`, `values-id/`, and `values-in/`) for Play, Pause, Next, and Previous.

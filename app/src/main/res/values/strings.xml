@@ -23,4 +23,10 @@
     <string name="btn_permission_notification">Grant Notification Access</string>
     <string name="permission_notification_granted">Notification Access Granted</string>
     <string name="permission_notification_missing">Notification Access Required</string>
+
+    <string name="search_hint">Song name (e.g., Bohemian Rhapsody)</string>
+    <string name="search_button">Search &amp; Play</string>
+    <string name="search_state_searching">Searching: %1$s...</string>
+    <string name="search_state_playing">Now playing: %1$s</string>
+    <string name="search_state_failed">Failed: %1$s</string>
 </resources>

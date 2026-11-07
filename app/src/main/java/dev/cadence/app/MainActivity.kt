@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dev.cadence.app.databinding.ActivityMainBinding
 import dev.cadence.app.engine.PlaybackInfo
+import dev.cadence.app.engine.SearchEngine
 import dev.cadence.app.engine.TransportEngine
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         TransportEngine.init(this)
+        SearchEngine.init(this)
 
         // Handle runtime locale switching (e.g. from intent extra or settings)
         intent.getStringExtra("locale")?.let { langTag ->
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         setupListeners()
         observePlaybackState()
+        observeSearchState()
     }
 
     override fun onResume() {
@@ -53,9 +56,44 @@ class MainActivity : AppCompatActivity() {
             TransportEngine.previous()
         }
 
+        binding.btnSearchPlay.setOnClickListener {
+            val query = binding.etSearchQuery.text.toString().trim()
+            if (query.isNotBlank()) {
+                SearchEngine.searchAndPlay(query, lifecycleScope)
+            }
+        }
+
+        binding.etSearchQuery.setOnEditorActionListener { _, _, _ ->
+            val query = binding.etSearchQuery.text.toString().trim()
+            if (query.isNotBlank()) {
+                SearchEngine.searchAndPlay(query, lifecycleScope)
+                true
+            } else {
+                false
+            }
+        }
+
         binding.btnPermissionNotification.setOnClickListener {
             val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
             startActivity(intent)
+        }
+    }
+
+    private fun observeSearchState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                SearchEngine.searchState.collect { state ->
+                    binding.tvSearchState.text = when (state) {
+                        is SearchEngine.SearchState.Idle -> ""
+                        is SearchEngine.SearchState.Searching ->
+                            getString(R.string.search_state_searching, state.query)
+                        is SearchEngine.SearchState.Playing ->
+                            getString(R.string.search_state_playing, state.query)
+                        is SearchEngine.SearchState.Failed ->
+                            getString(R.string.search_state_failed, state.reason)
+                    }
+                }
+            }
         }
     }
 
