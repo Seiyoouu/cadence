@@ -135,6 +135,41 @@
         android:textColor="@color/primary"
         android:textSize="14sp" />
 
+    <!-- Voice Control Section -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingVertical="12dp">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swVoiceControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/voice_toggle_label"
+            android:textColor="@color/onBackground" />
+
+        <TextView
+            android:id="@+id/tvVoiceState"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:textColor="@color/primary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvLastTranscript"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/onBackground"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        android:text="@string/transcript_placeholder" />
+
     <!-- Permission Management Section -->
     <TextView
         android:id="@+id/tv_permission_status"

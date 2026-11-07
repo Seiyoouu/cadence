@@ -1,10 +1,16 @@
 package dev.cadence.app
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.session.PlaybackState
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,11 +19,24 @@ import dev.cadence.app.databinding.ActivityMainBinding
 import dev.cadence.app.engine.PlaybackInfo
 import dev.cadence.app.engine.SearchEngine
 import dev.cadence.app.engine.TransportEngine
+import dev.cadence.app.service.VoiceService
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val audioPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            binding.swVoiceControl.isChecked = true
+            startVoiceService()
+        } else {
+            binding.swVoiceControl.isChecked = false
+            Toast.makeText(this, R.string.mic_permission_denied, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
         observePlaybackState()
         observeSearchState()
+        observeVoiceState()
     }
 
     override fun onResume() {
@@ -44,6 +64,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        binding.swVoiceControl.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                    == PackageManager.PERMISSION_GRANTED
+                ) {
+                    startVoiceService()
+                } else {
+                    audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                }
+            } else {
+                stopVoiceService()
+            }
+        }
+
         binding.btnPlayPause.setOnClickListener {
             TransportEngine.togglePlayPause()
         }
@@ -147,6 +181,45 @@ class MainActivity : AppCompatActivity() {
                 binding.btnPlayPause.text = getString(R.string.btn_play)
             }
         }
+    }
+
+    private fun observeVoiceState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                VoiceService.voiceState.collect { state ->
+                    binding.tvVoiceState.text = when (state) {
+                        is VoiceService.VoiceState.Idle -> getString(R.string.voice_state_idle)
+                        is VoiceService.VoiceState.ListeningWake -> getString(R.string.voice_state_listening_wake)
+                        is VoiceService.VoiceState.ListeningCommand -> getString(R.string.voice_state_listening_command)
+                        is VoiceService.VoiceState.Processing -> getString(R.string.voice_state_processing)
+                    }
+                    if (state !is VoiceService.VoiceState.Idle && !binding.swVoiceControl.isChecked) {
+                        binding.swVoiceControl.isChecked = true
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                VoiceService.lastTranscript.collect { t ->
+                    binding.tvLastTranscript.text = t ?: getString(R.string.transcript_placeholder)
+                }
+            }
+        }
+    }
+
+    private fun startVoiceService() {
+        val intent = Intent(this, VoiceService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
+    }
+
+    private fun stopVoiceService() {
+        stopService(Intent(this, VoiceService::class.java))
     }
 
     private fun updatePermissionStatus() {

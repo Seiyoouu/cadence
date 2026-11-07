@@ -29,4 +29,15 @@
     <string name="search_state_searching">Mencari: %1$s...</string>
     <string name="search_state_playing">Sedang diputar: %1$s</string>
     <string name="search_state_failed">Gagal: %1$s</string>
+
+    <string name="voice_toggle_label">Kontrol Suara</string>
+    <string name="voice_state_idle">Siaga</string>
+    <string name="voice_state_listening_wake">Menunggu kata kunci...</string>
+    <string name="voice_state_listening_command">Menunggu perintah...</string>
+    <string name="voice_state_processing">Memproses...</string>
+    <string name="transcript_placeholder">Belum ada transkrip</string>
+    <string name="mic_permission_denied">Izin mikrofon diperlukan</string>
+    <string name="voice_service_channel_name">Kontrol Suara</string>
+    <string name="voice_service_title">Cadence Kontrol Suara Aktif</string>
+    <string name="voice_service_text">Menunggu kata kunci...</string>
 </resources>

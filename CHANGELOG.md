@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Phase 4: Voice Layer implementation with offline VOSK Speech Recognition and Wake Word detection.
+- Bundled dual VOSK models (`model-en` and `model-id`) with automated zero-compression asset extraction on first run.
+- Bilingual wake word detector supporting short triggers ("hey cade", "hai cade", "halo cade", "cadence").
+- `VoiceService` Foreground Service with persistent microphone notification and state flow management.
+- Integration test harness `TestSttActivity` for deterministic WAV audio injection verification.
+- UI voice toggle switch, real-time voice state indicator, and live speech transcript box in `MainActivity`.
+- Full bilingual resource strings for Voice Control across English and Indonesian.
 - Phase 3: Search Engine implementation with lightweight Piped/Invidious API and deep link auto-play.
 - Hands-free song search capability supporting pocket / screen-off operation without AccessibilityService overhead.
 - Dual-instance API resilience: primary `api.piped.private.coffee` with fallback to `yt.chocolatemoo53.com`.

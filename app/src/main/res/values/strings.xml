@@ -29,4 +29,15 @@
     <string name="search_state_searching">Searching: %1$s...</string>
     <string name="search_state_playing">Now playing: %1$s</string>
     <string name="search_state_failed">Failed: %1$s</string>
+
+    <string name="voice_toggle_label">Voice Control</string>
+    <string name="voice_state_idle">Idle</string>
+    <string name="voice_state_listening_wake">Listening for wake word...</string>
+    <string name="voice_state_listening_command">Listening for command...</string>
+    <string name="voice_state_processing">Processing...</string>
+    <string name="transcript_placeholder">No transcript yet</string>
+    <string name="mic_permission_denied">Microphone permission required</string>
+    <string name="voice_service_channel_name">Voice Control</string>
+    <string name="voice_service_title">Cadence Voice Control Active</string>
+    <string name="voice_service_text">Listening for wake word...</string>
 </resources>

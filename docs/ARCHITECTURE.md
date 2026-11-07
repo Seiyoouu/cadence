@@ -39,7 +39,15 @@ The Search Engine allows riders to request specific songs hands-free without rel
 
 ## Layer 3: Voice Layer
 
-<!-- Implementation details to follow in Phase 4 & Phase 5 -->
+The Voice Layer provides completely offline, bilingual voice control via VOSK Speech Recognition engine:
+
+- **Offline Models**: Dual-model bundling inside assets (`model-en` and `model-id`), uncompressed and extracted to internal storage (`filesDir/vosk/`) on first run.
+- **Wake Word Detection**: `dev.cadence.app.voice.WakeWordDetector` uses acoustic models with targeted vocabulary grammar constraints for high precision and minimal battery consumption.
+  - Supports English: `"hey cade"`, `"hi cade"`, `"ok cade"`, `"cadence"`.
+  - Supports Indonesian: `"hai cade"`, `"hei cade"`, `"halo cade"`, `"oke cade"`.
+- **Speech-to-Text (STT)**: `dev.cadence.app.voice.VoskRecognizer` performs full offline phrase recognition once the wake word triggers.
+- **Background Persistence**: `dev.cadence.app.service.VoiceService` operates as a high-priority `ForegroundService` with `foregroundServiceType="microphone"`, keeping voice detection active while riding.
+- **Reactive State Flow**: Exposes `VoiceState` (`Idle`, `ListeningWake`, `ListeningCommand`, `Processing`) and `lastTranscript` via Kotlin `StateFlow`.
 
 ---
 

@@ -40,6 +40,10 @@ android {
         viewBinding = true
     }
 
+    androidResources {
+        noCompress += listOf("mdl", "fst", "txt", "mat", "dict", "wav")
+    }
+
     packaging {
         resources {
             excludes += setOf(
