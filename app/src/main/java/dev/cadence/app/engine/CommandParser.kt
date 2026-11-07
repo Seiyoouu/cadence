@@ -31,13 +31,27 @@ object CommandParser {
         "tolong", "dong", "ya", "cade", "kade", "please", "hey", "hei", "halo", "hai", "coba", "bisa", "nih"
     )
     private val WAKE_PREFIXES = listOf(
-        "hey cadence", "hi cadence", "halo cadence", "hai cadence", "cadence",
-        "hey cade", "hi cade", "ok cade", "hai cade", "hei cade", "halo cade", "oke cade",
+        "hey cadence", "hi cadence", "halo cadence", "hai cadence",
         "hey kade", "hi kade", "ok kade", "hai kade", "hei kade", "halo kade", "oke kade",
-        "hi candy", "hai candy", "candy", "cade", "kade"
+        "hey kadi", "hi kadi", "ok kadi", "hai kadi", "hei kadi", "halo kadi", "oke kadi",
+        "hey cade", "hi cade", "ok cade", "hai cade", "hei cade", "halo cade", "oke cade",
+        "hai musik", "halo musik", "hey music",
+        "hai bro", "halo bro", "hey bro", "ok bro",
+        "hi candy", "hai candy", "candy",
+        "cadence", "chade", "musik", "music", "kade", "kadi", "cade", "bro"
+    ).sortedByDescending { it.length }
+
+    private val IGNORED_SOLO_WORDS = setOf(
+        "cadence", "cade", "kade", "kadi", "candy", "bro", "halo", "hai", "hei", "hey",
+        "tes", "test", "testing", "asdf", "qwerty", "tolong", "dong", "please", "ya", "nih",
+        "bisa", "coba", "oke", "ok", "asdf qwerty"
     )
 
-    fun parse(rawTranscript: String): Command {
+    private fun isIgnoredSoloWord(word: String): Boolean {
+        return word.trim() in IGNORED_SOLO_WORDS
+    }
+
+    fun parse(rawTranscript: String, allowImplicitSearch: Boolean = true): Command {
         var text = rawTranscript.trim().lowercase()
         if (text.isEmpty()) return Command.Unknown
 
@@ -49,17 +63,19 @@ object CommandParser {
         }
         if (text.isEmpty()) return Command.Unknown
 
+        // 1. Control commands (Next, Previous, Pause) take priority
+        if (NEXT_PATTERNS.any { it.containsMatchIn(text) }) return Command.Next
+        if (PREVIOUS_PATTERNS.any { it.containsMatchIn(text) }) return Command.Previous
+        if (PAUSE_PATTERNS.any { it.containsMatchIn(text) }) return Command.Pause
+
+        // 2. Explicit search verbs with query: "play [song]", "putar lagu [judul]", "cari [judul]", "setel [judul]"
         for (pattern in SEARCH_PATTERNS) {
             val match = pattern.find(text)
             if (match != null) {
                 var query = match.groupValues[1].trim()
                 for (filler in FILLERS) {
-                    if (query.startsWith("$filler ")) {
-                        query = query.removePrefix("$filler ").trim()
-                    }
-                    if (query.endsWith(" $filler")) {
-                        query = query.removeSuffix(" $filler").trim()
-                    }
+                    if (query.startsWith("$filler ")) query = query.removePrefix("$filler ").trim()
+                    if (query.endsWith(" $filler")) query = query.removeSuffix(" $filler").trim()
                 }
                 if (query.length >= 2) {
                     return Command.Search(query)
@@ -67,26 +83,66 @@ object CommandParser {
             }
         }
 
-        if (NEXT_PATTERNS.any { it.containsMatchIn(text) }) return Command.Next
-        if (PREVIOUS_PATTERNS.any { it.containsMatchIn(text) }) return Command.Previous
-        if (PAUSE_PATTERNS.any { it.containsMatchIn(text) }) return Command.Pause
+        // 3. Play command (without query: e.g. "play", "resume", "putar", "mainkan", "lanjut")
         if (PLAY_PATTERNS.any { it.containsMatchIn(text) }) return Command.Play
+
+        // 4. Explicit "lagu [judul]" pattern (e.g. "lagu dewa 19 kangen", "lagu komang")
+        if (text.startsWith("lagu ") && text.length > 5) {
+            var query = text.removePrefix("lagu ").trim()
+            for (filler in FILLERS) {
+                if (query.startsWith("$filler ")) query = query.removePrefix("$filler ").trim()
+                if (query.endsWith(" $filler")) query = query.removeSuffix(" $filler").trim()
+            }
+            if (query.length >= 2 && !isIgnoredSoloWord(query)) {
+                return Command.Search(query)
+            }
+        }
+
+        // 5. Implicit music search fallback:
+        // When a user speaks a song title or artist without an explicit verb
+        // (or if audio timing clipped the verb), treat as a music search.
+        if (allowImplicitSearch) {
+            var cleaned = text
+            for (prefix in listOf("musik ", "song ", "track ")) {
+                if (cleaned.startsWith(prefix)) {
+                    cleaned = cleaned.removePrefix(prefix).trim()
+                }
+            }
+            for (filler in FILLERS) {
+                if (cleaned.startsWith("$filler ")) cleaned = cleaned.removePrefix("$filler ").trim()
+                if (cleaned.endsWith(" $filler")) cleaned = cleaned.removeSuffix(" $filler").trim()
+            }
+            if (cleaned.length >= 2 && !isIgnoredSoloWord(cleaned)) {
+                return Command.Search(cleaned)
+            }
+        }
 
         return Command.Unknown
     }
 
     /**
      * Evaluates multiple candidate transcriptions from SpeechRecognizer hypotheses in order.
-     * Returns the first non-Unknown command found, or Unknown if all candidates fail.
+     * Prioritizes explicit command verbs across all candidates first before falling back to implicit queries.
      */
     fun parseCandidates(candidates: List<String>): Command {
         if (candidates.isEmpty()) return Command.Unknown
+
+        // Pass 1: Prioritize explicit verbs and commands across all candidates
         for (cand in candidates) {
-            val cmd = parse(cand)
+            val cmd = parse(cand, allowImplicitSearch = false)
             if (cmd !is Command.Unknown) {
                 return cmd
             }
         }
+
+        // Pass 2: Fallback to implicit song searches
+        for (cand in candidates) {
+            val cmd = parse(cand, allowImplicitSearch = true)
+            if (cmd !is Command.Unknown) {
+                return cmd
+            }
+        }
+
         return Command.Unknown
     }
 }

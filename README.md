@@ -22,19 +22,21 @@ Changing songs or searching for music while riding a motorcycle is inconvenient 
 ## ✨ Features
 
 - 🎙️ **Voice Control**: Play, pause, skip tracks, and search songs directly using your voice without touching the screen.
-- 🗣️ **Bilingual Speech Engine**: Understands Bahasa Indonesia AND English commands simultaneously, regardless of your system language.
+- 🗣️ **Flexible Wake Words**: Use whatever is easiest for you: *"Hai Kadi"*, *"Hai Kade"*, *"Hai Musik"*, *"Hai Bro"*, *"Cadence"*, or *"Hey Cade"*.
+- 🔍 **Natural Song Search**: Simply state the song title or artist directly (e.g., *"Dewa 19 Kangen"*, *"Sheila On 7 Dan"*, *"Komang"*, *"Coldplay Yellow"*), with or without saying *"play"*.
+- 🌐 **Bilingual Speech Engine**: Seamlessly understands Bahasa Indonesia AND English commands simultaneously.
 - 🔋 **Rider Mode (Bluetooth Automation)**: Automatically starts listening when your helmet TWS/intercom connects, and halts immediately upon disconnect to save battery.
 - 📱 **Screen-Off Support**: Change and search songs even while your phone stays locked deep inside your jacket pocket.
-- 🔓 **100% Rootless**: Safe and clean without root, Magisk, or Xposed. Interacts directly with YouTube Music Morphe via native MediaSession and deep links.
+- 🔓 **100% Rootless**: Safe and clean without root, Magisk, or Xposed. Supports YouTube Music Morphe (`app.morphe...`, `app.revanced...`) and Google stock YTM.
 - 🎛️ **Physical TWS Fallback**: Physical media button support when wind noise at highway speeds is too loud for voice recognition.
-- 📳 **Haptic & Spoken Feedback**: Distinct helmet vibration cues and optional Text-to-Speech (TTS) voice confirmation.
+- 📳 **Haptic & Spoken Feedback**: Instant helmet vibration pulse upon wake word detection and optional spoken TTS confirmations.
 
 ---
 
 ## 📱 Requirements
 
 - **Android Version**: Android 8.0+ (API level 26 or higher).
-- **Target Music App**: [YouTube Music Morphe](https://morphe.software) (`com.google.android.apps.youtube.music`).
+- **Target Music App**: [YouTube Music Morphe](https://morphe.software), ReVanced, or Stock YTM.
 - **Speech Service**: Google App / Speech Services (for Android native `SpeechRecognizer`).
 - **Hardware**: Bluetooth TWS earbuds or helmet intercom with microphone.
 
@@ -42,7 +44,7 @@ Changing songs or searching for music while riding a motorcycle is inconvenient 
 
 ## 🚀 Installation & Setup
 
-1. **Download APK**: Grab the latest `app-release.apk` from the [Releases](https://github.com/Seiyoouu/cadence/releases) page.
+1. **Download APK**: Grab the latest `Cadence-v1.0.0.apk` from the [Releases](https://github.com/Seiyoouu/cadence/releases) page.
 2. **⚠️ Handling Google Play Protect Warnings**:
    > Because Cadence is an open-source sideloaded application requesting notification & mic access, Google Play Protect may warn or block installation. **This is completely normal and safe.**
    > 

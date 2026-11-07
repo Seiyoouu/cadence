@@ -41,6 +41,20 @@ android {
         }
     }
 
+    applicationVariants.all {
+        val variant = this
+        variant.outputs.all {
+            val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            val vName = variant.versionName
+            val bType = variant.buildType.name
+            if (bType == "release") {
+                output?.outputFileName = "Cadence-v${vName}.apk"
+            } else {
+                output?.outputFileName = "Cadence-v${vName}-${bType}.apk"
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

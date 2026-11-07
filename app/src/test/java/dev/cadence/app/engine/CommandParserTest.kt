@@ -276,4 +276,25 @@ class CommandParserTest {
         val candidates = listOf("asdf unknown", "puter lagu dewa 19", "something else")
         assertEquals(CommandParser.Command.Search("dewa 19"), CommandParser.parseCandidates(candidates))
     }
+
+    // --- 8. Implicit Search & Easy Wake Word Tests ---
+    @Test
+    fun testImplicitSongSearch_withoutVerb() {
+        assertEquals(CommandParser.Command.Search("dewa 19 kangen"), CommandParser.parse("dewa 19 kangen"))
+        assertEquals(CommandParser.Command.Search("dewa 19 kangen"), CommandParser.parse("lagu dewa 19 kangen"))
+        assertEquals(CommandParser.Command.Search("sheila on 7 dan"), CommandParser.parse("sheila on 7 dan"))
+        assertEquals(CommandParser.Command.Search("komang"), CommandParser.parse("lagu komang"))
+        assertEquals(CommandParser.Command.Search("tulus hati hati di jalan"), CommandParser.parse("tulus hati hati di jalan"))
+    }
+
+    @Test
+    fun testEasyIndonesianWakeWords() {
+        assertEquals(CommandParser.Command.Next, CommandParser.parse("hai kadi next"))
+        assertEquals(CommandParser.Command.Next, CommandParser.parse("hai bro lagu berikutnya"))
+        assertEquals(CommandParser.Command.Pause, CommandParser.parse("hai musik jeda"))
+        assertEquals(CommandParser.Command.Search("dewa 19 kangen"), CommandParser.parse("hai kade dewa 19 kangen"))
+        assertEquals(CommandParser.Command.Unknown, CommandParser.parse("hai kadi"))
+        assertEquals(CommandParser.Command.Unknown, CommandParser.parse("hai bro"))
+        assertEquals(CommandParser.Command.Unknown, CommandParser.parse("hai musik"))
+    }
 }

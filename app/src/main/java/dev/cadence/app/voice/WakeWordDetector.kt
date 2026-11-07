@@ -27,11 +27,22 @@ class WakeWordDetector(
     private var speechService: SpeechService? = null
 
     private val wakeWords = listOf(
+        // 1. Natural Indonesian Alternatives (Easy to pronounce)
+        "hai kadi", "halo kadi", "kadi", "oke kadi", "hei kadi",
+        "hai kade", "halo kade", "kade", "oke kade", "hei kade", "hay kade",
+        "hai bro", "halo bro", "bro", "hey bro", "ok bro",
+        "hai musik", "halo musik", "musik", "music", "play music",
+
+        // 2. Original Cade & Cadence
         "hey cade", "hi cade", "ok cade", "cade", "cadence",
         "hai cade", "hei cade", "halo cade", "oke cade",
         "hey cadence", "hi cadence", "halo cadence", "hai cadence",
-        "hi candy", "hai candy", "hay cade", "hei kade", "hai kade",
-        "hey kade", "hi kade", "candy"
+
+        // 3. Phonetic catch-alls for Indonesian accent
+        "hi caddy", "hai caddy", "caddy",
+        "hi kate", "hey kate", "kate",
+        "hi candy", "hai candy", "candy",
+        "hi chad", "hai chad", "chad"
     )
 
     fun start() {

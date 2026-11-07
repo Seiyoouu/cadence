@@ -39,7 +39,8 @@ class SpeechRecognizerEngine(
     fun startWithCandidates(
         onResults: (List<String>) -> Unit,
         onError: (String) -> Unit,
-        onTimeout: () -> Unit
+        onTimeout: () -> Unit,
+        onReady: (() -> Unit)? = null
     ) {
         if (!isAvailable()) {
             Log.e(TAG, "SpeechRecognizer not available")
@@ -52,6 +53,7 @@ class SpeechRecognizerEngine(
             setRecognitionListener(object : RecognitionListener {
                 override fun onReadyForSpeech(params: Bundle?) {
                     Log.i(TAG, "Ready for speech")
+                    onReady?.invoke()
                 }
                 override fun onBeginningOfSpeech() {
                     Log.i(TAG, "Beginning of speech")

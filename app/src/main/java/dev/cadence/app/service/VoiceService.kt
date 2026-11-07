@@ -129,6 +129,7 @@ class VoiceService : Service() {
             wakeDetector?.detected?.collect { detected ->
                 if (detected) {
                     Log.i(TAG, "Wake word detected -> transitioning to STT")
+                    VibrationFeedback.shortTap(this@VoiceService)
                     stopWakeListening()
                     startStt()
                 }
@@ -160,6 +161,9 @@ class VoiceService : Service() {
             return
         }
         stt?.startWithCandidates(
+            onReady = {
+                VibrationFeedback.shortTap(this@VoiceService)
+            },
             onResults = { candidates ->
                 Log.i(TAG, "STT candidates: $candidates")
                 val primary = candidates.firstOrNull() ?: ""

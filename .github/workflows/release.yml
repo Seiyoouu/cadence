@@ -34,7 +34,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: app/build/outputs/apk/release/app-release.apk
+          files: app/build/outputs/apk/release/*.apk
           name: Cadence ${{ github.ref_name }}
           draft: false
           prerelease: false

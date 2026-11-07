@@ -22,19 +22,21 @@ Mengganti lagu atau mencari musik saat berkendara motor sangat berbahaya. Pengen
 ## ✨ Fitur Utama
 
 - 🎙️ **Voice Control**: Putar, jeda, lewati trek, dan cari lagu langsung dengan suara tanpa menyentuh layar.
-- 🗣️ **Bilingual Speech Engine**: Memahami perintah Bahasa Indonesia DAN Bahasa Inggris secara simultan, apa pun pengaturan bahasa HP Anda.
+- 🗣️ **Kata Kunci Bangun Fleksibel**: Panggil dengan nama yang mudah diucapkan: *"Hai Kadi"*, *"Hai Kade"*, *"Hai Musik"*, *"Hai Bro"*, *"Cadence"*, atau *"Hai Cade"*.
+- 🔍 **Pencarian Lagu Bebas**: Cukup sebutkan judul/artis langsung (misal: *"Dewa 19 Kangen"*, *"Sheila On 7 Dan"*, *"Komang"*), baik dengan atau tanpa kata *"putar"*.
+- 🌐 **Bilingual Speech Engine**: Memahami perintah Bahasa Indonesia DAN Bahasa Inggris secara simultan.
 - 🔋 **Rider Mode (Otomatisasi Bluetooth)**: Otomatis mendengarkan saat TWS/interkom helm terhubung, dan otomatis nonaktif saat terputus untuk menghemat baterai.
 - 📱 **Dukungan Layar Mati (Screen-Off)**: Tetap bisa ganti lagu dan cari musik meski HP berada di dalam saku jaket dengan layar terkunci.
-- 🔓 **100% Rootless**: Aman dan bersih tanpa root, Magisk, atau Xposed. Bekerja langsung dengan YouTube Music Morphe via MediaSession dan deep link.
+- 🔓 **100% Rootless**: Aman dan bersih tanpa root, Magisk, atau Xposed. Mendukung YouTube Music Morphe (`app.morphe...` dan `app.revanced...`) maupun Google stock.
 - 🎛️ **Fallback Tombol Fisik TWS**: Dukungan tombol media fisik ketika kebisingan angin di jalan raya terlalu tinggi.
-- 📳 **Feedback Haptic & Suara**: Pola getaran helm khusus dan konfirmasi suara Text-to-Speech (TTS) opsional.
+- 📳 **Feedback Haptic & Suara**: Getaran helm instan saat mendeteksi kata kunci bangun dan konfirmasi suara Text-to-Speech (TTS) opsional.
 
 ---
 
 ## 📱 Persyaratan Sistem
 
 - **Versi Android**: Android 8.0+ (API level 26 ke atas).
-- **Aplikasi Musik Target**: [YouTube Music Morphe](https://morphe.software) (`com.google.android.apps.youtube.music`).
+- **Aplikasi Musik Target**: [YouTube Music Morphe](https://morphe.software) atau ReVanced / Stock YTM.
 - **Layanan Suara**: Aplikasi Google / Speech Services (untuk Android native `SpeechRecognizer`).
 - **Perangkat Keras**: TWS Bluetooth atau interkom helm dengan mikrofon.
 
@@ -42,7 +44,7 @@ Mengganti lagu atau mencari musik saat berkendara motor sangat berbahaya. Pengen
 
 ## 🚀 Panduan Instalasi & Pengaturan
 
-1. **Unduh APK**: Ambil file `app-release.apk` terbaru dari halaman [Releases](https://github.com/Seiyoouu/cadence/releases).
+1. **Unduh APK**: Ambil file `Cadence-v1.0.0.apk` terbaru dari halaman [Releases](https://github.com/Seiyoouu/cadence/releases).
 2. **⚠️ Mengatasi Peringatan Google Play Protect**:
    > Karena ini aplikasi open-source (sideload) yang membutuhkan akses notifikasi dan mikrofon, Google Play Protect mungkin memblokir instalasi. **Ini normal dan aman.**
    > 

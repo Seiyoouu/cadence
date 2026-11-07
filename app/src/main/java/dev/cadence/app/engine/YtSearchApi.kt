@@ -24,13 +24,15 @@ object YtSearchApi {
             Log.i(TAG, "Nonexistent query '$query' requested -> returning null")
             return@withContext null
         }
-        searchPiped(query) ?: searchInvidious(query)
+        searchPiped(query, "music_songs")
+            ?: searchPiped(query, "all")
+            ?: searchInvidious(query)
     }
 
-    private fun searchPiped(query: String): SearchResult? {
+    private fun searchPiped(query: String, filter: String = "music_songs"): SearchResult? {
         return try {
             val encoded = URLEncoder.encode(query, "UTF-8")
-            val urlString = "$PRIMARY_BASE_URL/search?q=$encoded&filter=music_songs"
+            val urlString = "$PRIMARY_BASE_URL/search?q=$encoded&filter=$filter"
             val conn = URL(urlString).openConnection().apply {
                 connectTimeout = 5000
                 readTimeout = 5000
