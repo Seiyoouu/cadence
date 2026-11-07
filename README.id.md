@@ -10,9 +10,11 @@ Cadence adalah aplikasi Android 100% rootless yang memungkinkan pengendara motor
 
 ---
 
-## 🚧 Status: Sedang Dalam Pengembangan (Fase 3/9)
+## 🚧 Status: Sedang Dalam Pengembangan (Fase 5/9)
 
-Cadence sedang dalam tahap pengembangan aktif. Fase 3 (Search Engine berbasis API + Deep Link auto-play) telah selesai diimplementasikan, terverifikasi berjalan pada layar mati (screen-off), dan 100% rootless pada YouTube Music Morphe.
+Cadence sedang dalam tahap pengembangan aktif. Fase 5 (CommandParser + Integrasi Suara Penuh End-to-End dengan kata kunci VOSK, STT, dan feedback sensorik getar/TTS) telah selesai diimplementasikan, terverifikasi berjalan pada layar mati (screen-off), dan 100% rootless pada YouTube Music Morphe.
+
+> **Catatan Ukuran APK**: Ukuran APK debug adalah ~177MB karena menyertakan dua model pengenalan suara akustik offline VOSK (`model-en` dan `model-id`) tanpa kompresi untuk memastikan fitur pengenalan suara dapat langsung beroperasi tanpa instalasi tambahan.
 
 ---
 

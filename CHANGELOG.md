@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Phase 5: Bilingual CommandParser and full end-to-end voice integration.
+- `CommandParser`: simultaneous recognition of English and Indonesian voice commands (Next, Previous, Pause, Play, Search, Unknown).
+- Multi-channel sensory feedback: `VibrationFeedback` (short, long, double taps) and `TtsFeedback` (locale-aware Text-to-Speech).
+- Persistent TTS feedback toggle setting in `MainActivity` with `SharedPreferences` persistence.
+- Verified voice-controlled playback switching and search deep link launch with screen off.
+- 43 unit tests passing in `CommandParserTest` covering edge cases, fillers, and bilingual speech patterns.
 - Phase 4: Voice Layer implementation with offline VOSK Speech Recognition and Wake Word detection.
 - Bundled dual VOSK models (`model-en` and `model-id`) with automated zero-compression asset extraction on first run.
 - Bilingual wake word detector supporting short triggers ("hey cade", "hai cade", "halo cade", "cadence").

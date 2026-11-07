@@ -10,9 +10,11 @@ Cadence is a 100% rootless Android application providing hands-free voice contro
 
 ---
 
-## 🚧 Status: Under Development (Phase 3/9)
+## 🚧 Status: Under Development (Phase 5/9)
 
-Cadence is currently under active development. Phase 3 (Search Engine with API + Deep Link auto-play) is fully implemented, screen-off verified, and rootless against YouTube Music Morphe.
+Cadence is currently under active development. Phase 5 (CommandParser + Full End-to-End Voice Integration with VOSK wake words, STT, and sensory feedback) is fully implemented, screen-off verified, and rootless against YouTube Music Morphe.
+
+> **Note on APK Size**: The debug APK is ~177MB because it bundles two full, offline VOSK acoustic speech models uncompressed (`model-en` and `model-id`) to enable zero-setup, offline hands-free recognition straight after installation.
 
 ---
 

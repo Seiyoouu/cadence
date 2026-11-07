@@ -12,6 +12,11 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import dev.cadence.app.R
+import dev.cadence.app.engine.CommandParser
+import dev.cadence.app.engine.SearchEngine
+import dev.cadence.app.engine.TransportEngine
+import dev.cadence.app.feedback.TtsFeedback
+import dev.cadence.app.feedback.VibrationFeedback
 import dev.cadence.app.voice.VoskRecognizer
 import dev.cadence.app.voice.WakeWordDetector
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +56,7 @@ class VoiceService : Service() {
     private var stt: VoskRecognizer? = null
     private var wakeJob: Job? = null
     private lateinit var locale: String
+    private var tts: TtsFeedback? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -58,6 +64,7 @@ class VoiceService : Service() {
         Log.i(TAG, "VoiceService created with locale=$locale")
         createNotificationChannel()
         startForeground(NOTIF_ID, buildNotification())
+        tts = TtsFeedback(this)
         startWakeListening()
     }
 
@@ -65,6 +72,8 @@ class VoiceService : Service() {
         intent?.getStringExtra("test_transcript")?.let { transcript ->
             Log.i(TAG, "Test transcript injected: $transcript")
             _lastTranscript.value = transcript
+            _voiceState.value = VoiceState.Processing
+            handleCommand(transcript)
         }
         intent?.getBooleanExtra("test_wake", false)?.let { testWake ->
             if (testWake) {
@@ -80,6 +89,8 @@ class VoiceService : Service() {
 
     override fun onDestroy() {
         stopAll()
+        tts?.destroy()
+        tts = null
         scope.cancel()
         Log.i(TAG, "VoiceService destroyed")
         super.onDestroy()
@@ -117,9 +128,7 @@ class VoiceService : Service() {
                 _lastTranscript.value = transcript
                 _voiceState.value = VoiceState.Processing
                 stopStt()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startWakeListening()
-                }, 500)
+                handleCommand(transcript)
             },
             onTimeout = {
                 Log.i(TAG, "STT timeout")
@@ -127,6 +136,76 @@ class VoiceService : Service() {
                 startWakeListening()
             }
         )
+    }
+
+    fun handleCommand(transcript: String) {
+        val command = CommandParser.parse(transcript)
+        Log.i(TAG, "Parsed command: $command (from '$transcript')")
+
+        when (command) {
+            is CommandParser.Command.Next -> {
+                TransportEngine.next()
+                VibrationFeedback.shortTap(this)
+                if (isTtsEnabled()) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        val info = TransportEngine.playbackInfo.value
+                        if (info.title.isNotBlank()) {
+                            tts?.speak(info.title)
+                        }
+                    }, 800)
+                }
+            }
+            is CommandParser.Command.Previous -> {
+                TransportEngine.previous()
+                VibrationFeedback.shortTap(this)
+                if (isTtsEnabled()) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        val info = TransportEngine.playbackInfo.value
+                        if (info.title.isNotBlank()) {
+                            tts?.speak(info.title)
+                        }
+                    }, 800)
+                }
+            }
+            is CommandParser.Command.Pause -> {
+                TransportEngine.pause()
+                VibrationFeedback.shortTap(this)
+            }
+            is CommandParser.Command.Play -> {
+                TransportEngine.play()
+                VibrationFeedback.shortTap(this)
+            }
+            is CommandParser.Command.TogglePlayPause -> {
+                TransportEngine.togglePlayPause()
+                VibrationFeedback.shortTap(this)
+            }
+            is CommandParser.Command.Search -> {
+                VibrationFeedback.longTap(this)
+                SearchEngine.searchAndPlay(command.query, scope)
+                if (isTtsEnabled()) {
+                    val msg = if (locale == "id" || locale == "in") "Memutar ${command.query}"
+                    else "Playing ${command.query}"
+                    tts?.speak(msg)
+                }
+            }
+            is CommandParser.Command.Unknown -> {
+                VibrationFeedback.doubleTap(this)
+                if (isTtsEnabled()) {
+                    val msg = if (locale == "id" || locale == "in") "Perintah tidak dikenali"
+                    else "Command not recognized"
+                    tts?.speak(msg)
+                }
+            }
+        }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            startWakeListening()
+        }, 800)
+    }
+
+    private fun isTtsEnabled(): Boolean {
+        return getSharedPreferences("cadence_prefs", MODE_PRIVATE)
+            .getBoolean("tts_enabled", false)
     }
 
     private fun stopStt() {

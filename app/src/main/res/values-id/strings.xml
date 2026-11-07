@@ -40,4 +40,5 @@
     <string name="voice_service_channel_name">Kontrol Suara</string>
     <string name="voice_service_title">Cadence Kontrol Suara Aktif</string>
     <string name="voice_service_text">Menunggu kata kunci...</string>
+    <string name="tts_toggle_label">Suara feedback (TTS)</string>
 </resources>

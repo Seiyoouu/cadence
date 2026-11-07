@@ -40,4 +40,5 @@
     <string name="voice_service_channel_name">Voice Control</string>
     <string name="voice_service_title">Cadence Voice Control Active</string>
     <string name="voice_service_text">Listening for wake word...</string>
+    <string name="tts_toggle_label">Speak feedback (TTS)</string>
 </resources>

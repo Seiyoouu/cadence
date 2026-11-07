@@ -47,6 +47,10 @@ The Voice Layer provides completely offline, bilingual voice control via VOSK Sp
   - Supports Indonesian: `"hai cade"`, `"hei cade"`, `"halo cade"`, `"oke cade"`.
 - **Speech-to-Text (STT)**: `dev.cadence.app.voice.VoskRecognizer` performs full offline phrase recognition once the wake word triggers.
 - **Background Persistence**: `dev.cadence.app.service.VoiceService` operates as a high-priority `ForegroundService` with `foregroundServiceType="microphone"`, keeping voice detection active while riding.
+- **Command Parsing & Dispatch**: `dev.cadence.app.engine.CommandParser` processes recognized transcripts using bilingual rule sets with filler-stripping, routing to `TransportEngine` and `SearchEngine`.
+- **Sensory Feedback**: Dual-channel non-visual feedback for helmet/motorcycle riders:
+  - `VibrationFeedback`: short pulse (transport controls), long pulse (search started), double pulse (unknown command or error).
+  - `TtsFeedback`: optional spoken audio confirmation ("Playing [title]", "Song not found", "Command not recognized") localized according to device language.
 - **Reactive State Flow**: Exposes `VoiceState` (`Idle`, `ListeningWake`, `ListeningCommand`, `Processing`) and `lastTranscript` via Kotlin `StateFlow`.
 
 ---

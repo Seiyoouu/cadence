@@ -160,6 +160,14 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/swTtsFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/tts_toggle_label"
+        android:textColor="@color/onBackground" />
+
     <TextView
         android:id="@+id/tvLastTranscript"
         android:layout_width="match_parent"

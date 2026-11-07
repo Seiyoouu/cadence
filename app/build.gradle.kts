@@ -63,4 +63,5 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.vosk.android)
+    testImplementation(libs.junit)
 }

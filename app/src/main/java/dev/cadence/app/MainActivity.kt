@@ -64,6 +64,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        val prefs = getSharedPreferences("cadence_prefs", MODE_PRIVATE)
+        binding.swTtsFeedback.isChecked = prefs.getBoolean("tts_enabled", false)
+        binding.swTtsFeedback.setOnCheckedChangeListener { _, checked ->
+            prefs.edit().putBoolean("tts_enabled", checked).apply()
+        }
+
         binding.swVoiceControl.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
