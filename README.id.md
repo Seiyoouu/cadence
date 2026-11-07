@@ -1,40 +1,33 @@
 🇮🇩 Bahasa Indonesia | 🇬🇧 [English](README.md)
 
-# Cadence
+# Cadence 🎵🏍️ (Kontrol Suara untuk YT Music di Motor)
 
 [![Build Debug APK](https://github.com/Seiyoouu/cadence/actions/workflows/build.yml/badge.svg)](https://github.com/Seiyoouu/cadence/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/Seiyoouu/cadence?color=orange)](https://github.com/Seiyoouu/cadence/releases)
+[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-green.svg)](https://developer.android.com)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Release](https://img.shields.io/github/v/release/Seiyoouu/cadence?include_prereleases&color=orange)](https://github.com/Seiyoouu/cadence/releases)
 
-**Cadence** adalah aplikasi Android 100% rootless yang memungkinkan pengendara motor mengontrol [YouTube Music Morphe](https://morphe.software) sepenuhnya lewat suara tanpa menyentuh layar, dirancang khusus untuk helm dengan TWS atau interkom Bluetooth.
+<p align="center">
+  <img src="docs/test-artifacts/demo.gif" alt="Cadence Demo" width="300" />
+</p>
 
 ---
 
-## 🏍️ Mengapa Cadence?
+## 🛑 Masalah Utama
 
-Mengganti lagu atau mencari musik saat berkendara motor sangat berbahaya: pengendara harus menepi, melepas sarung tangan, membuka kunci ponsel, dan menyentuh layar.
-
-Cadence menghilangkan kebutuhan menyentuh layar:
-- Ponsel tetap aman terkunci di dalam saku jaket.
-- Cukup ucapkan **"Hai Cade"** atau **"Hey Cade"** melalui mikrofon helm/TWS Anda.
-- Kontrol pemutaran, ganti lagu, atau cari dan putar lagu apa saja secara instan.
+Mengganti lagu atau mencari musik saat berkendara motor sangat berbahaya. Pengendara seringkali harus menepi ke pinggir jalan, melepas sarung tangan, membuka kunci HP, dan menekan tombol layar sentuh kecil di bawah terik matahari. **Cadence** menyelesaikan masalah ini dengan kontrol suara 100% hands-free tanpa perlu menyalakan layar, dirancang khusus untuk pengendara helm dengan TWS atau interkom Bluetooth.
 
 ---
 
 ## ✨ Fitur Utama
 
-- **Continuous Offline Wake Word**: Didukung engine VOSK ringan (`"Hai Cade"`, `"Halo Cade"`, `"Hey Cade"`, `"Cadence"`).
-- **Perintah Suara Bilingual**: Memahami Bahasa Indonesia DAN Bahasa Inggris secara simultan:
-  - **Berikutnya**: `lagu berikutnya`, `ganti lagu`, `maju`, `next`, `skip`
-  - **Sebelumnya**: `lagu sebelumnya`, `kembali`, `mundur`, `previous`, `prev`, `back`
-  - **Jeda**: `jeda`, `berhenti`, `diam`, `pause`, `stop`
-  - **Putar**: `lanjut`, `mainkan`, `putar`, `play`, `resume`
-  - **Cari & Putar**: `"putar lagu [judul]"`, `"mainkan [judul]"`, `"cari [judul]"`, `"play [title]"`
-- **Deep Link Auto-Play**: Pencarian lagu di-resolve via API Piped/Invidious dan langsung memicu YouTube Music Morphe auto-play bahkan saat layar mati dan terkunci di saku.
-- **Rider Mode (Otomatisasi Bluetooth)**: Layanan suara otomatis aktif saat TWS/interkom helm terhubung, dan otomatis mati saat terputus untuk menghemat baterai.
-- **Fallback Tombol Fisik TWS**: Dukungan tombol media TWS saat suara bising angin terlalu kencang.
-- **Feedback Sensorik Helm**: Getaran haptic khusus dan konfirmasi suara Text-to-Speech (TTS) opsional.
-- **100% Rootless**: Tanpa root, Magisk, atau Xposed.
+- 🎙️ **Voice Control**: Putar, jeda, lewati trek, dan cari lagu langsung dengan suara tanpa menyentuh layar.
+- 🗣️ **Bilingual Speech Engine**: Memahami perintah Bahasa Indonesia DAN Bahasa Inggris secara simultan, apa pun pengaturan bahasa HP Anda.
+- 🔋 **Rider Mode (Otomatisasi Bluetooth)**: Otomatis mendengarkan saat TWS/interkom helm terhubung, dan otomatis nonaktif saat terputus untuk menghemat baterai.
+- 📱 **Dukungan Layar Mati (Screen-Off)**: Tetap bisa ganti lagu dan cari musik meski HP berada di dalam saku jaket dengan layar terkunci.
+- 🔓 **100% Rootless**: Aman dan bersih tanpa root, Magisk, atau Xposed. Bekerja langsung dengan YouTube Music Morphe via MediaSession dan deep link.
+- 🎛️ **Fallback Tombol Fisik TWS**: Dukungan tombol media fisik ketika kebisingan angin di jalan raya terlalu tinggi.
+- 📳 **Feedback Haptic & Suara**: Pola getaran helm khusus dan konfirmasi suara Text-to-Speech (TTS) opsional.
 
 ---
 
@@ -42,51 +35,45 @@ Cadence menghilangkan kebutuhan menyentuh layar:
 
 - **Versi Android**: Android 8.0+ (API level 26 ke atas).
 - **Aplikasi Musik Target**: [YouTube Music Morphe](https://morphe.software) (`com.google.android.apps.youtube.music`).
-- **Layanan Suara**: Android `SpeechRecognizer` (Aplikasi Google / Speech Services).
-- **Perangkat Keras**: TWS Bluetooth atau interkom helm Bluetooth dengan mikrofon.
+- **Layanan Suara**: Aplikasi Google / Speech Services (untuk Android native `SpeechRecognizer`).
+- **Perangkat Keras**: TWS Bluetooth atau interkom helm dengan mikrofon.
 
 ---
 
-## 📦 Ukuran APK & Arsitektur
+## 🚀 Panduan Instalasi & Pengaturan
 
-- **Ukuran APK**: **~99MB** (Rilis Produksi v1.0).
-- **Arsitektur Hybrid Speech**:
-  - **Kata Kunci (Wake Word)**: Model akustik offline VOSK (`assets/model-en/`).
-  - **Transkripsi Perintah**: Android `SpeechRecognizer` native (akurasi tinggi Bahasa Indonesia dan Inggris tanpa perlu mendownload model raksasa tambahan).
+1. **Unduh APK**: Ambil file `app-release.apk` terbaru dari halaman [Releases](https://github.com/Seiyoouu/cadence/releases).
+2. **⚠️ Peringatan Play Protect & Pengaturan Dibatasi (PENTING)**:
+   > **Saat memasang Cadence via sideload**, Google Play Protect mungkin menampilkan *"Aplikasi tidak dikenal"*. Ketuk **Rincian selengkapnya** → **Tetap instal**.<br>
+   > Pada **Android 13+**, jika Akses Notifikasi berwarna abu-abu atau bertuliskan *"Setelan dibatasi"*, buka **Pengaturan HP → Aplikasi → Cadence → ketuk ikon titik tiga (⋮) di pojok kanan atas → pilih "Izinkan setelan yang dibatasi"** sebelum mengaktifkan Akses Notifikasi. Panduan lengkap per merek HP tersedia di [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+3. **Onboarding Interaktif**: Buka Cadence dan selesaikan panduan 4 langkah (Akses Notifikasi, Mikrofon, Bluetooth).
+4. **Siap Berkendara**: Sambungkan TWS helm Anda, ucapkan **"Hai Cade"** atau **"Hey Cade"**, dan nikmati perjalanan tanpa repot!
 
 ---
 
-## 🛠️ Cara Build dari Sumber
+## 🧠 Cara Kerja (Arsitektur)
 
-Prasyarat: JDK 17 dan Android SDK (API 34).
-
-```bash
-git clone https://github.com/Seiyoouu/cadence.git
-cd cadence
-./gradlew assembleDebug
+```text
+[Mikrofon Helm / TWS] ──> Kata Kunci ("Hai Cade" / VOSK) ──> STT Perintah (Android SpeechRecognizer)
+                                                                           │
+[Saku / Layar Mati] ◄── Auto-Play Deep Link ◄── [Piped / Invidious API] ───┘
+                                   │
+                                   ▼
+                        [YouTube Music Morphe]
 ```
 
-File APK hasil kompilasi akan berada di `app/build/outputs/apk/debug/app-debug.apk`.
+1. **Lapisan Kata Kunci (Wake Word)**: Pemantauan offline hemat daya menggunakan model akustik VOSK ringan (`assets/model-en/`).
+2. **Lapisan STT Perintah**: Pengenalan multibahasa instan via Android native `SpeechRecognizer` (mendukung paket bahasa offline).
+3. **Lapisan Eksekusi**: Mengirim kontrol playback lewat `MediaSession` atau men-resolve kueri pencarian musik terdesentralisasi via deep link Piped/Invidious.
 
 ---
 
-## 🔒 Penjelasan Izin Sistem
+## 🤝 Berkontribusi
 
-| Izin | Tujuan |
-|---|---|
-| `Akses Notifikasi` | Mendeteksi sesi aktif YouTube Music Morphe dan mengontrol playback. |
-| `RECORD_AUDIO` | Mendengarkan kata kunci dan perintah suara. |
-| `BLUETOOTH_CONNECT` | Mendeteksi koneksi TWS helm untuk auto-start Rider Mode. |
-| `FOREGROUND_SERVICE` | Menjaga pengenalan suara tetap aktif saat layar mati. |
-
-Untuk dokumentasi privasi lengkap, lihat [docs/PERMISSIONS.md](docs/PERMISSIONS.md).
+Kontribusi kode, laporan bug, dan pull request sangat terbuka! Silakan baca panduan lengkap di [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
 ## 📜 Lisensi
 
-Dilisensikan di bawah [GNU General Public License v3.0](LICENSE).
-
----
-
-🇮🇩 Bahasa Indonesia | 🇬🇧 [English](README.md)
+Cadence adalah perangkat lunak sumber terbuka yang dilisensikan di bawah [GNU General Public License v3.0](LICENSE).

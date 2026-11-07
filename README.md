@@ -1,40 +1,33 @@
 🇬🇧 English | 🇮🇩 [Bahasa Indonesia](README.id.md)
 
-# Cadence
+# Cadence 🎵🏍️ (Voice Control for YT Music on Motorcycles)
 
 [![Build Debug APK](https://github.com/Seiyoouu/cadence/actions/workflows/build.yml/badge.svg)](https://github.com/Seiyoouu/cadence/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/Seiyoouu/cadence?color=orange)](https://github.com/Seiyoouu/cadence/releases)
+[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-green.svg)](https://developer.android.com)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Release](https://img.shields.io/github/v/release/Seiyoouu/cadence?include_prereleases&color=orange)](https://github.com/Seiyoouu/cadence/releases)
 
-**Cadence** is a 100% rootless Android application providing complete hands-free voice control for [YouTube Music Morphe](https://morphe.software), crafted specifically for motorcycle riders wearing helmets with TWS earbuds or intercoms.
+<p align="center">
+  <img src="docs/test-artifacts/demo.gif" alt="Cadence Demo" width="300" />
+</p>
 
 ---
 
-## 🏍️ Why Cadence?
+## 🛑 The Problem
 
-Changing songs or searching for tracks while riding a motorcycle is dangerous: riders have to pull over, take off gloves, unlock their phones, and navigate small touch targets. 
-
-Cadence solves this with zero physical screen contact:
-- Keep your phone safely locked in your jacket pocket.
-- Say **"Hey Cade"** or **"Hai Cade"** into your helmet microphone.
-- Control playback, skip tracks, or search and play any song directly.
+Changing songs or searching for music while riding a motorcycle is inconvenient and hazardous. Riders frequently have to pull over to the shoulder, take off riding gloves, unlock their phones, and fiddle with tiny touchscreen buttons in the glare. **Cadence** completely resolves this with 100% hands-free, screen-off voice control tailored for riders wearing helmets with Bluetooth TWS or intercoms.
 
 ---
 
 ## ✨ Features
 
-- **Continuous Offline Wake Word**: Powered by a lightweight VOSK engine (`"Hey Cade"`, `"Hi Cade"`, `"Hai Cade"`, `"Cadence"`).
-- **Bilingual Voice Commands**: Seamlessly understands English AND Bahasa Indonesia commands simultaneously:
-  - **Next**: `next`, `skip`, `lagu berikutnya`, `ganti lagu`, `maju`
-  - **Previous**: `previous`, `prev`, `back`, `lagu sebelumnya`, `kembali`, `mundur`
-  - **Pause**: `pause`, `stop`, `jeda`, `berhenti`, `diam`
-  - **Play**: `play`, `resume`, `lanjut`, `mainkan`, `putar`
-  - **Search & Play**: `"play [title]"`, `"putar lagu [title]"`, `"mainkan [title]"`, `"cari [title]"`
-- **Deep Link Auto-Play**: Song search resolves via decentralized Piped/Invidious APIs and launches YouTube Music Morphe instantly even when the screen is locked and off.
-- **Rider Mode (Bluetooth Automation)**: Automatically starts voice control when your helmet TWS/intercom connects, and halts when disconnected to preserve battery life.
-- **Physical Media Button Fallback**: Use TWS buttons when wind noise is too loud.
-- **Sensory Helmet Feedback**: Distinct haptic vibration patterns and optional Text-to-Speech (TTS) voice confirmation.
-- **100% Rootless**: No root, Magisk, or Xposed required. Works cleanly with patched Morphe APKs.
+- 🎙️ **Voice Control**: Play, pause, skip tracks, and search songs directly using your voice without touching the screen.
+- 🗣️ **Bilingual Speech Engine**: Understands Bahasa Indonesia AND English commands simultaneously, regardless of your system language.
+- 🔋 **Rider Mode (Bluetooth Automation)**: Automatically starts listening when your helmet TWS/intercom connects, and halts immediately upon disconnect to save battery.
+- 📱 **Screen-Off Support**: Change and search songs even while your phone stays locked deep inside your jacket pocket.
+- 🔓 **100% Rootless**: Safe and clean without root, Magisk, or Xposed. Interacts directly with YouTube Music Morphe via native MediaSession and deep links.
+- 🎛️ **Physical TWS Fallback**: Physical media button support when wind noise at highway speeds is too loud for voice recognition.
+- 📳 **Haptic & Spoken Feedback**: Distinct helmet vibration cues and optional Text-to-Speech (TTS) voice confirmation.
 
 ---
 
@@ -42,51 +35,45 @@ Cadence solves this with zero physical screen contact:
 
 - **Android Version**: Android 8.0+ (API level 26 or higher).
 - **Target Music App**: [YouTube Music Morphe](https://morphe.software) (`com.google.android.apps.youtube.music`).
-- **Speech Service**: Android `SpeechRecognizer` (Google app / Speech Services).
-- **Hardware**: Bluetooth TWS earbuds or helmet Bluetooth intercom with mic.
+- **Speech Service**: Google App / Speech Services (for Android native `SpeechRecognizer`).
+- **Hardware**: Bluetooth TWS earbuds or helmet intercom with microphone.
 
 ---
 
-## 📦 APK Size & Architecture
+## 🚀 Installation & Setup
 
-- **APK Size**: **~99MB** (Production v1.0).
-- **Hybrid Speech Architecture**:
-  - **Wake Word**: Offline bundled VOSK acoustic model (`assets/model-en/`).
-  - **Command Transcription**: Android native `SpeechRecognizer` (high-accuracy bilingual Indonesian and English without bundling bulky redundant speech models).
+1. **Download APK**: Grab the latest `app-release.apk` from the [Releases](https://github.com/Seiyoouu/cadence/releases) page.
+2. **⚠️ Play Protect & Restricted Settings (Important)**:
+   > **When sideloading Cadence**, Google Play Protect may show *"Unrecognized app"*. Tap **More details** → **Install anyway**.<br>
+   > On **Android 13+**, if Notification Access appears greyed out or shows *"Restricted setting"*, go to your phone's **Settings → Apps → Cadence → tap the three dots (⋮) in the top-right corner → select "Allow restricted settings"** before enabling Notification Access. Full OEM details are documented in [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+3. **Interactive Onboarding**: Launch Cadence and complete the 4-step setup (Notification Access, Microphone, Bluetooth).
+4. **Hit the Road**: Connect your helmet TWS, say **"Hey Cade"** or **"Hai Cade"**, and command your music hands-free!
 
 ---
 
-## 🛠️ Build from Source
+## 🧠 How It Works (Architecture)
 
-Prerequisites: JDK 17 and Android SDK (API 34).
-
-```bash
-git clone https://github.com/Seiyoouu/cadence.git
-cd cadence
-./gradlew assembleDebug
+```text
+[Helmet / TWS Mic] ──> Wake Word ("Hey Cade" / VOSK) ──> Command STT (Android SpeechRecognizer)
+                                                                    │
+[Pocket / Screen-Off] ◄── Auto-Play Deep Link ◄── [Piped / Invidious API]
+                                     │
+                                     ▼
+                          [YouTube Music Morphe]
 ```
 
-The debug APK will be generated at `app/build/outputs/apk/debug/app-debug.apk`.
+1. **Wake Word Layer**: Continuous, battery-efficient offline listening via bundled VOSK acoustic engine (`assets/model-en/`).
+2. **Command STT Layer**: One-shot multi-language recognition via Android's native `SpeechRecognizer` (supports offline language packs).
+3. **Execution Layer**: Dispatches transport controls via `MediaSession` or resolves decentralized music search queries via Piped/Invidious deep links.
 
 ---
 
-## 🔒 Permissions Explained
+## 🤝 Contributing
 
-| Permission | Purpose |
-|---|---|
-| `Notification Access` | Detects active YouTube Music Morphe session and controls playback. |
-| `RECORD_AUDIO` | Listens for wake words and voice commands. |
-| `BLUETOOTH_CONNECT` | Detects helmet TWS connection for Rider Mode auto-start. |
-| `FOREGROUND_SERVICE` | Keeps voice recognition active while riding with screen off. |
-
-For detailed security disclosures, see [docs/PERMISSIONS.md](docs/PERMISSIONS.md).
+Contributions, bug reports, and pull requests are warmly welcomed! Please check [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines, commit standards, and build instructions.
 
 ---
 
 ## 📜 License
 
-Licensed under the [GNU General Public License v3.0](LICENSE).
-
----
-
-🇬🇧 English | 🇮🇩 [Bahasa Indonesia](README.id.md)
+Cadence is free and open-source software licensed under the [GNU General Public License v3.0](LICENSE).
