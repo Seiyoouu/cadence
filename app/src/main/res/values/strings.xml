@@ -64,5 +64,5 @@
 
     <!-- Restricted Settings strings -->
     <string name="fix_restricted_settings">Fix Restricted Settings</string>
-    <string name="restricted_instructions">Tap button -> 3-dot menu -> Allow restricted settings, then enable Notification Access.</string>
+    <string name="restricted_instructions">Android 13+ restricts this setting for sideloaded apps. Tap button -> 3-dot menu in top right -> Allow restricted settings, then enable Notification Access.</string>
 </resources>

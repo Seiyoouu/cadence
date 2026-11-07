@@ -64,5 +64,5 @@
 
     <!-- Restricted Settings strings -->
     <string name="fix_restricted_settings">Perbaiki Setelan Terbatas</string>
-    <string name="restricted_instructions">Tekan tombol -> menu 3-titik -> Izinkan setelan terbatas, lalu aktifkan Akses Notifikasi.</string>
+    <string name="restricted_instructions">Android 13+ memblokir izin ini. Buka menu 3-titik di pojok kanan atas > Izinkan setelan terbatas, lalu nyalakan izin Notifikasi.</string>
 </resources>

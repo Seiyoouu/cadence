@@ -43,11 +43,20 @@ Changing songs or searching for music while riding a motorcycle is inconvenient 
 ## 🚀 Installation & Setup
 
 1. **Download APK**: Grab the latest `app-release.apk` from the [Releases](https://github.com/Seiyoouu/cadence/releases) page.
-2. **⚠️ Play Protect & Restricted Settings (Important)**:
-   > **When sideloading Cadence**, Google Play Protect may show *"Unrecognized app"*. Tap **More details** → **Install anyway**.<br>
-   > On **Android 13+**, if Notification Access appears greyed out or shows *"Restricted setting"*, go to your phone's **Settings → Apps → Cadence → tap the three dots (⋮) in the top-right corner → select "Allow restricted settings"** before enabling Notification Access. Full OEM details are documented in [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
-3. **Interactive Onboarding**: Launch Cadence and complete the 4-step setup (Notification Access, Microphone, Bluetooth).
-4. **Hit the Road**: Connect your helmet TWS, say **"Hey Cade"** or **"Hai Cade"**, and command your music hands-free!
+2. **⚠️ Handling Google Play Protect Warnings**:
+   > Because Cadence is an open-source sideloaded application requesting notification & mic access, Google Play Protect may warn or block installation. **This is completely normal and safe.**
+   > 
+   > **Smoothest Installation Method (The 24-Hour Pause):**
+   > 1. Open the **Google Play Store** app.
+   > 2. Tap your **profile picture** (top right) > **Play Protect** > **Gear icon** (Settings).
+   > 3. Toggle off **"Scan apps with Play Protect"**.
+   > 4. Google will offer an option to **"Pause for 24 hours"**. Select **Yes / Pause**.
+   > 5. Now open the downloaded Cadence APK and install normally.
+   > 6. *(Optional)* After installation, you can re-enable Play Protect at any time.
+3. **🔓 Fixing Greyed-Out Notification Permission (Restricted Settings)**:
+   > If Notification Access is greyed out or shows *"Restricted setting"* (Android 13+), go to **Settings > Apps > Cadence > 3-Dot Menu (top right) > Allow restricted settings**. Afterwards, return to Cadence and enable Notification Access. Full OEM guide in [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+4. **Interactive Onboarding**: Launch Cadence and complete the 4-step setup (Notification Access, Microphone, Bluetooth).
+5. **Hit the Road**: Connect your helmet TWS, say **"Hey Cade"** or **"Hai Cade"**, and command your music hands-free!
 
 ---
 

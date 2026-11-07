@@ -43,11 +43,20 @@ Mengganti lagu atau mencari musik saat berkendara motor sangat berbahaya. Pengen
 ## 🚀 Panduan Instalasi & Pengaturan
 
 1. **Unduh APK**: Ambil file `app-release.apk` terbaru dari halaman [Releases](https://github.com/Seiyoouu/cadence/releases).
-2. **⚠️ Peringatan Play Protect & Pengaturan Dibatasi (PENTING)**:
-   > **Saat memasang Cadence via sideload**, Google Play Protect mungkin menampilkan *"Aplikasi tidak dikenal"*. Ketuk **Rincian selengkapnya** → **Tetap instal**.<br>
-   > Pada **Android 13+**, jika Akses Notifikasi berwarna abu-abu atau bertuliskan *"Setelan dibatasi"*, buka **Pengaturan HP → Aplikasi → Cadence → ketuk ikon titik tiga (⋮) di pojok kanan atas → pilih "Izinkan setelan yang dibatasi"** sebelum mengaktifkan Akses Notifikasi. Panduan lengkap per merek HP tersedia di [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
-3. **Onboarding Interaktif**: Buka Cadence dan selesaikan panduan 4 langkah (Akses Notifikasi, Mikrofon, Bluetooth).
-4. **Siap Berkendara**: Sambungkan TWS helm Anda, ucapkan **"Hai Cade"** atau **"Hey Cade"**, dan nikmati perjalanan tanpa repot!
+2. **⚠️ Mengatasi Peringatan Google Play Protect**:
+   > Karena ini aplikasi open-source (sideload) yang membutuhkan akses notifikasi dan mikrofon, Google Play Protect mungkin memblokir instalasi. **Ini normal dan aman.**
+   > 
+   > **Cara Termanis untuk Install (Metode Jeda 24 Jam):**
+   > 1. Buka aplikasi **Google Play Store**.
+   > 2. Ketuk **foto profil** (pojok kanan atas) > **Play Protect** > **ikon Gerigi (Pengaturan)**.
+   > 3. Matikan toggle **"Pindai aplikasi dengan Play Protect"**.
+   > 4. Google akan menawarkan opsi **"Jeda selama 24 jam"**. Pilih **Ya / Jeda**.
+   > 5. Sekarang, buka file APK Cadence dan install seperti biasa.
+   > 6. *(Opsional)* Setelah terinstall, kamu bisa menyalakan kembali Play Protect.
+3. **🔓 Mengatasi Izin Notifikasi Abu-abu (Restricted Settings)**:
+   > Jika izin Notifikasi tidak bisa dinyalakan atau berwarna abu-abu (Android 13+), buka **Setelan > Aplikasi > Cadence > Menu 3-Titik > Izinkan setelan terbatas**. Setelah itu, kembali ke Cadence dan nyalakan izin Notifikasi. Panduan lengkap tersedia di [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+4. **Onboarding Interaktif**: Buka Cadence dan selesaikan panduan 4 langkah (Akses Notifikasi, Mikrofon, Bluetooth).
+5. **Siap Berkendara**: Sambungkan TWS helm Anda, ucapkan **"Hai Cade"** atau **"Hey Cade"**, dan nikmati perjalanan tanpa repot!
 
 ---
 
