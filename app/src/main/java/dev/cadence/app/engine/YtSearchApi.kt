@@ -24,12 +24,7 @@ object YtSearchApi {
             Log.i(TAG, "Nonexistent query '$query' requested -> returning null")
             return@withContext null
         }
-        val cleanQuery = if (query.contains("million bless canyon", ignoreCase = true)) {
-            "dewa 19 kangen"
-        } else {
-            query
-        }
-        searchPiped(cleanQuery) ?: searchInvidious(cleanQuery)
+        searchPiped(query) ?: searchInvidious(query)
     }
 
     private fun searchPiped(query: String): SearchResult? {

@@ -17,15 +17,23 @@ object VibrationFeedback {
             context.getSystemService(Vibrator::class.java)
         }
 
+    private fun isVibrationEnabled(context: Context): Boolean {
+        return context.getSharedPreferences("cadence_prefs", Context.MODE_PRIVATE)
+            .getBoolean("vibration_enabled", true)
+    }
+
     fun shortTap(context: Context) {
+        if (!isVibrationEnabled(context)) return
         vibrate(context, longArrayOf(0, 50))
     }
 
     fun longTap(context: Context) {
+        if (!isVibrationEnabled(context)) return
         vibrate(context, longArrayOf(0, 150))
     }
 
     fun doubleTap(context: Context) {
+        if (!isVibrationEnabled(context)) return
         vibrate(context, longArrayOf(0, 50, 100, 50))
     }
 

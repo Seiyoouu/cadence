@@ -164,8 +164,24 @@
         android:id="@+id/swTtsFeedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:text="@string/tts_toggle_label"
+        android:textColor="@color/onBackground" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/swAutoStartBluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="@string/settings_auto_start_bluetooth"
+        android:textColor="@color/onBackground" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/swVibrationFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/settings_vibration"
         android:textColor="@color/onBackground" />
 
     <TextView

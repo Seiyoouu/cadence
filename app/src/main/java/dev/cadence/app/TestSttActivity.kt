@@ -52,7 +52,9 @@ class TestSttActivity : Activity() {
                 Log.e(TAG, "WAV file does not exist: $wavPath")
                 return "File not found"
             }
-            val modelName = if (locale == "id") "id" else "en"
+            val rawLocale = locale.lowercase()
+            val isIndonesian = rawLocale in listOf("id", "in", "id-id", "in-id")
+            val modelName = if (isIndonesian) "id" else "en"
             val modelDir = ModelExtractor.extractIfNeeded(this, modelName)
             val model = Model(modelDir.absolutePath)
             val recognizer = Recognizer(model, SAMPLE_RATE)

@@ -13,29 +13,27 @@ object CommandParser {
     }
 
     private val NEXT_PATTERNS = listOf(
-        Regex("\\b(next|skip|lagu\\s+berikutnya|ganti\\s+lagu|maju|lagoon\\s+break|break\\s+with\\s+near)\\b", RegexOption.IGNORE_CASE)
+        Regex("\\b(next|skip|lagu\\s+berikutnya|ganti\\s+lagu|maju)\\b", RegexOption.IGNORE_CASE)
     )
     private val PREVIOUS_PATTERNS = listOf(
         Regex("\\b(previous|prev|back|lagu\\s+sebelumnya|kembali|mundur)\\b", RegexOption.IGNORE_CASE)
     )
     private val PAUSE_PATTERNS = listOf(
-        Regex("\\b(pause|stop|jeda|berhenti|diam|jadeja\\s+dad|did\\s+dad|dad|this\\s+thought)\\b", RegexOption.IGNORE_CASE)
+        Regex("\\b(pause|stop|jeda|berhenti|diam)\\b", RegexOption.IGNORE_CASE)
     )
     private val PLAY_PATTERNS = listOf(
         Regex("\\b(play|resume|lanjut|mainkan|putar)\\b", RegexOption.IGNORE_CASE)
     )
     private val SEARCH_PATTERNS = listOf(
-        Regex("^\\s*(?:play|putar|mainkan|cari|search|up\\s+with\\s+that\\s+allow\\s+good|put\\s+that\\s+allow\\s+good|put\\s+that)\\s+(?:lagu\\s+|song\\s+)?(.+)$", RegexOption.IGNORE_CASE)
+        Regex("^\\s*(?:play|putar|mainkan|cari|search)\\s+(?:lagu\\s+|song\\s+)?(.+)$", RegexOption.IGNORE_CASE)
     )
     private val FILLERS = listOf(
         "tolong", "dong", "ya", "cade", "please", "hey", "hei", "halo", "hai"
     )
     private val WAKE_PREFIXES = listOf(
-        "hi chad the a", "hi chad the", "hi chad", "hai chad",
-        "hey kid", "hi kid", "hey k", "hi k", "hello jadeja", "hello jade",
-        "hi candy", "hai candy", "hey cade", "hi cade", "ok cade",
-        "hai cade", "hei cade", "halo cade", "oke cade", "cadence", "cade",
-        "hey kade", "hi kade", "hay cade"
+        "hey cadence", "hi cadence", "halo cadence", "hai cadence", "cadence",
+        "hey cade", "hi cade", "ok cade", "hai cade", "hei cade", "halo cade", "oke cade",
+        "hi candy", "hai candy", "cade"
     )
 
     fun parse(rawTranscript: String): Command {

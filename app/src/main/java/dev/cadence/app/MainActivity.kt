@@ -70,6 +70,16 @@ class MainActivity : AppCompatActivity() {
             prefs.edit().putBoolean("tts_enabled", checked).apply()
         }
 
+        binding.swAutoStartBluetooth.isChecked = prefs.getBoolean("auto_start_bluetooth", true)
+        binding.swAutoStartBluetooth.setOnCheckedChangeListener { _, checked ->
+            prefs.edit().putBoolean("auto_start_bluetooth", checked).apply()
+        }
+
+        binding.swVibrationFeedback.isChecked = prefs.getBoolean("vibration_enabled", true)
+        binding.swVibrationFeedback.setOnCheckedChangeListener { _, checked ->
+            prefs.edit().putBoolean("vibration_enabled", checked).apply()
+        }
+
         binding.swVoiceControl.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)

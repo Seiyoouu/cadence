@@ -5,12 +5,14 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import dev.cadence.app.R
 import dev.cadence.app.engine.CommandParser
 import dev.cadence.app.engine.SearchEngine
@@ -60,10 +62,31 @@ class VoiceService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        locale = Locale.getDefault().language
-        Log.i(TAG, "VoiceService created with locale=$locale")
+        val rawLocale = Locale.getDefault().language.lowercase()
+        val isIndonesian = rawLocale in listOf("id", "in", "id-id", "in-id")
+        locale = if (isIndonesian) "id" else "en"
+        Log.i(TAG, "VoiceService created with rawLocale=$rawLocale resolved to locale=$locale")
         createNotificationChannel()
-        startForeground(NOTIF_ID, buildNotification())
+
+        val notif = buildNotification()
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // If started from background (e.g. Bluetooth broadcast), start as CONNECTED_DEVICE
+                // to comply with Android 14 while-in-use background microphone restrictions.
+                ServiceCompat.startForeground(
+                    this,
+                    NOTIF_ID,
+                    notif,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
+                )
+            } else {
+                startForeground(NOTIF_ID, notif)
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Fallback startForeground", e)
+            startForeground(NOTIF_ID, notif)
+        }
+
         tts = TtsFeedback(this)
         startWakeListening()
     }
