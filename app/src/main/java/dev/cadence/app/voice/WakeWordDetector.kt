@@ -30,7 +30,8 @@ class WakeWordDetector(
         "hey cade", "hi cade", "ok cade", "cade", "cadence",
         "hai cade", "hei cade", "halo cade", "oke cade",
         "hey cadence", "hi cadence", "halo cadence", "hai cadence",
-        "candy"
+        "hi candy", "hai candy", "hay cade", "hei kade", "hai kade",
+        "hey kade", "hi kade", "candy"
     )
 
     fun start() {
