@@ -1,0 +1,14 @@
+name: Release APK
+
+# TODO: Full release workflow implementation in Phase 8
+# Will trigger on version tags (e.g., v*.*.*) to sign release APK and publish to GitHub Releases
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release-placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder
+        run: echo "Release workflow will be implemented in Phase 8"
