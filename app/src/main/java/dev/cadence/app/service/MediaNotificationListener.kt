@@ -10,6 +10,7 @@ import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import dev.cadence.app.engine.MorphePackageResolver
 import dev.cadence.app.engine.TransportEngine
 
 class MediaNotificationListener : NotificationListenerService() {
@@ -70,12 +71,12 @@ class MediaNotificationListener : NotificationListenerService() {
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {
         super.onNotificationRemoved(sbn)
         sbn?.let {
-            if (it.packageName == TransportEngine.TARGET_PACKAGE) {
+            if (MorphePackageResolver.isTargetPackage(it.packageName)) {
                 Log.d(TAG, "Target package notification removed: ${it.packageName}")
                 // Check if session is still alive via session manager before detaching
                 try {
                     val controllers = sessionManager?.getActiveSessions(componentName)
-                    val stillHasSession = controllers?.any { c -> c.packageName == TransportEngine.TARGET_PACKAGE } == true
+                    val stillHasSession = controllers?.any { c -> MorphePackageResolver.isTargetPackage(c.packageName) } == true
                     if (!stillHasSession) {
                         TransportEngine.detachController()
                     }
@@ -92,17 +93,21 @@ class MediaNotificationListener : NotificationListenerService() {
             return
         }
 
-        val targetController = controllers.firstOrNull { it.packageName == TransportEngine.TARGET_PACKAGE }
+        val targetController = controllers.firstOrNull { it.packageName == MorphePackageResolver.PACKAGE_MORPHE }
+            ?: controllers.firstOrNull { it.packageName == MorphePackageResolver.PACKAGE_REVANCED }
+            ?: controllers.firstOrNull { MorphePackageResolver.isTargetPackage(it.packageName) && it.packageName != MorphePackageResolver.PACKAGE_GOOGLE }
+            ?: controllers.firstOrNull { it.packageName == MorphePackageResolver.PACKAGE_GOOGLE }
+
         if (targetController != null) {
-            Log.i(TAG, "Found target MediaController for ${TransportEngine.TARGET_PACKAGE}")
+            Log.i(TAG, "Found target MediaController for ${targetController.packageName}")
             TransportEngine.attachController(targetController)
         } else {
-            Log.d(TAG, "Target package ${TransportEngine.TARGET_PACKAGE} not found among active sessions")
+            Log.d(TAG, "No Morphe or YouTube Music target found among active sessions")
         }
     }
 
     private fun inspectNotification(sbn: StatusBarNotification) {
-        if (sbn.packageName != TransportEngine.TARGET_PACKAGE) {
+        if (!MorphePackageResolver.isTargetPackage(sbn.packageName)) {
             return
         }
 

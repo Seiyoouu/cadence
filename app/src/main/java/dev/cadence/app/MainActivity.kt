@@ -11,6 +11,7 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.app.NotificationManagerCompat
@@ -18,6 +19,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dev.cadence.app.databinding.ActivityMainBinding
+import dev.cadence.app.engine.MorphePackageResolver
 import dev.cadence.app.engine.PlaybackInfo
 import dev.cadence.app.engine.SearchEngine
 import dev.cadence.app.engine.TransportEngine
@@ -87,6 +89,16 @@ class MainActivity : AppCompatActivity() {
         binding.swVibrationFeedback.isChecked = prefs.getBoolean("vibration_enabled", true)
         binding.swVibrationFeedback.setOnCheckedChangeListener { _, checked ->
             prefs.edit().putBoolean("vibration_enabled", checked).apply()
+        }
+
+        updateTargetPlayerUi()
+        binding.layoutTargetPlayer.setOnClickListener {
+            showTargetPlayerDialog()
+        }
+
+        updateVoiceLanguageUi()
+        binding.layoutVoiceLanguage.setOnClickListener {
+            showVoiceLanguageDialog()
         }
 
         binding.swVoiceControl.setOnCheckedChangeListener { _, isChecked ->
@@ -271,5 +283,72 @@ class MainActivity : AppCompatActivity() {
             }
             binding.btnPermissionNotification.isEnabled = true
         }
+    }
+
+    private fun updateTargetPlayerUi() {
+        val preferred = MorphePackageResolver.getPreferredPackage(this)
+        binding.tvTargetPlayerValue.text = MorphePackageResolver.getDisplayName(this, preferred)
+    }
+
+    private fun showTargetPlayerDialog() {
+        val installed = MorphePackageResolver.getInstalledYtmPackages(this)
+        val packages = if (installed.isNotEmpty()) installed else listOf(
+            MorphePackageResolver.PACKAGE_MORPHE,
+            MorphePackageResolver.PACKAGE_REVANCED,
+            MorphePackageResolver.PACKAGE_GOOGLE
+        )
+        val names = packages.map { MorphePackageResolver.getDisplayName(this, it) }.toTypedArray()
+        val current = MorphePackageResolver.getPreferredPackage(this)
+        val selectedIndex = packages.indexOf(current).let { if (it >= 0) it else 0 }
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.select_target_player)
+            .setSingleChoiceItems(names, selectedIndex) { dialog, which ->
+                val chosen = packages[which]
+                getSharedPreferences("cadence_prefs", MODE_PRIVATE)
+                    .edit()
+                    .putString("target_ytm_package", chosen)
+                    .apply()
+                updateTargetPlayerUi()
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun updateVoiceLanguageUi() {
+        val prefs = getSharedPreferences("cadence_prefs", MODE_PRIVATE)
+        val lang = prefs.getString("voice_language", "id-ID") ?: "id-ID"
+        binding.tvVoiceLanguageValue.text = when (lang) {
+            "en-US" -> getString(R.string.lang_english)
+            "auto" -> getString(R.string.lang_auto)
+            else -> getString(R.string.lang_indonesian)
+        }
+    }
+
+    private fun showVoiceLanguageDialog() {
+        val options = arrayOf(
+            getString(R.string.lang_indonesian),
+            getString(R.string.lang_english),
+            getString(R.string.lang_auto)
+        )
+        val values = arrayOf("id-ID", "en-US", "auto")
+        val current = getSharedPreferences("cadence_prefs", MODE_PRIVATE)
+            .getString("voice_language", "id-ID") ?: "id-ID"
+        val selectedIndex = values.indexOf(current).let { if (it >= 0) it else 0 }
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.select_voice_language)
+            .setSingleChoiceItems(options, selectedIndex) { dialog, which ->
+                val chosen = values[which]
+                getSharedPreferences("cadence_prefs", MODE_PRIVATE)
+                    .edit()
+                    .putString("voice_language", chosen)
+                    .apply()
+                updateVoiceLanguageUi()
+                dialog.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 }

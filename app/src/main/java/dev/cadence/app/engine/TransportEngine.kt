@@ -22,7 +22,6 @@ data class PlaybackInfo(
 
 object TransportEngine {
     private const val TAG = "TransportEngine"
-    const val TARGET_PACKAGE = "com.google.android.apps.youtube.music"
 
     private val _playbackInfo = MutableStateFlow(PlaybackInfo())
     val playbackInfo: StateFlow<PlaybackInfo> = _playbackInfo.asStateFlow()
@@ -42,7 +41,7 @@ object TransportEngine {
         }
 
         override fun onSessionDestroyed() {
-            Log.d(TAG, "MediaSession destroyed for $TARGET_PACKAGE")
+            Log.d(TAG, "MediaSession destroyed for ${activeController?.packageName}")
             detachController()
         }
     }
@@ -53,7 +52,7 @@ object TransportEngine {
 
     @Synchronized
     fun attachController(controller: MediaController) {
-        if (controller.packageName != TARGET_PACKAGE) {
+        if (!MorphePackageResolver.isTargetPackage(controller.packageName)) {
             Log.d(TAG, "Ignoring non-target package session: ${controller.packageName}")
             return
         }
@@ -66,7 +65,7 @@ object TransportEngine {
 
         detachController()
 
-        Log.i(TAG, "Attaching MediaController for $TARGET_PACKAGE")
+        Log.i(TAG, "Attaching MediaController for ${controller.packageName}")
         activeController = controller
         controller.registerCallback(controllerCallback)
         updatePlaybackInfo(controller.playbackState, controller.metadata)

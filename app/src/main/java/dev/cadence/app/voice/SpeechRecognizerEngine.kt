@@ -27,6 +27,20 @@ class SpeechRecognizerEngine(
         onError: (String) -> Unit,
         onTimeout: () -> Unit
     ) {
+        startWithCandidates(
+            onResults = { candidates ->
+                onResult(candidates.firstOrNull() ?: "")
+            },
+            onError = onError,
+            onTimeout = onTimeout
+        )
+    }
+
+    fun startWithCandidates(
+        onResults: (List<String>) -> Unit,
+        onError: (String) -> Unit,
+        onTimeout: () -> Unit
+    ) {
         if (!isAvailable()) {
             Log.e(TAG, "SpeechRecognizer not available")
             onError("SpeechRecognizer not available")
@@ -63,10 +77,10 @@ class SpeechRecognizerEngine(
                     active = false
                     val texts = results?.getStringArrayList(
                         SpeechRecognizer.RESULTS_RECOGNITION
-                    )
-                    val best = texts?.firstOrNull()?.trim() ?: ""
-                    Log.i(TAG, "Result: $best")
-                    if (best.isEmpty()) onTimeout() else onResult(best)
+                    ) ?: arrayListOf()
+                    Log.i(TAG, "SpeechRecognizer results: $texts")
+                    val valid = texts.filter { it.isNotBlank() }
+                    if (valid.isEmpty()) onTimeout() else onResults(valid)
                 }
                 override fun onPartialResults(partialResults: Bundle?) {
                     val texts = partialResults?.getStringArrayList(
@@ -82,9 +96,15 @@ class SpeechRecognizerEngine(
         }
 
         val langTag = when (locale.lowercase()) {
-            "id", "in", "id-id", "in-id" -> "id-ID"
-            else -> "en-US"
+            "en", "en-us" -> "en-US"
+            "auto" -> {
+                val sys = java.util.Locale.getDefault().language.lowercase()
+                if (sys in listOf("id", "in", "id-id", "in-id")) "id-ID" else "en-US"
+            }
+            else -> "id-ID" // Default to Bahasa Indonesia
         }
+        val fallbackLang = if (langTag.startsWith("id", ignoreCase = true)) "en-US" else "id-ID"
+
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -92,12 +112,13 @@ class SpeechRecognizerEngine(
             )
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, langTag)
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, langTag)
-            putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, langTag)
+            putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", arrayOf(langTag, fallbackLang))
+            putExtra("android.speech.extra.ADDITIONAL_LANGUAGES", arrayOf(langTag, fallbackLang))
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
             putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, context.packageName)
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1500L)
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 1000L)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 1500L)
             putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1500L)
         }
         recognizer?.startListening(intent)

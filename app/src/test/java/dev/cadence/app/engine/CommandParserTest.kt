@@ -249,4 +249,31 @@ class CommandParserTest {
     fun testUnknown_wakeWordOnlyId() {
         assertEquals(CommandParser.Command.Unknown, CommandParser.parse("halo cade"))
     }
+
+    // --- 7. Natural Indonesian Phrasing & Candidates Tests ---
+    @Test
+    fun testIndonesianNaturalPhrasings() {
+        assertEquals(CommandParser.Command.Next, CommandParser.parse("selanjutnya"))
+        assertEquals(CommandParser.Command.Next, CommandParser.parse("berikutnya"))
+        assertEquals(CommandParser.Command.Previous, CommandParser.parse("sebelumnya"))
+        assertEquals(CommandParser.Command.Pause, CommandParser.parse("setop"))
+        assertEquals(CommandParser.Command.Play, CommandParser.parse("lanjutkan"))
+        assertEquals(CommandParser.Command.Play, CommandParser.parse("puter"))
+        assertEquals(CommandParser.Command.Search("dewa 19 kangen"), CommandParser.parse("puter lagu dewa 19 kangen"))
+        assertEquals(CommandParser.Command.Search("coldplay yellow"), CommandParser.parse("setelkan lagu coldplay yellow dong"))
+        assertEquals(CommandParser.Command.Search("tulus hati hati di jalan"), CommandParser.parse("setel tulus hati hati di jalan"))
+        assertEquals(CommandParser.Command.Search("sheila on 7"), CommandParser.parse("cariin lagu sheila on 7"))
+    }
+
+    @Test
+    fun testParseCandidates_fallback() {
+        val candidates = listOf("laku berikutnya", "lagu berikutnya", "lagu berikut nya")
+        assertEquals(CommandParser.Command.Next, CommandParser.parseCandidates(candidates))
+    }
+
+    @Test
+    fun testParseCandidates_search() {
+        val candidates = listOf("asdf unknown", "puter lagu dewa 19", "something else")
+        assertEquals(CommandParser.Command.Search("dewa 19"), CommandParser.parseCandidates(candidates))
+    }
 }

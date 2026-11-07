@@ -65,4 +65,13 @@
     <!-- Restricted Settings strings -->
     <string name="fix_restricted_settings">Perbaiki Setelan Terbatas</string>
     <string name="restricted_instructions">Android 13+ memblokir izin ini. Buka menu 3-titik di pojok kanan atas > Izinkan setelan terbatas, lalu nyalakan izin Notifikasi.</string>
+
+    <!-- Target Player & Voice Language Settings -->
+    <string name="target_player_label">Aplikasi Musik Target</string>
+    <string name="voice_language_label">Bahasa Pengenalan Suara</string>
+    <string name="lang_indonesian">Bahasa Indonesia (id-ID)</string>
+    <string name="lang_english">English (en-US)</string>
+    <string name="lang_auto">Ikuti Bahasa Sistem (Auto)</string>
+    <string name="select_target_player">Pilih Aplikasi Musik Target</string>
+    <string name="select_voice_language">Pilih Bahasa Pengenalan Suara</string>
 </resources>

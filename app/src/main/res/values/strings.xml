@@ -65,4 +65,13 @@
     <!-- Restricted Settings strings -->
     <string name="fix_restricted_settings">Fix Restricted Settings</string>
     <string name="restricted_instructions">Android 13+ restricts this setting for sideloaded apps. Tap button -> 3-dot menu in top right -> Allow restricted settings, then enable Notification Access.</string>
+
+    <!-- Target Player & Voice Language Settings -->
+    <string name="target_player_label">Target Music App</string>
+    <string name="voice_language_label">Voice Recognition Language</string>
+    <string name="lang_indonesian">Bahasa Indonesia (id-ID)</string>
+    <string name="lang_english">English (en-US)</string>
+    <string name="lang_auto">System Default (Auto)</string>
+    <string name="select_target_player">Select Target Music App</string>
+    <string name="select_voice_language">Select Voice Language</string>
 </resources>

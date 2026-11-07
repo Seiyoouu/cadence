@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
@@ -144,7 +145,8 @@ class VoiceService : Service() {
 
     private fun startStt() {
         _voiceState.value = VoiceState.ListeningCommand
-        stt = SpeechRecognizerEngine(this, locale)
+        val languageTag = resolveSttLanguage()
+        stt = SpeechRecognizerEngine(this, languageTag)
         if (!stt!!.isAvailable()) {
             Log.e(TAG, "SpeechRecognizer not available on this device")
             _voiceState.value = VoiceState.Idle
@@ -157,13 +159,14 @@ class VoiceService : Service() {
             startWakeListening()
             return
         }
-        stt?.start(
-            onResult = { transcript ->
-                Log.i(TAG, "STT result: $transcript")
-                _lastTranscript.value = transcript
+        stt?.startWithCandidates(
+            onResults = { candidates ->
+                Log.i(TAG, "STT candidates: $candidates")
+                val primary = candidates.firstOrNull() ?: ""
+                _lastTranscript.value = primary
                 _voiceState.value = VoiceState.Processing
                 stopStt()
-                handleCommand(transcript)
+                handleCommandCandidates(candidates)
             },
             onError = { err ->
                 Log.e(TAG, "STT error: $err")
@@ -178,14 +181,35 @@ class VoiceService : Service() {
         )
     }
 
+    private fun resolveSttLanguage(): String {
+        val prefs = getSharedPreferences("cadence_prefs", Context.MODE_PRIVATE)
+        val prefLang = prefs.getString("voice_language", "id-ID") ?: "id-ID"
+        if (prefLang == "auto") {
+            val raw = Locale.getDefault().language.lowercase()
+            return if (raw in listOf("id", "in", "id-id", "in-id")) "id-ID" else "en-US"
+        }
+        return prefLang
+    }
+
     private fun isIndonesian(): Boolean {
         val raw = Locale.getDefault().language.lowercase()
         return raw in listOf("id", "in", "id-id", "in-id")
     }
 
+    private fun handleCommandCandidates(candidates: List<String>) {
+        val primary = candidates.firstOrNull() ?: ""
+        val command = CommandParser.parseCandidates(candidates)
+        Log.i(TAG, "Parsed command: $command (primary='$primary', count=${candidates.size})")
+        executeCommand(command, primary)
+    }
+
     fun handleCommand(transcript: String) {
         val command = CommandParser.parse(transcript)
         Log.i(TAG, "Parsed command: $command (from '$transcript')")
+        executeCommand(command, transcript)
+    }
+
+    private fun executeCommand(command: CommandParser.Command, transcript: String) {
 
         when (command) {
             is CommandParser.Command.Next -> {

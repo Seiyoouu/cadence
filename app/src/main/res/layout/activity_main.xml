@@ -189,6 +189,65 @@
         android:text="@string/settings_vibration"
         android:textColor="@color/onBackground" />
 
+    <!-- Target Player Setting Row -->
+    <LinearLayout
+        android:id="@+id/layoutTargetPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/target_player_label"
+            android:textColor="@color/onBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvTargetPlayerValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Voice Language Setting Row -->
+    <LinearLayout
+        android:id="@+id/layoutVoiceLanguage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/voice_language_label"
+            android:textColor="@color/onBackground"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvVoiceLanguageValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tvLastTranscript"
         android:layout_width="match_parent"

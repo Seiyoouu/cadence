@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 object SearchEngine {
     private const val TAG = "SearchEngine"
-    private const val TARGET_PACKAGE = "com.google.android.apps.youtube.music"
     private lateinit var appContext: Context
 
     private val _searchState = MutableStateFlow<SearchState>(SearchState.Idle)
@@ -47,13 +46,14 @@ object SearchEngine {
     }
 
     private fun playViaDeepLink(videoId: String, title: String) {
+        val targetPackage = MorphePackageResolver.getPreferredPackage(appContext)
         val uri = Uri.parse("https://music.youtube.com/watch?v=$videoId")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
-            setPackage(TARGET_PACKAGE)
+            setPackage(targetPackage)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         try {
-            Log.i(TAG, "Opening deep link for videoId=$videoId: $uri")
+            Log.i(TAG, "Opening deep link for videoId=$videoId on targetPackage=$targetPackage: $uri")
             appContext.startActivity(intent)
             _searchState.value = SearchState.Playing(title)
 
@@ -71,9 +71,10 @@ object SearchEngine {
     }
 
     private fun fallbackToIntentSearch(query: String) {
+        val targetPackage = MorphePackageResolver.getPreferredPackage(appContext)
         val intent = Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH).apply {
             putExtra(SearchManager.QUERY, query)
-            setPackage(TARGET_PACKAGE)
+            setPackage(targetPackage)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         try {
