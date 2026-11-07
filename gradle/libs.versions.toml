@@ -1,0 +1,23 @@
+[versions]
+agp = "8.5.2"
+kotlin = "1.9.24"
+coreKtx = "1.13.1"
+lifecycleService = "2.8.4"
+preferenceKtx = "1.2.1"
+coroutinesAndroid = "1.8.1"
+voskAndroid = "0.3.47"
+appcompat = "1.7.0"
+material = "1.12.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycleService" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesAndroid" }
+vosk-android = { group = "com.alphacephei", name = "vosk-android", version.ref = "voskAndroid" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
