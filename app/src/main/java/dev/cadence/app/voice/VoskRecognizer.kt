@@ -37,10 +37,7 @@ class VoskRecognizer(
 
     fun start(onComplete: (String) -> Unit, onTimeout: () -> Unit) {
         try {
-            val rawLocale = locale.lowercase()
-            val isIndonesian = rawLocale in listOf("id", "in", "id-id", "in-id")
-            val modelName = if (isIndonesian) "id" else "en"
-            val modelDir: File = ModelExtractor.extractIfNeeded(context, modelName)
+            val modelDir: File = ModelExtractor.extractIfNeeded(context, "en")
             model = Model(modelDir.absolutePath)
             recognizer = Recognizer(model, SAMPLE_RATE)
             _transcript.value = null
@@ -92,10 +89,7 @@ class VoskRecognizer(
      */
     fun recognizePcm(audioData: ByteArray): String {
         return try {
-            val rawLocale = locale.lowercase()
-            val isIndonesian = rawLocale in listOf("id", "in", "id-id", "in-id")
-            val modelName = if (isIndonesian) "id" else "en"
-            val modelDir: File = ModelExtractor.extractIfNeeded(context, modelName)
+            val modelDir = ModelExtractor.extractIfNeeded(context, "en")
             val directModel = Model(modelDir.absolutePath)
             val directRecognizer = Recognizer(directModel, SAMPLE_RATE)
             directRecognizer.acceptWaveForm(audioData, audioData.size)

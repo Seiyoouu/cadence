@@ -12,12 +12,21 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
             abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("../cadence-release.jks")
+            storePassword = System.getenv("CADENCE_KEYSTORE_PASS") ?: "cadence123"
+            keyAlias = "cadence"
+            keyPassword = System.getenv("CADENCE_KEY_PASS") ?: "cadence123"
         }
     }
 
@@ -28,6 +37,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 

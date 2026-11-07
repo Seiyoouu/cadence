@@ -39,32 +39,29 @@ The Search Engine allows riders to request specific songs hands-free without rel
 
 ## Layer 3: Voice Layer
 
-The Voice Layer provides completely offline, bilingual voice control via VOSK Speech Recognition engine:
+The Voice Layer provides a hybrid speech architecture combining lightweight offline wake word detection with native Android speech recognition:
 
-- **Offline Models**: Dual-model bundling inside assets (`model-en` and `model-id`), uncompressed and extracted to internal storage (`filesDir/vosk/`) on first run.
-- **Wake Word Detection**: `dev.cadence.app.voice.WakeWordDetector` uses acoustic models with targeted vocabulary grammar constraints for high precision and minimal battery consumption.
-  - Supports English: `"hey cade"`, `"hi cade"`, `"ok cade"`, `"cadence"`.
-  - Supports Indonesian: `"hai cade"`, `"hei cade"`, `"halo cade"`, `"oke cade"`.
-- **Speech-to-Text (STT)**: `dev.cadence.app.voice.VoskRecognizer` performs full offline phrase recognition once the wake word triggers.
-- **Background Persistence**: `dev.cadence.app.service.VoiceService` operates as a high-priority `ForegroundService` with `foregroundServiceType="microphone"`, keeping voice detection active while riding.
-- **Command Parsing & Dispatch**: `dev.cadence.app.engine.CommandParser` processes recognized transcripts using bilingual rule sets with filler-stripping, routing to `TransportEngine` and `SearchEngine`.
-- **Sensory Feedback**: Dual-channel non-visual feedback for helmet/motorcycle riders:
+- **Wake Word Detection**: `dev.cadence.app.voice.WakeWordDetector` runs continuously via the bundled lightweight VOSK English model (`app/src/main/assets/model-en/`) with constrained grammar for low power consumption:
+  - Recognizes: `"Hey Cade"`, `"Hi Cade"`, `"Ok Cade"`, `"Cadence"`, `"Hai Cade"`, `"Halo Cade"`.
+- **Command Speech-to-Text (STT)**: `dev.cadence.app.voice.SpeechRecognizerEngine` handles one-shot command recognition after wake detection using the native Android `SpeechRecognizer` (Google speech service with offline pack support). This provides native, high-accuracy Bahasa Indonesia (`id-ID`) and English (`en-US`) transcription without extra model bloat.
+- **Background Persistence**: `dev.cadence.app.service.VoiceService` operates as a `ForegroundService` with `connectedDevice|microphone` types to maintain wake word listening and Bluetooth triggers while screen is off.
+- **Command Parsing & Dispatch**: `dev.cadence.app.engine.CommandParser` parses commands into typed actions (`Next`, `Previous`, `Play`, `Pause`, `Search`, `Unknown`).
+- **Sensory Feedback**: Dual-channel non-visual feedback for helmet riders:
   - `VibrationFeedback`: short pulse (transport controls), long pulse (search started), double pulse (unknown command or error).
-  - `TtsFeedback`: optional spoken audio confirmation ("Playing [title]", "Song not found", "Command not recognized") localized according to device language.
-- **Reactive State Flow**: Exposes `VoiceState` (`Idle`, `ListeningWake`, `ListeningCommand`, `Processing`) and `lastTranscript` via Kotlin `StateFlow`.
+  - `TtsFeedback`: optional spoken audio confirmation localized to system language.
 
 ---
 
 ## Layer 4: Rider Mode
 
-<!-- Implementation details to follow in Phase 6 -->
+Rider Mode manages the hands-free riding lifecycle and physical fallbacks:
+
+- **Bluetooth Lifecycle Automation**: `dev.cadence.app.service.RiderModeService` monitors `BluetoothA2dp` and `BluetoothHeadset` connection states. Connecting helmet TWS or intercom automatically starts `VoiceService`; disconnecting stops it to save battery.
+- **Physical Media Button Fallback**: `dev.cadence.app.service.MediaButtonReceiver` listens for hardware TWS button clicks (`KEYCODE_MEDIA_NEXT`, `KEYCODE_MEDIA_PREVIOUS`, `KEYCODE_MEDIA_PLAY_PAUSE`), enabling seamless control even in heavy helmet wind noise.
+- **User Preferences**: Persistent toggles in `MainActivity` for Bluetooth auto-start, vibration feedback, and TTS spoken feedback.
 
 ---
 
-## VOSK Models
+## Offline Models
 
-Cadence bundles two lightweight, offline VOSK speech recognition models directly within the APK under `app/src/main/assets/`:
-- `model-id/`: Indonesian acoustic model (`vosk-model-small-id-0.22`)
-- `model-en/`: English (US) acoustic model (`vosk-model-small-en-us-0.15`)
-
-Both models are obtained from the official Alpha Cephei repository at [alphacephei.com/vosk/models](https://alphacephei.com/vosk/models). Bundling both models enables zero-setup offline operation for motorcycle riders straight after installation.
+Cadence bundles the lightweight VOSK English US acoustic model (`vosk-model-small-en-us-0.15`) under `app/src/main/assets/model-en/` specifically for zero-latency, offline wake word listening. One-shot command recognition uses Android's native SpeechRecognizer, keeping total APK size at ~99MB.

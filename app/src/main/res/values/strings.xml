@@ -43,4 +43,22 @@
     <string name="tts_toggle_label">Speak feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Auto-start on Bluetooth connect</string>
     <string name="settings_vibration">Vibration feedback</string>
+    <string name="about_text">Cadence v1.0.0 · GPL-3.0\nBuilt with ❤ for riders\nhttps://github.com/Seiyoouu/cadence</string>
+
+    <!-- Onboarding strings -->
+    <string name="onboard_step1_title">Welcome to Cadence</string>
+    <string name="onboard_step1_body">Control YouTube Music completely hands-free while riding your motorcycle.</string>
+    <string name="onboard_next">Next</string>
+    <string name="onboard_step2_title">Notification Access</string>
+    <string name="onboard_step2_body">Cadence requires Notification Access to detect and control YouTube Music playback without root.</string>
+    <string name="onboard_open_settings">Open Settings</string>
+    <string name="onboard_step3_title">Microphone Permission</string>
+    <string name="onboard_step3_body">Microphone access is required for offline wake word and voice command recognition.</string>
+    <string name="onboard_grant_mic">Grant Microphone Access</string>
+    <string name="onboard_step4_title">Bluetooth Permission</string>
+    <string name="onboard_step4_body">Bluetooth permission enables Cadence to automatically activate when your helmet TWS connects.</string>
+    <string name="onboard_grant_bt">Grant Bluetooth Access</string>
+    <string name="onboard_done_title">You\'re All Set!</string>
+    <string name="onboard_done_body">Put on your helmet, connect your TWS, and say \"Hey Cade\" or \"Hai Cade\" followed by your command.</string>
+    <string name="onboard_finish">Get Started</string>
 </resources>

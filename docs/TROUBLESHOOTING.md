@@ -47,4 +47,23 @@ Setelah setting di atas, restart HP dan test ulang Bluetooth auto-start.
 
 ## VOSK wake word not detected
 
-<!-- Guidance on microphone gain, helmet wind noise, TWS Bluetooth audio routing, and model selection to follow in Phase 8 -->
+1. Make sure your microphone permission is granted in Android Settings → Apps → Cadence → Permissions → Microphone.
+2. Ensure you speak clearly into your helmet or TWS mic. The wake word triggers on `"Hey Cade"`, `"Hi Cade"`, `"Ok Cade"`, `"Cadence"`, or `"Hai Cade"`.
+3. If riding at highway speeds with high wind noise, use physical TWS buttons (Media Button fallback) or check helmet wind-deflector padding.
+
+---
+
+## SpeechRecognizer not available
+
+Cadence uses Android's native `SpeechRecognizer` service for high-accuracy multilingual command understanding.
+1. On Google Play certified devices: Ensure the **Google** app is installed and enabled.
+2. On custom ROMs or de-googled devices (MicroG / GrapheneOS): Install `Speech Services by Google` or an open-source offline speech provider that supports Android's `SpeechRecognizer` API.
+
+---
+
+## Speech recognition offline not working
+
+To use voice command transcription without an active internet connection:
+1. Open phone **Settings** → **Google** (or System) → **Voice**.
+2. Select **Offline speech recognition**.
+3. Under the **All** tab, download **Indonesian (Bahasa Indonesia)** and **English (US)** language packs.

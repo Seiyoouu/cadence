@@ -19,7 +19,7 @@ import dev.cadence.app.engine.SearchEngine
 import dev.cadence.app.engine.TransportEngine
 import dev.cadence.app.feedback.TtsFeedback
 import dev.cadence.app.feedback.VibrationFeedback
-import dev.cadence.app.voice.VoskRecognizer
+import dev.cadence.app.voice.SpeechRecognizerEngine
 import dev.cadence.app.voice.WakeWordDetector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +55,7 @@ class VoiceService : Service() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var wakeDetector: WakeWordDetector? = null
-    private var stt: VoskRecognizer? = null
+    private var stt: SpeechRecognizerEngine? = null
     private var wakeJob: Job? = null
     private lateinit var locale: String
     private var tts: TtsFeedback? = null
@@ -144,14 +144,31 @@ class VoiceService : Service() {
 
     private fun startStt() {
         _voiceState.value = VoiceState.ListeningCommand
-        stt = VoskRecognizer(this, locale)
+        stt = SpeechRecognizerEngine(this, locale)
+        if (!stt!!.isAvailable()) {
+            Log.e(TAG, "SpeechRecognizer not available on this device")
+            _voiceState.value = VoiceState.Idle
+            if (isTtsEnabled()) {
+                tts?.speak(
+                    if (isIndonesian()) "Pengenalan suara tidak tersedia"
+                    else "Speech recognition not available"
+                )
+            }
+            startWakeListening()
+            return
+        }
         stt?.start(
-            onComplete = { transcript ->
-                Log.i(TAG, "STT complete: '$transcript'")
+            onResult = { transcript ->
+                Log.i(TAG, "STT result: $transcript")
                 _lastTranscript.value = transcript
                 _voiceState.value = VoiceState.Processing
                 stopStt()
                 handleCommand(transcript)
+            },
+            onError = { err ->
+                Log.e(TAG, "STT error: $err")
+                stopStt()
+                startWakeListening()
             },
             onTimeout = {
                 Log.i(TAG, "STT timeout")
@@ -159,6 +176,11 @@ class VoiceService : Service() {
                 startWakeListening()
             }
         )
+    }
+
+    private fun isIndonesian(): Boolean {
+        val raw = Locale.getDefault().language.lowercase()
+        return raw in listOf("id", "in", "id-id", "in-id")
     }
 
     fun handleCommand(transcript: String) {
@@ -232,7 +254,7 @@ class VoiceService : Service() {
     }
 
     private fun stopStt() {
-        stt?.stop()
+        stt?.destroy()
         stt = null
     }
 

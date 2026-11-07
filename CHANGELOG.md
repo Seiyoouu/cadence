@@ -5,10 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-11-08
 
 ### Added
-- Phase 5: Bilingual CommandParser and full end-to-end voice integration.
+- Voice control dengan wake word "hai cade" / "hey cade" via lightweight VOSK engine.
+- Bilingual command recognition (ID + EN) via Android SpeechRecognizer (`SpeechRecognizerEngine`).
+- Search & play lagu otomatis via Piped & Invidious API + deep link auto-play.
+- Bluetooth auto-start & stop lifecycle (Rider Mode via `RiderModeService`).
+- TWS physical media button fallback (`MediaButtonReceiver`).
+- Multi-slide interactive Onboarding flow (`OnboardingActivity`).
+- Settings toggles (Bluetooth auto-start, TTS feedback, vibration feedback) with persistent preferences.
+- Full bilingual UI localization (English & Bahasa Indonesia).
+- About section dengan versi, lisensi GPL-3.0, dan repository link.
+- Continuous screen-off execution support for motorcycle riding.
+
+### Fixed
+- Migrated command STT to native Android SpeechRecognizer for high-accuracy Indonesian and English transcription.
+- Cleaned up experimental hardcodes and overfit regex patterns from earlier prototype phases.
+- Resolved Android 14 foreground service start-from-background restrictions using `FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE`.
+
+### Removed
+- Removed redundant VOSK `model-id` asset, reducing overall APK size from 177MB to ~98MB.
 - `CommandParser`: simultaneous recognition of English and Indonesian voice commands (Next, Previous, Pause, Play, Search, Unknown).
 - Multi-channel sensory feedback: `VibrationFeedback` (short, long, double taps) and `TtsFeedback` (locale-aware Text-to-Speech).
 - Persistent TTS feedback toggle setting in `MainActivity` with `SharedPreferences` persistence.

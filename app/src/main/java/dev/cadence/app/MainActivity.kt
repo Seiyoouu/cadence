@@ -40,6 +40,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val prefs = getSharedPreferences("cadence_prefs", MODE_PRIVATE)
+        if (!prefs.getBoolean("onboarding_completed", false)) {
+            startActivity(Intent(this, dev.cadence.app.ui.OnboardingActivity::class.java))
+            finish()
+            return
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

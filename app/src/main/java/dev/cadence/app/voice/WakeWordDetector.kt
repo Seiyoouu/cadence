@@ -36,10 +36,7 @@ class WakeWordDetector(
 
     fun start() {
         try {
-            val rawLocale = locale.lowercase()
-            val isIndonesian = rawLocale in listOf("id", "in", "id-id", "in-id")
-            val modelName = if (isIndonesian) "id" else "en"
-            val modelDir: File = ModelExtractor.extractIfNeeded(context, modelName)
+            val modelDir: File = ModelExtractor.extractIfNeeded(context, "en")
             model = Model(modelDir.absolutePath)
             val grammarJson = wakeWords.joinToString(",") { "\"$it\"" } + ",\"[unk]\""
             val recognizer = Recognizer(model, SAMPLE_RATE, "[$grammarJson]")

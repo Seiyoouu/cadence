@@ -92,10 +92,7 @@ class TestVoiceActivity : Activity() {
                 }
             }
 
-            val rawLocale = locale.lowercase()
-            val isIndonesian = rawLocale in listOf("id", "in", "id-id", "in-id")
-            val modelName = if (isIndonesian) "id" else "en"
-            val modelDir = ModelExtractor.extractIfNeeded(this, modelName)
+            val modelDir = ModelExtractor.extractIfNeeded(this, "en")
             val model = Model(modelDir.absolutePath)
             val recognizer = Recognizer(model, SAMPLE_RATE)
 

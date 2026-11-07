@@ -43,4 +43,22 @@
     <string name="tts_toggle_label">Suara feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Mulai otomatis saat Bluetooth terhubung</string>
     <string name="settings_vibration">Feedback getar</string>
+    <string name="about_text">Cadence v1.0.0 · GPL-3.0\nDibuat dengan ❤ untuk pengendara\nhttps://github.com/Seiyoouu/cadence</string>
+
+    <!-- Onboarding strings -->
+    <string name="onboard_step1_title">Selamat Datang di Cadence</string>
+    <string name="onboard_step1_body">Kendalikan YouTube Music sepenuhnya tanpa menyentuh layar saat berkendara motor.</string>
+    <string name="onboard_next">Lanjut</string>
+    <string name="onboard_step2_title">Akses Notifikasi</string>
+    <string name="onboard_step2_body">Cadence membutuhkan Akses Notifikasi untuk mendeteksi dan mengontrol pemutaran YouTube Music tanpa root.</string>
+    <string name="onboard_open_settings">Buka Pengaturan</string>
+    <string name="onboard_step3_title">Izin Mikrofon</string>
+    <string name="onboard_step3_body">Akses mikrofon diperlukan untuk mendengarkan kata kunci offline dan perintah suara.</string>
+    <string name="onboard_grant_mic">Berikan Izin Mikrofon</string>
+    <string name="onboard_step4_title">Izin Bluetooth</string>
+    <string name="onboard_step4_body">Izin Bluetooth memungkinkan Cadence aktif otomatis saat TWS helm terhubung.</string>
+    <string name="onboard_grant_bt">Berikan Izin Bluetooth</string>
+    <string name="onboard_done_title">Semua Siap!</string>
+    <string name="onboard_done_body">Kenakan helm, sambungkan TWS, lalu ucapkan \"Hai Cade\" atau \"Hey Cade\" diikuti perintah lagu Anda.</string>
+    <string name="onboard_finish">Mulai</string>
 </resources>
