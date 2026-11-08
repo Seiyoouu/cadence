@@ -236,6 +236,8 @@ class MainActivity : AppCompatActivity() {
                 binding.btnPlayPause.setIconResource(R.drawable.ic_play)
             }
         }
+
+        binding.equalizerView.setPlaying(info.playbackState == PlaybackState.STATE_PLAYING)
     }
 
     private fun observeVoiceState() {
@@ -246,18 +248,22 @@ class MainActivity : AppCompatActivity() {
                         is VoiceService.VoiceState.Idle -> {
                             binding.tvVoiceState.text = getString(R.string.voice_state_idle)
                             binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.textMuted))
+                            binding.ivVoiceMic.imageTintList = android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this@MainActivity, R.color.textMuted))
                         }
                         is VoiceService.VoiceState.ListeningWake -> {
                             binding.tvVoiceState.text = getString(R.string.voice_state_listening_wake)
                             binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.amber))
+                            binding.ivVoiceMic.imageTintList = android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this@MainActivity, R.color.primary))
                         }
                         is VoiceService.VoiceState.ListeningCommand -> {
                             binding.tvVoiceState.text = getString(R.string.voice_state_listening_command)
                             binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.emerald))
+                            binding.ivVoiceMic.imageTintList = android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this@MainActivity, R.color.emerald))
                         }
                         is VoiceService.VoiceState.Processing -> {
                             binding.tvVoiceState.text = getString(R.string.voice_state_processing)
                             binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.primary))
+                            binding.ivVoiceMic.imageTintList = android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this@MainActivity, R.color.primary))
                         }
                     }
                     if (state !is VoiceService.VoiceState.Idle && !binding.swVoiceControl.isChecked) {

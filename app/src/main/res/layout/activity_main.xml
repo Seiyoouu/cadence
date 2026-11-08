@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="Motorcycle Voice Controller"
+                    android:text="Rider Cockpit"
                     android:textColor="@color/textSecondary"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -115,6 +115,13 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
+
+                <!-- Live Animated Equalizer Bars -->
+                <dev.cadence.app.ui.FluidEqualizerView
+                    android:id="@+id/equalizerView"
+                    android:layout_width="28dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="10dp" />
 
                 <TextView
                     android:id="@+id/tv_playback_status"
@@ -253,18 +260,21 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_search_play"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text=""
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="21dp"
-                app:icon="@drawable/ic_play"
+                app:backgroundTint="#161B29"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/ic_search"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp"
-                app:iconSize="18dp"
-                app:iconTint="@color/onPrimary" />
+                app:iconSize="16dp"
+                app:iconTint="@color/primary"
+                app:strokeColor="#252F47"
+                app:strokeWidth="1dp" />
         </LinearLayout>
 
         <TextView
@@ -292,6 +302,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/ivVoiceMic"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/ic_mic" />
@@ -462,9 +473,22 @@
                 android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_squircle">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_music_note" />
+                </FrameLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -508,9 +532,22 @@
                 android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_squircle">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_globe" />
+                </FrameLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -550,9 +587,22 @@
                 android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_squircle">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_bluetooth" />
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:text="@string/settings_auto_start_bluetooth"
                     android:textColor="@color/textPrimary"
@@ -577,9 +627,22 @@
                 android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_squircle">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_vibrate" />
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:text="@string/settings_vibration"
                     android:textColor="@color/textPrimary"
@@ -604,9 +667,22 @@
                 android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_squircle">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_volume" />
+                </FrameLayout>
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:text="@string/tts_toggle_label"
                     android:textColor="@color/textPrimary"
