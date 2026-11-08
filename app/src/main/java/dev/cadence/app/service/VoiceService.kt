@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
@@ -60,6 +61,7 @@ class VoiceService : Service() {
     private var wakeJob: Job? = null
     private lateinit var locale: String
     private var tts: TtsFeedback? = null
+    private var wakeLock: PowerManager.WakeLock? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -67,13 +69,31 @@ class VoiceService : Service() {
         val isIndonesian = rawLocale in listOf("id", "in", "id-id", "in-id")
         locale = if (isIndonesian) "id" else "en"
         Log.i(TAG, "VoiceService created with rawLocale=$rawLocale resolved to locale=$locale")
+
+        // Acquire partial wakelock to maintain audio capture while screen is locked in rider pocket
+        try {
+            val pm = getSystemService(Context.POWER_SERVICE) as? PowerManager
+            wakeLock = pm?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Cadence:VoiceServiceLock")?.apply {
+                setReferenceCounted(false)
+                acquire(12 * 60 * 60 * 1000L) // 12-hour safe auto-release
+            }
+            Log.i(TAG, "VoiceService partial WakeLock acquired")
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to acquire WakeLock", e)
+        }
+
         createNotificationChannel()
 
         val notif = buildNotification()
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // If started from background (e.g. Bluetooth broadcast), start as CONNECTED_DEVICE
-                // to comply with Android 14 while-in-use background microphone restrictions.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                ServiceCompat.startForeground(
+                    this,
+                    NOTIF_ID,
+                    notif,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE or ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
+                )
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 ServiceCompat.startForeground(
                     this,
                     NOTIF_ID,
@@ -115,6 +135,14 @@ class VoiceService : Service() {
         stopAll()
         tts?.destroy()
         tts = null
+        try {
+            wakeLock?.let {
+                if (it.isHeld) it.release()
+            }
+        } catch (e: Exception) {
+            // Ignored
+        }
+        wakeLock = null
         scope.cancel()
         Log.i(TAG, "VoiceService destroyed")
         super.onDestroy()
@@ -175,12 +203,16 @@ class VoiceService : Service() {
             onError = { err ->
                 Log.e(TAG, "STT error: $err")
                 stopStt()
-                startWakeListening()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    startWakeListening()
+                }, 400)
             },
             onTimeout = {
                 Log.i(TAG, "STT timeout")
                 stopStt()
-                startWakeListening()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    startWakeListening()
+                }, 400)
             }
         )
     }

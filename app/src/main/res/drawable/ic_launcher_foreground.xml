@@ -3,7 +3,46 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- Fluid Cosmic Ring Background -->
     <path
-        android:fillColor="#FF6B35"
-        android:pathData="M54,22 C36.33,22 22,36.33 22,54 C22,71.67 36.33,86 54,86 C67.42,86 78.96,77.72 83.82,65.98 L71.86,61.42 C68.91,68.56 62.01,73.6 54,73.6 C43.18,73.6 34.4,64.82 34.4,54 C34.4,43.18 43.18,34.4 54,34.4 C62.01,34.4 68.91,39.44 71.86,46.58 L83.82,42.02 C78.96,30.28 67.42,22 54,22 Z" />
+        android:strokeWidth="3.5"
+        android:strokeColor="#1F2842"
+        android:pathData="M54,22 C71.67,22 86,36.33 86,54 C86,71.67 71.67,86 54,86 C36.33,86 22,71.67 22,54 C22,36.33 36.33,22 54,22 Z" />
+
+    <!-- Fluid Speed Arc with Electric Cyan Glow -->
+    <path
+        android:strokeWidth="4"
+        android:strokeColor="#00E5FF"
+        android:strokeLineCap="round"
+        android:pathData="M28,68 C24.5,58 25.5,46 32,37 C40,27 54,23 66,27 C76,30.5 83,40 84,51" />
+
+    <!-- Soundwave Pulse 1 -->
+    <path
+        android:fillColor="#818CF8"
+        android:pathData="M37,47h3.5a1.75,1.75 0 0,1 1.75,1.75v10.5a1.75,1.75 0 0,1 -1.75,1.75h-3.5a1.75,1.75 0 0,1 -1.75,-1.75v-10.5a1.75,1.75 0 0,1 1.75,-1.75z" />
+
+    <!-- Soundwave Pulse 2 -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M45.5,39h3.5a1.75,1.75 0 0,1 1.75,1.75v26.5a1.75,1.75 0 0,1 -1.75,1.75h-3.5a1.75,1.75 0 0,1 -1.75,-1.75v-26.5a1.75,1.75 0 0,1 1.75,-1.75z" />
+
+    <!-- Soundwave Pulse 3 (Center Apex - Electric Cyan) -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M54,31h3.5a1.75,1.75 0 0,1 1.75,1.75v42.5a1.75,1.75 0 0,1 -1.75,1.75h-3.5a1.75,1.75 0 0,1 -1.75,-1.75v-42.5a1.75,1.75 0 0,1 1.75,-1.75z" />
+
+    <!-- Soundwave Pulse 4 -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M62.5,39h3.5a1.75,1.75 0 0,1 1.75,1.75v26.5a1.75,1.75 0 0,1 -1.75,1.75h-3.5a1.75,1.75 0 0,1 -1.75,-1.75v-26.5a1.75,1.75 0 0,1 1.75,-1.75z" />
+
+    <!-- Soundwave Pulse 5 -->
+    <path
+        android:fillColor="#818CF8"
+        android:pathData="M71,47h3.5a1.75,1.75 0 0,1 1.75,1.75v10.5a1.75,1.75 0 0,1 -1.75,1.75h-3.5a1.75,1.75 0 0,1 -1.75,-1.75v-10.5a1.75,1.75 0 0,1 1.75,-1.75z" />
+
+    <!-- Speedometer Velocity Needle Marker -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M52,78h7.5l-3.75,5.5z" />
 </vector>

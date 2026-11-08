@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Core Brand & Accent -->
-    <color name="primary">#FF6B35</color>
-    <color name="primaryDark">#E05520</color>
-    <color name="onPrimary">#FFFFFF</color>
-    <color name="primarySurface">#201612</color>
+    <!-- Core Brand: Fluid Electric Cyan & Aurora Violet (Zero Orange) -->
+    <color name="primary">#00E5FF</color>
+    <color name="primaryDark">#00B4D8</color>
+    <color name="onPrimary">#07080C</color>
+    <color name="primarySurface">#0B1924</color>
 
-    <!-- Deep OLED Surfaces & Backgrounds -->
-    <color name="background">#09090B</color>
-    <color name="surface">#121215</color>
-    <color name="surfaceElevated">#18181C</color>
-    <color name="surfaceBorder">#27272A</color>
-    <color name="surfaceBorderLight">#383840</color>
+    <!-- Aurora & Accent Gradients -->
+    <color name="auroraViolet">#818CF8</color>
+    <color name="auroraIndigo">#6366F1</color>
+    <color name="electricCyan">#00E5FF</color>
+    <color name="cyanGlow">#2000E5FF</color>
+
+    <!-- Deep Cosmic Obsidian & Frosted Glass Surfaces -->
+    <color name="background">#07080C</color>
+    <color name="surface">#0D101A</color>
+    <color name="surfaceElevated">#131724</color>
+    <color name="surfaceBorder">#1E253A</color>
+    <color name="surfaceBorderLight">#2B3552</color>
 
     <!-- Functional Accents -->
-    <color name="emerald">#22C55E</color>
-    <color name="emeraldMuted">#142E1F</color>
+    <color name="emerald">#10B981</color>
+    <color name="emeraldMuted">#0A2E20</color>
     <color name="amber">#F59E0B</color>
 
     <!-- Typography Hierarchy -->
-    <color name="textPrimary">#FAFAFA</color>
-    <color name="textSecondary">#A1A1AA</color>
-    <color name="textMuted">#71717A</color>
-    <color name="onBackground">#FAFAFA</color>
-    <color name="onSurface">#FAFAFA</color>
+    <color name="textPrimary">#F8FAFC</color>
+    <color name="textSecondary">#CBD5E1</color>
+    <color name="textMuted">#64748B</color>
+    <color name="onBackground">#F8FAFC</color>
+    <color name="onSurface">#F8FAFC</color>
 </resources>

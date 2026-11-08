@@ -23,32 +23,27 @@ class WakeWordDetector(
     private val _detected = MutableStateFlow(false)
     val detected: StateFlow<Boolean> = _detected.asStateFlow()
 
-    private var model: Model? = null
     private var speechService: SpeechService? = null
 
+    // Strictly compound wake phrases to prevent random false triggers during casual speech
     private val wakeWords = listOf(
-        // 1. Natural Indonesian Alternatives (Easy to pronounce)
-        "hai kadi", "halo kadi", "kadi", "oke kadi", "hei kadi",
-        "hai kade", "halo kade", "kade", "oke kade", "hei kade", "hay kade",
-        "hai bro", "halo bro", "bro", "hey bro", "ok bro",
-        "hai musik", "halo musik", "musik", "music", "play music",
+        "hai kadi", "halo kadi", "hey kadi", "oke kadi", "hei kadi",
+        "hai kade", "halo kade", "hey kade", "oke kade", "hei kade", "hay kade",
+        "hai cade", "halo cade", "hey cade", "ok cade", "hei cade", "hi cade",
+        "hai cadence", "halo cadence", "hey cadence", "hi cadence",
+        "hai musik", "halo musik", "hey music", "hai music",
+        "hai bro", "halo bro", "hey bro", "ok bro",
+        "cadence"
+    )
 
-        // 2. Original Cade & Cadence
-        "hey cade", "hi cade", "ok cade", "cade", "cadence",
-        "hai cade", "hei cade", "halo cade", "oke cade",
-        "hey cadence", "hi cadence", "halo cadence", "hai cadence",
-
-        // 3. Phonetic catch-alls for Indonesian accent
-        "hi caddy", "hai caddy", "caddy",
-        "hi kate", "hey kate", "kate",
-        "hi candy", "hai candy", "candy",
-        "hi chad", "hai chad", "chad"
+    private val WAKE_REGEX = Regex(
+        "\\b(hai|halo|hei|hey|oke|ok)\\s+(kadi|kade|cade|cadence|musik|music|bro)\\b|\\b(cadence)\\b",
+        RegexOption.IGNORE_CASE
     )
 
     fun start() {
         try {
-            val modelDir: File = ModelExtractor.extractIfNeeded(context, "en")
-            model = Model(modelDir.absolutePath)
+            val model = VoskModelHolder.getModel(context)
             val grammarJson = wakeWords.joinToString(",") { "\"$it\"" } + ",\"[unk]\""
             val recognizer = Recognizer(model, SAMPLE_RATE, "[$grammarJson]")
             speechService = SpeechService(recognizer, SAMPLE_RATE)
@@ -59,31 +54,51 @@ class WakeWordDetector(
                 override fun onError(e: Exception?) { Log.e(TAG, "Wake error", e) }
                 override fun onTimeout() {}
             })
-            Log.i(TAG, "Wake word detector started (locale=$locale)")
+            Log.i(TAG, "Wake word detector started with memory-cached model (locale=$locale)")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to start wake word detector", e)
         }
     }
 
     private fun checkWakeWord(json: String) {
-        val lower = json.lowercase()
-        for (ww in wakeWords) {
-            if (lower.contains(ww)) {
-                _detected.value = true
-                Log.i(TAG, "Wake word detected: $ww")
-                return
+        val extracted = extractTextFromJson(json)
+        if (extracted.isBlank()) return
+
+        if (WAKE_REGEX.containsMatchIn(extracted)) {
+            _detected.value = true
+            Log.i(TAG, "Wake word detected via regex match: '$extracted'")
+        }
+    }
+
+    private fun extractTextFromJson(json: String): String {
+        return try {
+            val lower = json.lowercase()
+            if (lower.contains("\"partial\"")) {
+                lower.substringAfter("\"partial\" : \"", "")
+                    .substringAfter("\"partial\" :\"", "")
+                    .substringBefore("\"")
+            } else if (lower.contains("\"text\"")) {
+                lower.substringAfter("\"text\" : \"", "")
+                    .substringAfter("\"text\" :\"", "")
+                    .substringBefore("\"")
+            } else {
+                lower
             }
+        } catch (e: Exception) {
+            json.lowercase()
         }
     }
 
     fun resetDetection() { _detected.value = false }
 
     fun stop() {
-        speechService?.stop()
-        speechService?.shutdown()
+        try {
+            speechService?.stop()
+            speechService?.shutdown()
+        } catch (e: Exception) {
+            Log.w(TAG, "Error shutting down speechService", e)
+        }
         speechService = null
-        model?.close()
-        model = null
-        Log.i(TAG, "Wake word detector stopped")
+        Log.i(TAG, "Wake word detector stopped (model retained in cache)")
     }
 }

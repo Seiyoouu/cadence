@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-11-08
+
+### Fixed
+- **Zero False Triggers on Casual Speech**: Removed loose single words (`"bro"`, `"musik"`, `"kadi"`, `"cade"`) that caused accidental triggers; wake words now strictly require compound greetings (e.g. *"Hai Kadi"*, *"Hai Musik"*, *"Hai Bro"*, *"Hai Cade"*, *"Cadence"*) evaluated with regex word boundaries.
+- **Continuous Voice Command Loop**: Cached the 40MB VOSK Kaldi model in-memory via `VoskModelHolder` (loading time reduced from 2.5s to <10ms) and added audio release cooldown so voice commands can be chained continuously without disconnects.
+- **Background & Screen-Off Voice Survival**: Added `PowerManager.PARTIAL_WAKE_LOCK` with `android.permission.WAKE_LOCK` and dual Android 14 `FOREGROUND_SERVICE_TYPE_MICROPHONE or FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE` flags so voice recognition persists indefinitely while riding with the screen locked in pockets.
+
+### Changed
+- **Fluid Electric Cyan UI/UX Redesign (Zero Orange)**: Replaced all orange elements across the app with vibrant fluid electric cyan (`#00E5FF`) and aurora violet (`#818CF8`) on deep cosmic obsidian (`#07080C`).
+- **New Adaptive App Logo**: Redesigned `ic_launcher` vector with dynamic soundwave pulse and fluid speedometer tachometer arc.
+
 ## [1.0.1] - 2026-11-08
 
 ### Fixed

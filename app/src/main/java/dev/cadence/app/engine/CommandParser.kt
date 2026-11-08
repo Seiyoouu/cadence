@@ -37,8 +37,8 @@ object CommandParser {
         "hey cade", "hi cade", "ok cade", "hai cade", "hei cade", "halo cade", "oke cade",
         "hai musik", "halo musik", "hey music",
         "hai bro", "halo bro", "hey bro", "ok bro",
-        "hi candy", "hai candy", "candy",
-        "cadence", "chade", "musik", "music", "kade", "kadi", "cade", "bro"
+        "hi candy", "hai candy",
+        "cadence", "chade"
     ).sortedByDescending { it.length }
 
     private val IGNORED_SOLO_WORDS = setOf(
