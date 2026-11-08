@@ -5,6 +5,7 @@ import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.json.JSONObject
 import org.vosk.Model
 import org.vosk.Recognizer
 import org.vosk.android.RecognitionListener
@@ -25,19 +26,31 @@ class WakeWordDetector(
 
     private var speechService: SpeechService? = null
 
-    // Strictly compound wake phrases to prevent random false triggers during casual speech
+    // Strictly compound wake phrases + acoustic phonetic variants
     private val wakeWords = listOf(
-        "hai kadi", "halo kadi", "hey kadi", "oke kadi", "hei kadi",
-        "hai kade", "halo kade", "hey kade", "oke kade", "hei kade", "hay kade",
-        "hai cade", "halo cade", "hey cade", "ok cade", "hei cade", "hi cade",
-        "hai cadence", "halo cadence", "hey cadence", "hi cadence",
-        "hai musik", "halo musik", "hey music", "hai music",
-        "hai bro", "halo bro", "hey bro", "ok bro",
-        "cadence"
+        // Cade & Cadence variants
+        "hey cade", "hi cade", "hai cade", "halo cade", "hei cade", "ok cade", "oke cade",
+        "hey cadence", "hi cadence", "hai cadence", "halo cadence", "cadence",
+
+        // Phonetic Kaldi acoustic neighbors for 'Cade'
+        "hey kate", "hi kate", "hai kate", "halo kate",
+        "hey caddy", "hi caddy", "hai caddy", "halo caddy",
+        "hey chad", "hi chad", "hai chad", "halo chad",
+        "hey candy", "hi candy", "hai candy", "halo candy",
+
+        // Kadi & Kade variants
+        "hai kadi", "halo kadi", "hey kadi", "hi kadi", "oke kadi", "hei kadi",
+        "hai kade", "halo kade", "hey kade", "hi kade", "oke kade", "hei kade", "hay kade",
+
+        // Musik variants
+        "hai musik", "halo musik", "hey music", "hi music", "hai music",
+
+        // Bro variants
+        "hai bro", "halo bro", "hey bro", "hi bro", "ok bro", "oke bro"
     )
 
     private val WAKE_REGEX = Regex(
-        "\\b(hai|halo|hei|hey|oke|ok)\\s+(kadi|kade|cade|cadence|musik|music|bro)\\b|\\b(cadence)\\b",
+        "\\b(hai|halo|hei|hey|hi|ok|oke)\\s+(kadi|kade|cade|cadence|kate|caddy|chad|candy|musik|music|bro)\\b|\\b(cadence)\\b",
         RegexOption.IGNORE_CASE
     )
 
@@ -64,6 +77,14 @@ class WakeWordDetector(
         val extracted = extractTextFromJson(json)
         if (extracted.isBlank()) return
 
+        for (ww in wakeWords) {
+            if (extracted.contains(ww)) {
+                _detected.value = true
+                Log.i(TAG, "Wake word detected via exact phrase: '$ww' in '$extracted'")
+                return
+            }
+        }
+
         if (WAKE_REGEX.containsMatchIn(extracted)) {
             _detected.value = true
             Log.i(TAG, "Wake word detected via regex match: '$extracted'")
@@ -72,20 +93,21 @@ class WakeWordDetector(
 
     private fun extractTextFromJson(json: String): String {
         return try {
+            val obj = JSONObject(json)
+            val partial = obj.optString("partial")
+            if (partial.isNotBlank()) return partial.trim().lowercase()
+            val text = obj.optString("text")
+            if (text.isNotBlank()) return text.trim().lowercase()
+            ""
+        } catch (e: Exception) {
             val lower = json.lowercase()
             if (lower.contains("\"partial\"")) {
-                lower.substringAfter("\"partial\" : \"", "")
-                    .substringAfter("\"partial\" :\"", "")
-                    .substringBefore("\"")
+                lower.substringAfter("\"partial\"", "").substringAfter("\"", "").substringBefore("\"")
             } else if (lower.contains("\"text\"")) {
-                lower.substringAfter("\"text\" : \"", "")
-                    .substringAfter("\"text\" :\"", "")
-                    .substringBefore("\"")
+                lower.substringAfter("\"text\"", "").substringAfter("\"", "").substringBefore("\"")
             } else {
-                lower
+                ""
             }
-        } catch (e: Exception) {
-            json.lowercase()
         }
     }
 

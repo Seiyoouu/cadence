@@ -45,7 +45,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("cadence_prefs", MODE_PRIVATE)
-        if (!prefs.getBoolean("onboarding_completed", false)) {
+        val notifGranted = androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages(this).contains(packageName)
+        if (!prefs.getBoolean("onboarding_completed", false) || !notifGranted) {
             startActivity(Intent(this, dev.cadence.app.ui.OnboardingActivity::class.java))
             finish()
             return

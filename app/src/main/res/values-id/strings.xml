@@ -62,6 +62,14 @@
     <string name="onboard_done_body">Kenakan helm, sambungkan TWS, lalu ucapkan \"Hai Cade\" atau \"Hey Cade\" diikuti perintah lagu Anda.</string>
     <string name="onboard_finish">Mulai</string>
 
+    <!-- Onboarding Android 13+ Guidance -->
+    <string name="onboard_step_counter">LANGKAH %1$d DARI %2$d</string>
+    <string name="onboard_restricted_guide_title">Panduan Khusus Android 13+</string>
+    <string name="onboard_restricted_guide_body">Karena aplikasi dipasang dari luar Play Store, Android membatasi izin ini secara otomatis:\n\n1. Ketuk tombol \"1. Buka Info Cadence\" di bawah.\n2. Di pojok kanan atas, ketuk menu 3-titik (⋮) lalu pilih \"Izinkan setelan terbatas\".\n3. Kembali ke sini dan ketuk \"2. Buka Akses Notifikasi\" untuk menyalakan izin Cadence.</string>
+    <string name="onboard_btn_open_app_info">1. Buka Info Cadence (Menu 3-Titik)</string>
+    <string name="onboard_btn_open_notification">2. Buka Akses Notifikasi</string>
+    <string name="onboard_notification_granted">✓ Akses Notifikasi Sudah Aktif!</string>
+
     <!-- Restricted Settings strings -->
     <string name="fix_restricted_settings">Perbaiki Setelan Terbatas</string>
     <string name="restricted_instructions">Android 13+ memblokir izin ini. Buka menu 3-titik di pojok kanan atas > Izinkan setelan terbatas, lalu nyalakan izin Notifikasi.</string>

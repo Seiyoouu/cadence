@@ -1,54 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="32dp">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/primary"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp">
 
-    <TextView
-        android:id="@+id/tv_body"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:lineSpacingExtra="4dp"
-        android:textColor="@color/onBackground"
-        android:textSize="15sp" />
+        <!-- Step Indicator Pill -->
+        <TextView
+            android:id="@+id/tvStepCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pill_chip"
+            android:letterSpacing="0.08"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="5dp"
+            android:text="STEP 1 OF 5"
+            android:textColor="@color/primary"
+            android:textSize="11sp"
+            android:textStyle="bold" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_next"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginTop="40dp"
-        android:textColor="@color/onPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:backgroundTint="@color/primary"
-        app:cornerRadius="27dp" />
+        <!-- App Icon Artwork -->
+        <FrameLayout
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_icon_squircle">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_finish"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/onboard_finish"
-        android:textColor="@color/onPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:backgroundTint="@color/primary"
-        app:cornerRadius="27dp" />
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher_foreground" />
+        </FrameLayout>
 
-</LinearLayout>
+        <!-- Step Title -->
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/textPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Step Body Text -->
+        <TextView
+            android:id="@+id/tv_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/textSecondary"
+            android:textSize="13sp" />
+
+        <!-- Android 13+ Restricted Settings Guide Card -->
+        <LinearLayout
+            android:id="@+id/cardRestrictedGuide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvRestrictedTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/onboard_restricted_guide_title"
+                android:textColor="@color/amber"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRestrictedBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="2dp"
+                android:text="@string/onboard_restricted_guide_body"
+                android:textColor="@color/textSecondary"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenAppInfo"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/onboard_btn_open_app_info"
+                android:textColor="@color/onPrimary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="22dp" />
+        </LinearLayout>
+
+        <!-- Granted Status Badge -->
+        <TextView
+            android:id="@+id/tvGrantedBadge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/onboard_notification_granted"
+            android:textColor="@color/emerald"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <!-- Next / Action Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="14dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:textColor="@color/textPrimary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="#161B29"
+            app:cornerRadius="23dp"
+            app:strokeColor="#252F47"
+            app:strokeWidth="1dp" />
+
+        <!-- Finish Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_finish"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="14dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/onboard_finish"
+            android:textColor="@color/onPrimary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="23dp" />
+
+    </LinearLayout>
+</ScrollView>
