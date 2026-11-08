@@ -11,8 +11,8 @@ android {
         applicationId = "dev.cadence.app"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -27,6 +27,9 @@ android {
             storePassword = System.getenv("CADENCE_KEYSTORE_PASS") ?: "cadence123"
             keyAlias = "cadence"
             keyPassword = System.getenv("CADENCE_KEY_PASS") ?: "cadence123"
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
         }
     }
 

@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-11-08
+
+### Fixed
+- **Installation Fix**: Resolved "App not installed as package appears to be invalid" by enabling v1 (JAR) and v2/v3 signature schemes explicitly and bumping `versionCode` to 2.
+- **Indonesian Song Search**: Added implicit music search so riders can speak song titles and artists directly without rigid verb prefixes.
+- **Easy Wake Words**: Added natural Indonesian wake phrases: *"Hai Kadi"*, *"Hai Musik"*, *"Hai Bro"*, and *"Cadence"*.
+- **Morphe Package Routing**: Prioritized `app.morphe.android.apps.youtube.music` and ReVanced packages over stock Google YouTube Music.
+
+### Changed
+- **Editorial UI/UX Redesign**: Complete automotive dark mode overhaul:
+  - Hero Now Playing card with high-contrast circular media buttons.
+  - Unified search pill with integrated playback trigger.
+  - Two-line grouped Rider Preferences card (Apple / Linear aesthetic).
+  - High-glanceability layout with outdoor contrast tuning for motorcycle riders.
+
 ## [1.0.0] - 2026-11-08
 
 ### Added

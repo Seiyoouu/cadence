@@ -24,7 +24,7 @@
     <string name="permission_notification_granted">Akses Notifikasi Diberikan</string>
     <string name="permission_notification_missing">Akses Notifikasi Diperlukan</string>
 
-    <string name="search_hint">Nama lagu (mis. Bohemian Rhapsody)</string>
+    <string name="search_hint">Cari lagu atau artis...</string>
     <string name="search_button">Cari &amp; Putar</string>
     <string name="search_state_searching">Mencari: %1$s...</string>
     <string name="search_state_playing">Sedang diputar: %1$s</string>
@@ -43,7 +43,7 @@
     <string name="tts_toggle_label">Suara feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Mulai otomatis saat Bluetooth terhubung</string>
     <string name="settings_vibration">Feedback getar</string>
-    <string name="about_text">Cadence v1.0.0 · GPL-3.0\nDibuat dengan ❤ untuk pengendara\nhttps://github.com/Seiyoouu/cadence</string>
+    <string name="about_text">Cadence v1.0.1 · GPL-3.0\nDibuat dengan teliti untuk pengendara motor\nhttps://github.com/Seiyoouu/cadence</string>
 
     <!-- Onboarding strings -->
     <string name="onboard_step1_title">Selamat Datang di Cadence</string>

@@ -24,7 +24,7 @@
     <string name="permission_notification_granted">Notification Access Granted</string>
     <string name="permission_notification_missing">Notification Access Required</string>
 
-    <string name="search_hint">Song name (e.g., Bohemian Rhapsody)</string>
+    <string name="search_hint">Search song or artist...</string>
     <string name="search_button">Search &amp; Play</string>
     <string name="search_state_searching">Searching: %1$s...</string>
     <string name="search_state_playing">Now playing: %1$s</string>
@@ -43,7 +43,7 @@
     <string name="tts_toggle_label">Speak feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Auto-start on Bluetooth connect</string>
     <string name="settings_vibration">Vibration feedback</string>
-    <string name="about_text">Cadence v1.0.0 · GPL-3.0\nBuilt with ❤ for riders\nhttps://github.com/Seiyoouu/cadence</string>
+    <string name="about_text">Cadence v1.0.1 · GPL-3.0\nCrafted with care for motorcycle riders\nhttps://github.com/Seiyoouu/cadence</string>
 
     <!-- Onboarding strings -->
     <string name="onboard_step1_title">Welcome to Cadence</string>

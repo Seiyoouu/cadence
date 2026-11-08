@@ -185,11 +185,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renderPlaybackInfo(info: PlaybackInfo) {
-        // Target connection status
+        // Target connection status & indicator dot
         if (info.isConnected) {
             binding.tvTargetStatus.text = getString(R.string.target_connected)
+            binding.tvTargetStatus.setTextColor(ContextCompat.getColor(this, R.color.emerald))
+            binding.viewStatusDot.setBackgroundResource(R.drawable.bg_status_dot_connected)
         } else {
             binding.tvTargetStatus.text = getString(R.string.target_disconnected)
+            binding.tvTargetStatus.setTextColor(ContextCompat.getColor(this, R.color.textSecondary))
+            binding.viewStatusDot.setBackgroundResource(R.drawable.bg_status_dot_idle)
         }
 
         // Track title & artist
@@ -209,19 +213,27 @@ class MainActivity : AppCompatActivity() {
         when (info.playbackState) {
             PlaybackState.STATE_PLAYING -> {
                 binding.tvPlaybackStatus.text = getString(R.string.status_playing)
+                binding.tvPlaybackStatus.setTextColor(ContextCompat.getColor(this, R.color.emerald))
                 binding.btnPlayPause.text = getString(R.string.btn_pause)
+                binding.btnPlayPause.setIconResource(R.drawable.ic_pause)
             }
             PlaybackState.STATE_PAUSED -> {
                 binding.tvPlaybackStatus.text = getString(R.string.status_paused)
+                binding.tvPlaybackStatus.setTextColor(ContextCompat.getColor(this, R.color.amber))
                 binding.btnPlayPause.text = getString(R.string.btn_play)
+                binding.btnPlayPause.setIconResource(R.drawable.ic_play)
             }
             PlaybackState.STATE_STOPPED -> {
                 binding.tvPlaybackStatus.text = getString(R.string.status_stopped)
+                binding.tvPlaybackStatus.setTextColor(ContextCompat.getColor(this, R.color.textMuted))
                 binding.btnPlayPause.text = getString(R.string.btn_play)
+                binding.btnPlayPause.setIconResource(R.drawable.ic_play)
             }
             else -> {
                 binding.tvPlaybackStatus.text = getString(R.string.status_unknown)
+                binding.tvPlaybackStatus.setTextColor(ContextCompat.getColor(this, R.color.textMuted))
                 binding.btnPlayPause.text = getString(R.string.btn_play)
+                binding.btnPlayPause.setIconResource(R.drawable.ic_play)
             }
         }
     }
@@ -230,11 +242,23 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 VoiceService.voiceState.collect { state ->
-                    binding.tvVoiceState.text = when (state) {
-                        is VoiceService.VoiceState.Idle -> getString(R.string.voice_state_idle)
-                        is VoiceService.VoiceState.ListeningWake -> getString(R.string.voice_state_listening_wake)
-                        is VoiceService.VoiceState.ListeningCommand -> getString(R.string.voice_state_listening_command)
-                        is VoiceService.VoiceState.Processing -> getString(R.string.voice_state_processing)
+                    when (state) {
+                        is VoiceService.VoiceState.Idle -> {
+                            binding.tvVoiceState.text = getString(R.string.voice_state_idle)
+                            binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.textMuted))
+                        }
+                        is VoiceService.VoiceState.ListeningWake -> {
+                            binding.tvVoiceState.text = getString(R.string.voice_state_listening_wake)
+                            binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.amber))
+                        }
+                        is VoiceService.VoiceState.ListeningCommand -> {
+                            binding.tvVoiceState.text = getString(R.string.voice_state_listening_command)
+                            binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.emerald))
+                        }
+                        is VoiceService.VoiceState.Processing -> {
+                            binding.tvVoiceState.text = getString(R.string.voice_state_processing)
+                            binding.tvVoiceState.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.primary))
+                        }
                     }
                     if (state !is VoiceService.VoiceState.Idle && !binding.swVoiceControl.isChecked) {
                         binding.swVoiceControl.isChecked = true

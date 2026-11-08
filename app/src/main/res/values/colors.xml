@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Core Brand & Accent -->
     <color name="primary">#FF6B35</color>
+    <color name="primaryDark">#E05520</color>
     <color name="onPrimary">#FFFFFF</color>
-    <color name="background">#121212</color>
-    <color name="onBackground">#E0E0E0</color>
-    <color name="surface">#1E1E1E</color>
-    <color name="onSurface">#FFFFFF</color>
+    <color name="primarySurface">#201612</color>
+
+    <!-- Deep OLED Surfaces & Backgrounds -->
+    <color name="background">#09090B</color>
+    <color name="surface">#121215</color>
+    <color name="surfaceElevated">#18181C</color>
+    <color name="surfaceBorder">#27272A</color>
+    <color name="surfaceBorderLight">#383840</color>
+
+    <!-- Functional Accents -->
+    <color name="emerald">#22C55E</color>
+    <color name="emeraldMuted">#142E1F</color>
+    <color name="amber">#F59E0B</color>
+
+    <!-- Typography Hierarchy -->
+    <color name="textPrimary">#FAFAFA</color>
+    <color name="textSecondary">#A1A1AA</color>
+    <color name="textMuted">#71717A</color>
+    <color name="onBackground">#FAFAFA</color>
+    <color name="onSurface">#FAFAFA</color>
 </resources>
