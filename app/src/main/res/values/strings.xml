@@ -69,10 +69,18 @@
     <string name="onboard_btn_open_app_info">1. Open Cadence Info (3-Dots)</string>
     <string name="onboard_btn_open_notification">2. Open Notification Access</string>
     <string name="onboard_notification_granted">✓ Notification Access Granted!</string>
+    <string name="onboard_step_bg_title">Background Music Search</string>
+    <string name="onboard_step_bg_body">Allow Cadence to display over other apps so voice commands can open and play songs directly from outside the app or with the screen locked in your pocket.</string>
+    <string name="onboard_grant_bg">Grant Background Search</string>
+    <string name="onboard_bg_granted">✓ Background Search Permission Active!</string>
 
-    <!-- Restricted Settings strings -->
+    <!-- Restricted Settings & Overlay strings -->
     <string name="fix_restricted_settings">Fix Restricted Settings</string>
     <string name="restricted_instructions">Android 13+ restricts this setting for sideloaded apps. Tap button -> 3-dot menu in top right -> Allow restricted settings, then enable Notification Access.</string>
+    <string name="permission_overlay_missing">Notification Access active. Please grant Display Over Other Apps so background music search works while phone is locked or in pocket.</string>
+    <string name="btn_permission_overlay">Grant Background Display</string>
+    <string name="permission_all_granted">✓ All Rider Permissions Active (Notification + Background Search)</string>
+    <string name="permission_granted_button">All Permissions Granted</string>
 
     <!-- Target Player & Voice Language Settings -->
     <string name="target_player_label">Target Music App</string>

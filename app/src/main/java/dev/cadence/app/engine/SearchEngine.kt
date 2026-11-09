@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
@@ -50,11 +51,75 @@ object SearchEngine {
         val uri = Uri.parse("https://music.youtube.com/watch?v=$videoId")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             setPackage(targetPackage)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
+
+        // Wake screen briefly if device was locked in rider's pocket
+        try {
+            val pm = appContext.getSystemService(Context.POWER_SERVICE) as? android.os.PowerManager
+            @Suppress("DEPRECATION")
+            val screenWake = pm?.newWakeLock(
+                android.os.PowerManager.SCREEN_BRIGHT_WAKE_LOCK or android.os.PowerManager.ACQUIRE_CAUSES_WAKEUP or android.os.PowerManager.ON_AFTER_RELEASE,
+                "Cadence:SearchPlayWake"
+            )
+            screenWake?.acquire(2500L)
+        } catch (e: Exception) {
+            Log.w(TAG, "Screen wake failed", e)
+        }
+
         try {
             Log.i(TAG, "Opening deep link for videoId=$videoId on targetPackage=$targetPackage: $uri")
-            appContext.startActivity(intent)
+
+            val creatorOptions = if (Build.VERSION.SDK_INT >= 34) {
+                android.app.ActivityOptions.makeBasic().apply {
+                    setPendingIntentCreatorBackgroundActivityStartMode(
+                        android.app.ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
+                    )
+                }
+            } else {
+                android.app.ActivityOptions.makeBasic()
+            }
+
+            val senderOptions = if (Build.VERSION.SDK_INT >= 34) {
+                android.app.ActivityOptions.makeBasic().apply {
+                    setPendingIntentBackgroundActivityStartMode(
+                        android.app.ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
+                    )
+                }
+            } else {
+                android.app.ActivityOptions.makeBasic()
+            }
+
+            val pendingIntent = android.app.PendingIntent.getActivity(
+                appContext,
+                1002,
+                intent,
+                android.app.PendingIntent.FLAG_UPDATE_CURRENT or android.app.PendingIntent.FLAG_IMMUTABLE,
+                creatorOptions.toBundle()
+            )
+
+            // Direct launch if SYSTEM_ALERT_WINDOW is granted
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || android.provider.Settings.canDrawOverlays(appContext)) {
+                try {
+                    appContext.startActivity(intent)
+                    Log.i(TAG, "Launched directly via startActivity with SYSTEM_ALERT_WINDOW privilege")
+                } catch (e: Exception) {
+                    Log.w(TAG, "startActivity failed, falling back to PendingIntent", e)
+                    pendingIntent.send(appContext, 0, null, null, null, null, senderOptions.toBundle())
+                }
+            } else {
+                // Method 1: Try PendingIntent send with both Creator and Sender BAL allowances
+                try {
+                    pendingIntent.send(appContext, 0, null, null, null, null, senderOptions.toBundle())
+                    Log.i(TAG, "Deep link sent via PendingIntent.send() with Creator+Sender BAL")
+                } catch (e: Exception) {
+                    Log.w(TAG, "PendingIntent send failed", e)
+                }
+
+                // Method 2: System-level launch via High Priority Notification FullScreenIntent (bypasses BAL on Android 10-14+)
+                launchViaNotificationFullScreen(pendingIntent, title)
+            }
+
             _searchState.value = SearchState.Playing(title)
 
             // Trigger play if music session hasn't started after opening deep link
@@ -67,6 +132,50 @@ object SearchEngine {
         } catch (e: Exception) {
             Log.e(TAG, "Deep link launch failed", e)
             _searchState.value = SearchState.Failed(title, "Gagal buka YT Music")
+        }
+    }
+
+    private fun launchViaNotificationFullScreen(pendingIntent: android.app.PendingIntent, title: String) {
+        try {
+            val nm = appContext.getSystemService(Context.NOTIFICATION_SERVICE) as? android.app.NotificationManager ?: return
+            val channelId = "cadence_play_launch"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = android.app.NotificationChannel(
+                    channelId,
+                    "Cadence Music Launcher",
+                    android.app.NotificationManager.IMPORTANCE_HIGH
+                ).apply {
+                    description = "Music launcher notifications"
+                    setSound(null, null)
+                    enableVibration(false)
+                }
+                nm.createNotificationChannel(channel)
+            }
+
+            val notif = androidx.core.app.NotificationCompat.Builder(appContext, channelId)
+                .setSmallIcon(dev.cadence.app.R.mipmap.ic_launcher)
+                .setContentTitle("Memutar Musik")
+                .setContentText(title)
+                .setPriority(androidx.core.app.NotificationCompat.PRIORITY_MAX)
+                .setCategory(androidx.core.app.NotificationCompat.CATEGORY_ALARM)
+                .setFullScreenIntent(pendingIntent, true)
+                .setAutoCancel(true)
+                .setTimeoutAfter(3000)
+                .build()
+
+            val notifId = 8888
+            nm.notify(notifId, notif)
+            Log.i(TAG, "High-priority FullScreenIntent notification dispatched for '$title'")
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                try {
+                    nm.cancel(notifId)
+                } catch (e: Exception) {
+                    // Ignored
+                }
+            }, 3000)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to launch via Notification FullScreenIntent", e)
         }
     }
 

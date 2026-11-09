@@ -297,14 +297,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePermissionStatus() {
-        val isGranted = NotificationManagerCompat.getEnabledListenerPackages(this)
+        val isNotifGranted = NotificationManagerCompat.getEnabledListenerPackages(this)
             .contains(packageName)
-
-        if (isGranted) {
-            binding.tvPermissionStatus.text = getString(R.string.permission_notification_granted)
-            binding.btnPermissionNotification.isEnabled = false
-            binding.btnFixRestricted.visibility = View.GONE
+        val isOverlayGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Settings.canDrawOverlays(this)
         } else {
+            true
+        }
+
+        if (!isNotifGranted) {
             if (Build.VERSION.SDK_INT >= 33) {
                 binding.btnFixRestricted.visibility = View.VISIBLE
                 binding.tvPermissionStatus.text = getString(R.string.restricted_instructions)
@@ -312,7 +313,30 @@ class MainActivity : AppCompatActivity() {
                 binding.btnFixRestricted.visibility = View.GONE
                 binding.tvPermissionStatus.text = getString(R.string.permission_notification_missing)
             }
+            binding.btnPermissionNotification.text = getString(R.string.btn_permission_notification)
             binding.btnPermissionNotification.isEnabled = true
+            binding.btnPermissionNotification.setOnClickListener {
+                startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+            }
+        } else if (!isOverlayGranted) {
+            binding.btnFixRestricted.visibility = View.GONE
+            binding.tvPermissionStatus.text = getString(R.string.permission_overlay_missing)
+            binding.btnPermissionNotification.text = getString(R.string.btn_permission_overlay)
+            binding.btnPermissionNotification.isEnabled = true
+            binding.btnPermissionNotification.setOnClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:$packageName")
+                    )
+                    startActivity(intent)
+                }
+            }
+        } else {
+            binding.tvPermissionStatus.text = getString(R.string.permission_all_granted)
+            binding.btnPermissionNotification.text = getString(R.string.permission_granted_button)
+            binding.btnPermissionNotification.isEnabled = false
+            binding.btnFixRestricted.visibility = View.GONE
         }
     }
 

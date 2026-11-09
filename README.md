@@ -140,6 +140,9 @@ On newer Android releases, sensitive permissions (Notification Access) on sidelo
 3. Select **Allow restricted settings** and authenticate.
 4. Launch Cadence and grant Notification Access via the onboarding wizard.
 
+#### Background Music Search (Display Over Other Apps)
+Android 10+ restricts apps in the background from launching music player activities. Cadence uses the standard "Display over other apps" permission to allow voice commands to immediately open and play songs into YouTube Music Morphe while your phone stays locked in your pocket or when outside the app. The onboarding wizard prompts you to enable this toggle.
+
 ---
 
 ## Build from Source

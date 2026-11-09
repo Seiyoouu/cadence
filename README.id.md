@@ -140,6 +140,9 @@ Pada versi Android baru, izin sensitif (Akses Notifikasi) untuk aplikasi sideloa
 3. Pilih **Izinkan setelan yang dibatasi** dan konfirmasi kunci layar Anda.
 4. Buka aplikasi Cadence dan berikan Akses Notifikasi melalui panduan onboarding.
 
+#### Pencarian Musik di Latar Belakang (Tampil di Atas Aplikasi Lain)
+Android 10 ke atas membatasi aplikasi di latar belakang untuk membuka player musik secara otomatis. Cadence menggunakan izin standar "Tampil di atas aplikasi lain" agar perintah suara dapat langsung membuka dan memutar lagu ke YouTube Music Morphe meskipun layar HP mati di dalam saku jaket atau saat berada di luar aplikasi. Izin ini dapat diaktifkan dengan mudah melalui panduan awal (onboarding).
+
 ---
 
 ## Kompilasi dari Sumber (Build)

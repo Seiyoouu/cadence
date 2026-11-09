@@ -69,10 +69,18 @@
     <string name="onboard_btn_open_app_info">1. Buka Info Cadence (Menu 3-Titik)</string>
     <string name="onboard_btn_open_notification">2. Buka Akses Notifikasi</string>
     <string name="onboard_notification_granted">✓ Akses Notifikasi Sudah Aktif!</string>
+    <string name="onboard_step_bg_title">Pencarian di Latar Belakang</string>
+    <string name="onboard_step_bg_body">Izinkan Cadence tampil di atas aplikasi lain agar perintah suara dapat langsung membuka dan memutar lagu saat ponsel di luar aplikasi atau saat layar mati di saku jaket.</string>
+    <string name="onboard_grant_bg">Izinkan Tampil di Latar Belakang</string>
+    <string name="onboard_bg_granted">✓ Izin Latar Belakang Sudah Aktif!</string>
 
-    <!-- Restricted Settings strings -->
+    <!-- Restricted Settings & Overlay strings -->
     <string name="fix_restricted_settings">Perbaiki Setelan Terbatas</string>
     <string name="restricted_instructions">Android 13+ memblokir izin ini. Buka menu 3-titik di pojok kanan atas > Izinkan setelan terbatas, lalu nyalakan izin Notifikasi.</string>
+    <string name="permission_overlay_missing">Akses Notifikasi aktif. Izinkan Tampil di Latar Belakang agar pencarian suara berfungsi saat HP di luar aplikasi atau di saku jaket.</string>
+    <string name="btn_permission_overlay">Izinkan Tampil di Latar Belakang</string>
+    <string name="permission_all_granted">✓ Semua Izin Pengendara Aktif (Notifikasi + Pencarian Latar Belakang)</string>
+    <string name="permission_granted_button">Semua Izin Telah Aktif</string>
 
     <!-- Target Player & Voice Language Settings -->
     <string name="target_player_label">Aplikasi Musik Target</string>

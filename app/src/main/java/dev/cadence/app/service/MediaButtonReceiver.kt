@@ -14,6 +14,14 @@ class MediaButtonReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.hasExtra("test_search")) {
+            val query = intent.getStringExtra("test_search") ?: ""
+            Log.i(TAG, "Test search received in background: '$query'")
+            val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.IO)
+            dev.cadence.app.engine.SearchEngine.searchAndPlay(query, scope)
+            return
+        }
+
         @Suppress("DEPRECATION")
         val event = intent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
         val keyCode = when {
