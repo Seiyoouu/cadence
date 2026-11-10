@@ -75,6 +75,24 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updatePermissionStatus()
+        updateBluetoothMicUi()
+    }
+
+    private fun updateBluetoothMicUi() {
+        val preferred = dev.cadence.app.voice.BluetoothAudioRouter.isBluetoothMicPreferred(this)
+        val isActive = dev.cadence.app.voice.BluetoothAudioRouter.isBluetoothMicActive.value
+        val deviceName = dev.cadence.app.voice.BluetoothAudioRouter.activeDeviceName.value
+
+        if (!preferred) {
+            binding.tvBluetoothMicStatus.text = getString(R.string.settings_bluetooth_mic_desc_off)
+            binding.tvBluetoothMicStatus.setTextColor(ContextCompat.getColor(this, R.color.textMuted))
+        } else if (isActive && deviceName != null) {
+            binding.tvBluetoothMicStatus.text = "Aktif: $deviceName"
+            binding.tvBluetoothMicStatus.setTextColor(ContextCompat.getColor(this, R.color.primary))
+        } else {
+            binding.tvBluetoothMicStatus.text = getString(R.string.settings_bluetooth_mic_desc_on)
+            binding.tvBluetoothMicStatus.setTextColor(ContextCompat.getColor(this, R.color.textSecondary))
+        }
     }
 
     private fun setupListeners() {
@@ -88,6 +106,13 @@ class MainActivity : AppCompatActivity() {
         binding.swAutoStartBluetooth.setOnCheckedChangeListener { _, checked ->
             prefs.edit().putBoolean("auto_start_bluetooth", checked).apply()
         }
+
+        binding.swBluetoothMic.isChecked = dev.cadence.app.voice.BluetoothAudioRouter.isBluetoothMicPreferred(this)
+        binding.swBluetoothMic.setOnCheckedChangeListener { _, checked ->
+            dev.cadence.app.voice.BluetoothAudioRouter.setBluetoothMicPreferred(this, checked)
+            updateBluetoothMicUi()
+        }
+        updateBluetoothMicUi()
 
         binding.swVibrationFeedback.isChecked = prefs.getBoolean("vibration_enabled", true)
         binding.swVibrationFeedback.setOnCheckedChangeListener { _, checked ->
@@ -340,11 +365,6 @@ class MainActivity : AppCompatActivity() {
     private fun updatePermissionStatus() {
         val isNotifGranted = NotificationManagerCompat.getEnabledListenerPackages(this)
             .contains(packageName)
-        val isOverlayGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Settings.canDrawOverlays(this)
-        } else {
-            true
-        }
 
         if (!isNotifGranted) {
             if (Build.VERSION.SDK_INT >= 33) {
@@ -359,22 +379,8 @@ class MainActivity : AppCompatActivity() {
             binding.btnPermissionNotification.setOnClickListener {
                 startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
             }
-        } else if (!isOverlayGranted) {
-            binding.btnFixRestricted.visibility = View.GONE
-            binding.tvPermissionStatus.text = getString(R.string.permission_overlay_missing)
-            binding.btnPermissionNotification.text = getString(R.string.btn_permission_overlay)
-            binding.btnPermissionNotification.isEnabled = true
-            binding.btnPermissionNotification.setOnClickListener {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    val intent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:$packageName")
-                    )
-                    startActivity(intent)
-                }
-            }
         } else {
-            binding.tvPermissionStatus.text = getString(R.string.permission_all_granted)
+            binding.tvPermissionStatus.text = getString(R.string.permission_notification_granted)
             binding.btnPermissionNotification.text = getString(R.string.permission_granted_button)
             binding.btnPermissionNotification.isEnabled = false
             binding.btnFixRestricted.visibility = View.GONE

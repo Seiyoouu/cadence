@@ -98,27 +98,24 @@ object SearchEngine {
                 creatorOptions.toBundle()
             )
 
-            // Direct launch if SYSTEM_ALERT_WINDOW is granted
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || android.provider.Settings.canDrawOverlays(appContext)) {
-                try {
-                    appContext.startActivity(intent)
-                    Log.i(TAG, "Launched directly via startActivity with SYSTEM_ALERT_WINDOW privilege")
-                } catch (e: Exception) {
-                    Log.w(TAG, "startActivity failed, falling back to PendingIntent", e)
-                    pendingIntent.send(appContext, 0, null, null, null, null, senderOptions.toBundle())
-                }
-            } else {
-                // Method 1: Try PendingIntent send with both Creator and Sender BAL allowances
-                try {
-                    pendingIntent.send(appContext, 0, null, null, null, null, senderOptions.toBundle())
-                    Log.i(TAG, "Deep link sent via PendingIntent.send() with Creator+Sender BAL")
-                } catch (e: Exception) {
-                    Log.w(TAG, "PendingIntent send failed", e)
-                }
-
-                // Method 2: System-level launch via High Priority Notification FullScreenIntent (bypasses BAL on Android 10-14+)
-                launchViaNotificationFullScreen(pendingIntent, title)
+            // 1. Direct startActivity
+            try {
+                appContext.startActivity(intent)
+                Log.i(TAG, "Launched directly via startActivity")
+            } catch (e: Exception) {
+                Log.w(TAG, "startActivity failed, falling back to PendingIntent", e)
             }
+
+            // 2. PendingIntent with Creator + Sender BAL allowances
+            try {
+                pendingIntent.send(appContext, 0, null, null, null, null, senderOptions.toBundle())
+                Log.i(TAG, "Deep link sent via PendingIntent.send() with Creator+Sender BAL")
+            } catch (e: Exception) {
+                Log.w(TAG, "PendingIntent send failed", e)
+            }
+
+            // 3. Status Notification so rider can also tap to launch if phone is unlocked
+            launchViaNotificationFullScreen(pendingIntent, title)
 
             _searchState.value = SearchState.Playing(title)
 

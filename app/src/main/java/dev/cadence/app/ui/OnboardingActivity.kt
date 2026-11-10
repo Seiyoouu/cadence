@@ -54,22 +54,7 @@ class OnboardingActivity : AppCompatActivity() {
                     }
                 }
                 3 -> micPermLauncher.launch(Manifest.permission.RECORD_AUDIO)
-                4 -> {
-                    if (isOverlayPermissionGranted()) {
-                        nextStep()
-                    } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            val intent = Intent(
-                                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:$packageName")
-                            )
-                            startActivity(intent)
-                        } else {
-                            nextStep()
-                        }
-                    }
-                }
-                5 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                4 -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     btPermLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
                 } else {
                     nextStep()
@@ -103,12 +88,12 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun nextStep() {
-        step = (step + 1).coerceAtMost(6)
+        step = (step + 1).coerceAtMost(5)
         updateUI()
     }
 
     private fun updateUI() {
-        binding.tvStepCounter.text = getString(R.string.onboard_step_counter, step, 6)
+        binding.tvStepCounter.text = getString(R.string.onboard_step_counter, step, 5)
 
         when (step) {
             1 -> {
@@ -153,24 +138,6 @@ class OnboardingActivity : AppCompatActivity() {
                 binding.btnFinish.visibility = View.GONE
             }
             4 -> {
-                val granted = isOverlayPermissionGranted()
-                binding.tvTitle.text = getString(R.string.onboard_step_bg_title)
-                binding.tvBody.text = getString(R.string.onboard_step_bg_body)
-                binding.cardRestrictedGuide.visibility = View.GONE
-
-                if (granted) {
-                    binding.tvGrantedBadge.visibility = View.VISIBLE
-                    binding.tvGrantedBadge.text = getString(R.string.onboard_bg_granted)
-                    binding.btnNext.text = getString(R.string.onboard_next)
-                } else {
-                    binding.tvGrantedBadge.visibility = View.GONE
-                    binding.btnNext.text = getString(R.string.onboard_grant_bg)
-                }
-
-                binding.btnNext.visibility = View.VISIBLE
-                binding.btnFinish.visibility = View.GONE
-            }
-            5 -> {
                 binding.tvTitle.text = getString(R.string.onboard_step4_title)
                 binding.tvBody.text = getString(R.string.onboard_step4_body)
                 binding.cardRestrictedGuide.visibility = View.GONE
@@ -179,7 +146,7 @@ class OnboardingActivity : AppCompatActivity() {
                 binding.btnNext.visibility = View.VISIBLE
                 binding.btnFinish.visibility = View.GONE
             }
-            6 -> {
+            5 -> {
                 binding.tvTitle.text = getString(R.string.onboard_done_title)
                 binding.tvBody.text = getString(R.string.onboard_done_body)
                 binding.cardRestrictedGuide.visibility = View.GONE

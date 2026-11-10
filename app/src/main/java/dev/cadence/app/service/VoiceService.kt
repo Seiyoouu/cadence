@@ -110,6 +110,7 @@ class VoiceService : Service() {
         }
 
         tts = TtsFeedback(this)
+        dev.cadence.app.voice.BluetoothAudioRouter.start(this)
         startWakeListening()
     }
 
@@ -133,6 +134,7 @@ class VoiceService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
+        dev.cadence.app.voice.BluetoothAudioRouter.stop(this)
         stopAll()
         tts?.destroy()
         tts = null

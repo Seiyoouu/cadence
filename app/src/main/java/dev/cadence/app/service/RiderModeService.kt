@@ -37,6 +37,7 @@ class RiderModeService : BroadcastReceiver() {
 
         when (state) {
             BluetoothProfile.STATE_CONNECTED -> {
+                dev.cadence.app.voice.BluetoothAudioRouter.updateRouting(context)
                 if (autoStart) {
                     Log.i(TAG, "Bluetooth connected -> starting VoiceService")
                     startVoiceService(context)
@@ -45,6 +46,7 @@ class RiderModeService : BroadcastReceiver() {
                 }
             }
             BluetoothProfile.STATE_DISCONNECTED -> {
+                dev.cadence.app.voice.BluetoothAudioRouter.updateRouting(context)
                 Log.i(TAG, "Bluetooth disconnected -> stopping VoiceService")
                 stopVoiceService(context)
             }

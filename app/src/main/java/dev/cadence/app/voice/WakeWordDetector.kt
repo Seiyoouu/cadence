@@ -42,6 +42,16 @@ class WakeWordDetector(
         "hey cadence", "hi cadence", "hai cadence", "halo cadence", "cadence"
     )
 
+    // Component acoustic anchors allow Kaldi to resolve words under road rumble without falling into [unk]
+    private val acousticGrammarTokens = listOf(
+        "hey", "hai", "halo", "hei", "hi", "ok", "oke",
+        "cade", "kadi", "kade", "cadence",
+        "hey cade", "hi cade", "hai cade", "halo cade", "hei cade", "ok cade", "oke cade",
+        "hey kadi", "hi kadi", "hai kadi", "halo kadi", "hei kadi", "oke kadi",
+        "hey kade", "hi kade", "hai kade", "halo kade", "hei kade", "oke kade",
+        "hey cadence", "hi cadence", "hai cadence", "halo cadence"
+    )
+
     private val WAKE_REGEX = Regex(
         "\\b(hai|halo|hei|hey|hi|ok|oke)\\s+(cade|kadi|kade|cadence)\\b|\\b(cadence)\\b",
         RegexOption.IGNORE_CASE
@@ -52,7 +62,7 @@ class WakeWordDetector(
     fun start() {
         try {
             val model = VoskModelHolder.getModel(context)
-            val grammarJson = wakeWords.joinToString(",") { "\"$it\"" } + ",\"[unk]\""
+            val grammarJson = acousticGrammarTokens.distinct().joinToString(",") { "\"$it\"" } + ",\"[unk]\""
             val recognizer = Recognizer(model, SAMPLE_RATE, "[$grammarJson]")
             speechService = SpeechService(recognizer, SAMPLE_RATE)
             speechService?.startListening(object : RecognitionListener {
@@ -62,7 +72,7 @@ class WakeWordDetector(
                 override fun onError(e: Exception?) { Log.e(TAG, "Wake error", e) }
                 override fun onTimeout() {}
             })
-            Log.i(TAG, "Wake word detector started with memory-cached model (locale=$locale)")
+            Log.i(TAG, "Wake word detector started with acoustic anchors (locale=$locale)")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to start wake word detector", e)
         }
