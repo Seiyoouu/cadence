@@ -19,6 +19,7 @@ class WakeWordDetector(
     companion object {
         private const val TAG = "WakeWordDetector"
         private const val SAMPLE_RATE = 16000.0f
+        private const val DEBOUNCE_MS = 1500L
     }
 
     private val _detected = MutableStateFlow(false)
@@ -26,33 +27,27 @@ class WakeWordDetector(
 
     private var speechService: SpeechService? = null
 
-    // Strictly compound wake phrases + acoustic phonetic variants
+    // Strictly compound wake phrases with intentional greetings to prevent false triggers during casual speech and singing
     private val wakeWords = listOf(
-        // Cade & Cadence variants
+        // Primary Cade variants
         "hey cade", "hi cade", "hai cade", "halo cade", "hei cade", "ok cade", "oke cade",
-        "hey cadence", "hi cadence", "hai cadence", "halo cadence", "cadence",
 
-        // Phonetic Kaldi acoustic neighbors for 'Cade'
-        "hey kate", "hi kate", "hai kate", "halo kate",
-        "hey caddy", "hi caddy", "hai caddy", "halo caddy",
-        "hey chad", "hi chad", "hai chad", "halo chad",
-        "hey candy", "hi candy", "hai candy", "halo candy",
+        // Indonesian phonetic Kadi variants (natural Indonesian pronunciation for helmet mics)
+        "hai kadi", "halo kadi", "hey kadi", "hi kadi", "hei kadi", "oke kadi",
 
-        // Kadi & Kade variants
-        "hai kadi", "halo kadi", "hey kadi", "hi kadi", "oke kadi", "hei kadi",
-        "hai kade", "halo kade", "hey kade", "hi kade", "oke kade", "hei kade", "hay kade",
+        // Kade variants
+        "hai kade", "halo kade", "hey kade", "hi kade", "hei kade", "oke kade",
 
-        // Musik variants
-        "hai musik", "halo musik", "hey music", "hi music", "hai music",
-
-        // Bro variants
-        "hai bro", "halo bro", "hey bro", "hi bro", "ok bro", "oke bro"
+        // Brand variants
+        "hey cadence", "hi cadence", "hai cadence", "halo cadence", "cadence"
     )
 
     private val WAKE_REGEX = Regex(
-        "\\b(hai|halo|hei|hey|hi|ok|oke)\\s+(kadi|kade|cade|cadence|kate|caddy|chad|candy|musik|music|bro)\\b|\\b(cadence)\\b",
+        "\\b(hai|halo|hei|hey|hi|ok|oke)\\s+(cade|kadi|kade|cadence)\\b|\\b(cadence)\\b",
         RegexOption.IGNORE_CASE
     )
+
+    private var lastDetectionTime = 0L
 
     fun start() {
         try {
@@ -74,20 +69,17 @@ class WakeWordDetector(
     }
 
     private fun checkWakeWord(json: String) {
+        val now = System.currentTimeMillis()
+        if (now - lastDetectionTime < DEBOUNCE_MS) return
+
         val extracted = extractTextFromJson(json)
         if (extracted.isBlank()) return
 
-        for (ww in wakeWords) {
-            if (extracted.contains(ww)) {
-                _detected.value = true
-                Log.i(TAG, "Wake word detected via exact phrase: '$ww' in '$extracted'")
-                return
-            }
-        }
-
+        // Verify with word-boundary regex to prevent partial phonetic collisions during singing
         if (WAKE_REGEX.containsMatchIn(extracted)) {
+            lastDetectionTime = now
             _detected.value = true
-            Log.i(TAG, "Wake word detected via regex match: '$extracted'")
+            Log.i(TAG, "Wake word confirmed: '$extracted'")
         }
     }
 

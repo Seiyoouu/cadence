@@ -62,6 +62,7 @@ class VoiceService : Service() {
     private lateinit var locale: String
     private var tts: TtsFeedback? = null
     private var wakeLock: PowerManager.WakeLock? = null
+    private var wasPlayingBeforeWake = false
 
     override fun onCreate() {
         super.onCreate()
@@ -156,7 +157,8 @@ class VoiceService : Service() {
         wakeJob = scope.launch {
             wakeDetector?.detected?.collect { detected ->
                 if (detected) {
-                    Log.i(TAG, "Wake word detected -> transitioning to STT")
+                    wasPlayingBeforeWake = TransportEngine.playbackInfo.value.isPlaying
+                    Log.i(TAG, "Wake word detected -> transitioning to STT (wasPlaying=$wasPlayingBeforeWake)")
                     VibrationFeedback.shortTap(this@VoiceService)
                     stopWakeListening()
                     startStt()
@@ -203,6 +205,10 @@ class VoiceService : Service() {
             onError = { err ->
                 Log.e(TAG, "STT error: $err")
                 stopStt()
+                if (wasPlayingBeforeWake && !TransportEngine.playbackInfo.value.isPlaying) {
+                    Log.i(TAG, "Restoring playback after STT error")
+                    TransportEngine.play()
+                }
                 Handler(Looper.getMainLooper()).postDelayed({
                     startWakeListening()
                 }, 400)
@@ -210,6 +216,10 @@ class VoiceService : Service() {
             onTimeout = {
                 Log.i(TAG, "STT timeout")
                 stopStt()
+                if (wasPlayingBeforeWake && !TransportEngine.playbackInfo.value.isPlaying) {
+                    Log.i(TAG, "Restoring playback after STT timeout")
+                    TransportEngine.play()
+                }
                 Handler(Looper.getMainLooper()).postDelayed({
                     startWakeListening()
                 }, 400)
@@ -295,6 +305,10 @@ class VoiceService : Service() {
             }
             is CommandParser.Command.Unknown -> {
                 VibrationFeedback.doubleTap(this)
+                if (wasPlayingBeforeWake && !TransportEngine.playbackInfo.value.isPlaying) {
+                    Log.i(TAG, "Restoring playback after unknown command")
+                    TransportEngine.play()
+                }
                 if (isTtsEnabled()) {
                     val msg = if (locale == "id" || locale == "in") "Perintah tidak dikenali"
                     else "Command not recognized"

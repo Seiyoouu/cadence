@@ -1,102 +1,120 @@
-[English](README.md) · [Bahasa Indonesia](README.id.md)
+<div align="center">
 
-# Cadence
+# 🏍️ Cadence
 
-> Hands-free voice controller for YouTube Music Morphe, engineered for motorcycle riders with helmet Bluetooth intercoms and TWS earbuds.
+### Hands-Free Voice Cockpit for YouTube Music Morphe &amp; ReVanced
+*Engineered for motorcycle riders wearing helmets, Bluetooth intercoms, and riding gloves.*
 
 [![CI Build](https://github.com/Seiyoouu/cadence/actions/workflows/build.yml/badge.svg)](https://github.com/Seiyoouu/cadence/actions/workflows/build.yml)
-[![Pre-release](https://img.shields.io/github/v/release/Seiyoouu/cadence?include_prereleases&color=00E5FF&label=pre-release)](https://github.com/Seiyoouu/cadence/releases)
-[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-0F172A?logo=android&logoColor=00E5FF)](https://developer.android.com)
-[![License](https://img.shields.io/badge/License-GPLv3-1E293B.svg)](LICENSE)
+[![Pre-release](https://img.shields.io/github/v/release/Seiyoouu/cadence?include_prereleases&amp;color=00E5FF&amp;label=Pre-release)](https://github.com/Seiyoouu/cadence/releases)
+[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-0F172A?logo=android&amp;logoColor=00E5FF)](https://developer.android.com)
+[![Architecture](https://img.shields.io/badge/Root-100%25%20Rootless-10B981)](https://github.com/Seiyoouu/cadence)
+[![License](https://img.shields.io/badge/License-GPLv3-6366F1.svg)](LICENSE)
+
+<br/>
 
 <p align="center">
-  <img src="docs/test-artifacts/ui_craft_top_v2.png" alt="Cadence Rider Cockpit" width="340" style="border-radius: 24px; box-shadow: 0 20px 40px rgba(0, 229, 255, 0.15);" />
+  <img src="docs/test-artifacts/ui_v101_cockpit_top.png" alt="Cadence Dashboard" width="310" style="border-radius: 24px; margin: 10px; box-shadow: 0 20px 40px rgba(0, 229, 255, 0.2);" />
+  <img src="docs/test-artifacts/ui_v101_cockpit_quit.png" alt="Rider Preferences &amp; Quit" width="310" style="border-radius: 24px; margin: 10px; box-shadow: 0 20px 40px rgba(255, 77, 109, 0.15);" />
 </p>
 
----
+<p align="center">
+  <strong><a href="README.md">English</a></strong> · <strong><a href="README.id.md">Bahasa Indonesia</a></strong>
+</p>
 
-## Overview
-
-Changing tracks or searching for music while riding a motorcycle is inherently hazardous. Riders are forced to pull over onto the shoulder, remove heavy riding gloves, unlock their smartphone in direct sunlight, and navigate small touchscreen controls.
-
-**Cadence** eliminates physical interaction entirely. Keep your phone locked in your jacket pocket, speak into your helmet microphone, and manage playback with zero screen contact.
+</div>
 
 ---
 
-## Core Capabilities
+## ⚡ The 60 km/h Problem
 
-| Capability | Technical Mechanism | Benefit |
-|:---|:---|:---|
-| **Pocket & Screen-Off Execution** | Foreground service with `PARTIAL_WAKE_LOCK` and dual `microphone` + `connectedDevice` service types. | Runs continuously with the screen off and phone locked in pockets without OS throttling. |
-| **Bilingual Voice Engine** | Hybrid stack: Memory-cached VOSK Kaldi acoustic model for wake words paired with Android native `SpeechRecognizer` for command parsing. | Understands English and Bahasa Indonesia simultaneously with low latency (<10ms wake reaction). |
-| **Natural Song Search** | Decoupled query resolution via Piped & Invidious REST endpoints directly into YouTube Music deep links. | Simply speak any title or artist directly (e.g. *"Dewa 19 Kangen"* or *"Coldplay Yellow"*), with or without saying *"play"*. |
-| **Bluetooth Rider Mode** | Reactive BroadcastReceiver monitoring A2DP / Headset connection state changes. | Automatically starts listening when your helmet headset connects, and suspends immediately on disconnect to conserve battery. |
-| **Tactile Helmet Haptics** | Precision vibration waveforms (`Vibrator` / `VibrationEffect`). | Provides distinct physical confirmation pulses inside your pocket when wake words and commands resolve. |
-| **Physical Button Fallback** | Hardware `MEDIA_BUTTON` intent routing. | Physical TWS media buttons remain instant transport fallbacks during high-speed highway wind noise. |
-| **100% Rootless Architecture** | Direct IPC via Android `MediaSession` and `NotificationListenerService`. | Zero root, Magisk, or Xposed dependencies. Interacts cleanly with both Morphe and ReVanced packages. |
+Changing tracks or searching for songs while cruising on a motorcycle is a nightmare:
+- ❌ **Pulling over** onto a dangerous road shoulder just to change a playlist.
+- ❌ **Taking off tight riding gloves** with sweaty hands under the hot sun.
+- ❌ **Squinting at tiny touchscreen buttons** through helmet visors and glare.
 
----
+### 🛡️ The Cadence Solution
+Keep your phone **locked deep inside your jacket pocket**. Speak naturally into your helmet microphone or TWS earbuds. Cadence handles playback, song searches, and queueing with **zero screen contact** and **zero distraction**.
 
-## System Requirements
-
-- **Android OS**: Android 8.0 (API level 26) or higher.
-- **Companion Player**: [YouTube Music Morphe](https://morphe.software) (`app.morphe.android.apps.youtube.music`), ReVanced, or Google stock YTM.
-- **Speech Provider**: Google App / Android Speech Services (bundled on 99% of Android devices).
-- **Audio Gear**: Helmet Bluetooth intercom (Sena, Cardo, FreedConn) or in-ear TWS earbuds with microphone.
-
----
-
-## Supported Voice Commands
-
-### Wake Words
-Cadence uses compound greetings to eliminate false positives during casual conversation:
-- `"Hai Kadi"` / `"Halo Kadi"` / `"Hey Kadi"` / `"Oke Kadi"`
-- `"Hai Musik"` / `"Halo Musik"`
-- `"Hai Bro"` / `"Halo Bro"`
-- `"Hai Cade"` / `"Hey Cade"` / `"Halo Cade"`
-- `"Cadence"`
-
-### Media Transport & Search
 ```text
-Playback Controls:
-├── Next Track     : "next", "skip", "lagu berikutnya", "ganti lagu", "selanjutnya"
-├── Previous Track : "previous", "prev", "back", "lagu sebelumnya", "kembali"
-├── Pause / Stop   : "pause", "stop", "jeda", "berhenti", "matikan"
-├── Resume         : "play", "resume", "lanjut", "mainkan", "putar"
-└── Direct Search  : Just name the song or artist:
-                     • "Dewa 19 Kangen"
-                     • "Sheila On 7 Dan"
-                     • "Coldplay Yellow"
-                     • "Putar lagu Komang"
+Rider: "Hai Kadi, putar Dewa 19 Kangen"
+└── 📳 Helmet gives 2 distinct vibration pulses
+└── 🎵 Music starts streaming immediately into YouTube Music Morphe
+└── 🏍️ Your hands never left the handlebars
 ```
 
 ---
 
-## Architecture
+## ✨ Cutting-Edge Capabilities
+
+| Feature | Engineering Behind It | Rider Experience |
+|:---|:---|:---|
+| **Pocket &amp; Screen-Off Engine** | Foreground Service with `PARTIAL_WAKE_LOCK` and dual `microphone` + `connectedDevice` flags. | Works continuously while phone stays locked in your pocket. Will not get killed by OEM battery savers. |
+| **Singing &amp; Chatter Safe** | Strict compound acoustic wake model (`Hai Kadi`, `Hey Cade`, `Cadence`) with word-boundary debouncing. | **Zero false triggers.** Sing along to lyrics or chat with friends without music suddenly pausing or cutting out. |
+| **Auto-Resume Protection** | Intelligent state tracker (`wasPlayingBeforeWake`). | If ambient highway wind noise causes a command timeout, your music immediately resumes playing automatically. |
+| **Direct Natural Song Search** | Decoupled query resolution via Piped &amp; Invidious REST APIs straight into YouTube Music deep links. | Simply say any title or artist directly (e.g. *"Dewa 19 Kangen"* or *"Coldplay Yellow"*), with or without saying *"play"*. |
+| **Instant 1-Tap Cockpit Quit** | Dual emergency shutdown controls (Header Power icon + Bottom Shutdown Card). | Terminate `VoiceService`, release audio wakelocks, and kill all background processes in one clean click. |
+| **Smart Bluetooth Automation** | Reactive BroadcastReceiver monitoring A2DP &amp; Headset state. | Listening activates automatically when your helmet intercom connects, and suspends when disconnected. |
+| **Tactile Helmet Haptics** | Precise vibration waveform patterns (`VibrationEffect`). | Distinct physical confirmation pulses inside your pocket so you know your command was heard without looking. |
+| **100% Rootless Architecture** | Pure Android IPC via `MediaSession` and `NotificationListenerService`. | No Magisk, no KernelSU, no Xposed required. Fully compatible with Morphe, ReVanced, and Google YTM. |
+
+---
+
+## 🗣️ Supported Voice Commands
+
+### 🔑 Wake Words (Strict Compound Greetings)
+Cadence listens for clear, deliberate compound phrases so that accidental noise or singing never triggers recognition:
+* **`“Hai Kadi”`** / **`“Halo Kadi”`** / **`“Hey Kadi”`** / **`“Oke Kadi”`**
+* **`“Hey Cade”`** / **`“Hai Cade”`** / **`“Halo Cade”`**
+* **`“Cadence”`** / **`“Hai Cadence”`**
+
+---
+
+### 🎵 Playback &amp; Song Search Cheatsheet
+Both **Bahasa Indonesia** and **English** commands are parsed simultaneously:
+
+```text
+Media Playback:
+├── ⏭️ Next Track     : "next", "skip", "lagu berikutnya", "ganti lagu", "selanjutnya"
+├── ⏮️ Previous Track : "previous", "prev", "back", "lagu sebelumnya", "kembali", "ulang"
+├── ⏸️ Pause / Stop   : "pause", "stop", "jeda", "berhenti", "matikan"
+├── ▶️ Resume / Play  : "play", "resume", "lanjut", "mainkan", "putar"
+└── 🔍 Instant Search : Speak song title or artist directly:
+                        • "Dewa 19 Kangen"
+                        • "Sheila On 7 Dan"
+                        • "Coldplay Yellow"
+                        • "Putar lagu Komang"
+                        • "Play Bohemian Rhapsody"
+```
+
+---
+
+## 🏗️ System Architecture
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
-│                      HELMET MICROPHONE                      │
+│              BLUETOOTH HELMET INTERCOM / TWS                │
+│             Sena • Cardo • FreedConn • AirDots              │
 └──────────────────────────────┬──────────────────────────────┘
-                               │ Audio Stream (16kHz PCM)
+                               │ 16kHz PCM Audio Stream
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                 WAKE WORD ENGINE (Offline)                  │
-│   Memory-Cached VOSK Acoustic Model (assets/model-en/)      │
-│   Latency: <10ms warm detection | Zero CPU battery waste    │
+│    Memory-Cached VOSK Acoustic Model (assets/model-en/)     │
+│    Latency: <10ms warm detection | Zero CPU battery waste   │
 └──────────────────────────────┬──────────────────────────────┘
-                               │ Wake word detected + Haptic Pulse
+                               │ Wake confirmed + Tactile Haptic Pulse
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                 COMMAND STT (Android Native)                │
-│   Multi-Hypothesis SpeechRecognizer (id-ID + en-US)         │
-│   Extracts top-5 recognition candidates                     │
+│    Multi-Hypothesis SpeechRecognizer (id-ID + en-US)        │
+│    Extracts Top-5 Recognition Candidates                    │
 └──────────────────────────────┬──────────────────────────────┘
-                               │ Candidate text array
+                               │ Hypothesis Candidate Array
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                 BILINGUAL COMMAND PARSER                    │
-│   Multi-pass regex parser with natural Indonesian matching  │
+│    Multi-pass regex parser with Indonesian natural matching │
 └───────────────┬─────────────────────────────┬───────────────┘
                 │                             │
        [Transport Command]             [Music Query]
@@ -118,56 +136,64 @@ Playback Controls:
 
 ---
 
-## Installation
+## 🚀 Installation &amp; Sideloading
 
-### 1. Download the Package
+### 1. Download Binary
 Grab the latest release from the [GitHub Releases](https://github.com/Seiyoouu/cadence/releases/tag/v1.0.1) page:
-- **File**: `Cadence-v1.0.1.apk`
+* 📦 **Asset**: **`Cadence-v1.0.1.apk`** (99 MB)
 
-> **Important**: If you see **"App not installed as package appears to be invalid"**, this occurs because an older build with a different signature is currently installed on your phone. Simply **uninstall (hapus instalan)** the old Cadence app first, then install `Cadence-v1.0.1.apk`. It will install seamlessly.
-
-### 2. Sideloading Guidance
-
-#### Google Play Protect
-Because Cadence is an open-source sideloaded utility requesting background microphone and notification access, Play Protect may present an unverified developer prompt.
-- In Play Store: **Profile > Play Protect > Settings (Gear) > Pause for 24 hours**.
-- Proceed with APK installation. Play Protect may be re-enabled afterward.
-
-#### Android 13+ Restricted Settings
-On newer Android releases, sensitive permissions (Notification Access) on sideloaded apps are restricted by default:
-1. Open phone **Settings > Apps > Cadence**.
-2. Tap the **three-dot overflow menu (⋮)** in the top right corner.
-3. Select **Allow restricted settings** and authenticate.
-4. Launch Cadence and grant Notification Access via the onboarding wizard.
-
-#### Background Music Search (Display Over Other Apps)
-Android 10+ restricts apps in the background from launching music player activities. Cadence uses the standard "Display over other apps" permission to allow voice commands to immediately open and play songs into YouTube Music Morphe while your phone stays locked in your pocket or when outside the app. The onboarding wizard prompts you to enable this toggle.
+> 💡 **Upgrading from older test builds?**  
+> If Android displays *"App not installed as package appears to be invalid"*, simply **uninstall (hapus instalan)** the older version first, then install `Cadence-v1.0.1.apk`. It will install seamlessly!
 
 ---
 
-## Build from Source
+### 2. Sideloading Guidance
+
+#### 🛡️ Google Play Protect (The 24-Hour Pause)
+Because Cadence requests background microphone and notification access outside Google Play Store, Play Protect may prompt an unverified warning.
+1. Open **Google Play Store > Profile Icon > Play Protect > Gear Icon (Settings)**.
+2. Toggle off *"Scan apps with Play Protect"* and select **"Pause for 24 hours"**.
+3. Install the Cadence APK and launch it.
+
+#### 🔓 Android 13+ Restricted Settings
+Android 13+ restricts sensitive permissions on sideloaded APKs:
+1. Open phone **Settings > Apps > Cadence**.
+2. Tap the **three-dot menu (⋮)** in the top right corner.
+3. Tap **"Allow restricted settings"** and confirm your screen lock.
+4. Return to Cadence and complete the onboarding setup.
+
+#### 🪟 Background Music Search (Display Over Other Apps)
+Android 10+ prevents background services from launching media players directly. Grant the *"Display over other apps"* permission when prompted during onboarding so voice queries can open and play songs while your phone is locked in your jacket.
+
+---
+
+## 🛠️ Building from Source
 
 Prerequisites: JDK 17 and Android SDK Platform 34.
 
 ```bash
+# Clone the repository
 git clone https://github.com/Seiyoouu/cadence.git
 cd cadence
+
+# Build signed release APK
 ./gradlew assembleRelease
 ```
 
-The release package will be generated at:
+The APK binary will be output at:
 `app/build/outputs/apk/release/Cadence-v1.0.1.apk`
 
 ---
 
-## Privacy & Security
+## 🔒 Privacy &amp; Transparency
 
-- **Microphone**: Audio is processed strictly on-device for wake word detection. Command transcription is passed only to Android's native speech framework. No voice data is collected, stored, or phoned home by Cadence.
-- **Account Security**: Cadence operates 100% rootless and does not require or request Google account credentials.
-- **Telemetry**: Zero tracking, zero analytics, zero third-party telemetry SDKs.
+* **100% On-Device Wake Detection**: Audio is processed strictly locally inside RAM using the offline VOSK model. No voice streams are ever transmitted to any external server.
+* **No Account Required**: Cadence is 100% rootless and never asks for, touches, or stores your Google account credentials.
+* **Zero Telemetry**: No analytics, no crashlytics, no tracking cookies, and zero third-party advertising SDKs.
 
 ---
 
-## License
+## 📜 License
 
-Cadence is open-source software licensed under the [GNU General Public License v3.0](LICENSE).
+Cadence is free and open-source software distributed under the [GNU General Public License v3.0](LICENSE).
+Crafted with passion for motorcycle riders worldwide.

@@ -35,16 +35,14 @@ object CommandParser {
         "hey kade", "hi kade", "ok kade", "hai kade", "hei kade", "halo kade", "oke kade",
         "hey kadi", "hi kadi", "ok kadi", "hai kadi", "hei kadi", "halo kadi", "oke kadi",
         "hey cade", "hi cade", "ok cade", "hai cade", "hei cade", "halo cade", "oke cade",
-        "hai musik", "halo musik", "hey music",
-        "hai bro", "halo bro", "hey bro", "ok bro",
-        "hi candy", "hai candy",
         "cadence", "chade"
     ).sortedByDescending { it.length }
 
     private val IGNORED_SOLO_WORDS = setOf(
-        "cadence", "cade", "kade", "kadi", "candy", "bro", "halo", "hai", "hei", "hey",
+        "cadence", "cade", "kade", "kadi", "halo", "hai", "hei", "hey",
         "tes", "test", "testing", "asdf", "qwerty", "tolong", "dong", "please", "ya", "nih",
-        "bisa", "coba", "oke", "ok", "asdf qwerty"
+        "bisa", "coba", "oke", "ok", "asdf qwerty", "bro", "musik", "music", "lagu", "song",
+        "uh", "um", "ah", "ha", "haha", "hmm", "iya", "ya", "yo", "sip", "mantap"
     )
 
     private fun isIgnoredSoloWord(word: String): Boolean {

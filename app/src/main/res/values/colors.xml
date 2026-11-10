@@ -13,11 +13,11 @@
     <color name="cyanGlow">#2000E5FF</color>
 
     <!-- Deep Cosmic Obsidian & Frosted Glass Surfaces -->
-    <color name="background">#07080C</color>
-    <color name="surface">#0D101A</color>
-    <color name="surfaceElevated">#131724</color>
-    <color name="surfaceBorder">#1E253A</color>
-    <color name="surfaceBorderLight">#2B3552</color>
+    <color name="background">#06080C</color>
+    <color name="surface">#0B0E18</color>
+    <color name="surfaceElevated">#111625</color>
+    <color name="surfaceBorder">#1A2236</color>
+    <color name="surfaceBorderLight">#24304D</color>
 
     <!-- Functional Accents -->
     <color name="emerald">#10B981</color>

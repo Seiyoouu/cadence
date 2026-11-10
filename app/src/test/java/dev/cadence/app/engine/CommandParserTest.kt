@@ -211,8 +211,8 @@ class CommandParserTest {
     }
 
     @Test
-    fun testSearch_withWakeWord_hiCandy() {
-        val result = CommandParser.parse("hi candy play yellow")
+    fun testSearch_withWakeWord_haiKadi() {
+        val result = CommandParser.parse("hai kadi play yellow")
         assertTrue(result is CommandParser.Command.Search)
         assertEquals("yellow", (result as CommandParser.Command.Search).query)
     }

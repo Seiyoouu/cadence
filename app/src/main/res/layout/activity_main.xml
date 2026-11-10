@@ -382,8 +382,9 @@
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:text="“Hai Kadi”"
-                        android:textColor="@color/textSecondary"
-                        android:textSize="11sp" />
+                        android:textColor="@color/primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -392,18 +393,7 @@
                         android:background="@drawable/bg_pill_chip"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
-                        android:text="“Hai Musik”"
-                        android:textColor="@color/textSecondary"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/bg_pill_chip"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="4dp"
-                        android:text="“Hai Bro”"
+                        android:text="“Hey Cade”"
                         android:textColor="@color/textSecondary"
                         android:textSize="11sp" />
 
@@ -421,10 +411,21 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
                         android:background="@drawable/bg_pill_chip"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:text="“Hai Cade”"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_pill_chip"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:text="“Halo Kadi”"
                         android:textColor="@color/textSecondary"
                         android:textSize="11sp" />
                 </LinearLayout>
