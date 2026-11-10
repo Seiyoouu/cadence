@@ -111,6 +111,15 @@ class MainActivity : AppCompatActivity() {
         binding.swBluetoothMic.setOnCheckedChangeListener { _, checked ->
             dev.cadence.app.voice.BluetoothAudioRouter.setBluetoothMicPreferred(this, checked)
             updateBluetoothMicUi()
+            if (checked) {
+                val isId = java.util.Locale.getDefault().language.lowercase() in listOf("id", "in")
+                Toast.makeText(
+                    this,
+                    if (isId) "Perhatian: Mode Mic Bluetooth menurunkan kualitas musik ke mono telepon (limitasi Bluetooth A2DP). Matikan agar musik tetap HD jernih."
+                    else "Notice: Bluetooth Mic Mode drops music to mono telephone quality. Turn off to keep HD stereo music.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         updateBluetoothMicUi()
 

@@ -1,16 +1,16 @@
 package dev.cadence.app.voice
 
 import android.content.Context
+import android.media.AudioFormat
+import android.media.AudioRecord
+import android.media.MediaRecorder
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.json.JSONObject
-import org.vosk.Model
 import org.vosk.Recognizer
-import org.vosk.android.RecognitionListener
-import org.vosk.android.SpeechService
-import java.io.File
+import kotlin.concurrent.thread
 
 class WakeWordDetector(
     private val context: Context,
@@ -18,14 +18,19 @@ class WakeWordDetector(
 ) {
     companion object {
         private const val TAG = "WakeWordDetector"
-        private const val SAMPLE_RATE = 16000.0f
+        private const val SAMPLE_RATE = 16000
         private const val DEBOUNCE_MS = 1500L
+        private const val POCKET_GAIN = 2.5f // 2.5x amplification to compensate for jacket pocket fabric attenuation
     }
 
     private val _detected = MutableStateFlow(false)
     val detected: StateFlow<Boolean> = _detected.asStateFlow()
 
-    private var speechService: SpeechService? = null
+    @Volatile
+    private var isRecording = false
+    private var audioRecord: AudioRecord? = null
+    private var recordingThread: Thread? = null
+    private var recognizer: Recognizer? = null
 
     // Strictly compound wake phrases with intentional greetings to prevent false triggers during casual speech and singing
     private val wakeWords = listOf(
@@ -60,19 +65,76 @@ class WakeWordDetector(
     private var lastDetectionTime = 0L
 
     fun start() {
+        if (isRecording) return
         try {
             val model = VoskModelHolder.getModel(context)
             val grammarJson = acousticGrammarTokens.distinct().joinToString(",") { "\"$it\"" } + ",\"[unk]\""
-            val recognizer = Recognizer(model, SAMPLE_RATE, "[$grammarJson]")
-            speechService = SpeechService(recognizer, SAMPLE_RATE)
-            speechService?.startListening(object : RecognitionListener {
-                override fun onPartialResult(h: String?) { h?.let { checkWakeWord(it) } }
-                override fun onResult(h: String?) { h?.let { checkWakeWord(it) } }
-                override fun onFinalResult(h: String?) {}
-                override fun onError(e: Exception?) { Log.e(TAG, "Wake error", e) }
-                override fun onTimeout() {}
-            })
-            Log.i(TAG, "Wake word detector started with acoustic anchors (locale=$locale)")
+            val rec = Recognizer(model, SAMPLE_RATE.toFloat(), "[$grammarJson]")
+            recognizer = rec
+
+            val minBufferSize = AudioRecord.getMinBufferSize(
+                SAMPLE_RATE,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT
+            )
+            val bufferSize = maxOf(minBufferSize, (SAMPLE_RATE * 0.2f).toInt())
+
+            val record = AudioRecord(
+                MediaRecorder.AudioSource.MIC,
+                SAMPLE_RATE,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT,
+                bufferSize * 2
+            )
+
+            if (record.state != AudioRecord.STATE_INITIALIZED) {
+                Log.e(TAG, "AudioRecord initialization failed")
+                record.release()
+                return
+            }
+
+            audioRecord = record
+            isRecording = true
+
+            recordingThread = thread(start = true, name = "Cadence-PocketWakeDetector") {
+                try {
+                    record.startRecording()
+                    Log.i(TAG, "PocketWakeDetector started (MODE_NORMAL, 2.5x PocketBoost, bufferSize=$bufferSize)")
+                    val buffer = ShortArray(bufferSize)
+
+                    while (isRecording && !Thread.currentThread().isInterrupted) {
+                        val read = record.read(buffer, 0, buffer.size)
+                        if (read > 0) {
+                            // Apply Pocket-Mode Software Boost with soft limiter:
+                            // Compensates for ~10-15dB acoustic loss through motorcycle jacket pocket
+                            for (i in 0 until read) {
+                                val boosted = (buffer[i] * POCKET_GAIN).toInt()
+                                buffer[i] = boosted.coerceIn(Short.MIN_VALUE.toInt(), Short.MAX_VALUE.toInt()).toShort()
+                            }
+
+                            if (rec.acceptWaveForm(buffer, read)) {
+                                val result = rec.result
+                                checkWakeWord(result)
+                            } else {
+                                val partial = rec.partialResult
+                                checkWakeWord(partial)
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error in recording thread", e)
+                } finally {
+                    try {
+                        if (record.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
+                            record.stop()
+                        }
+                        record.release()
+                    } catch (e: Exception) {
+                        // Ignored
+                    }
+                    Log.i(TAG, "PocketWakeDetector recording thread terminated")
+                }
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to start wake word detector", e)
         }
@@ -116,13 +178,22 @@ class WakeWordDetector(
     fun resetDetection() { _detected.value = false }
 
     fun stop() {
+        isRecording = false
+        recordingThread?.interrupt()
+        recordingThread = null
         try {
-            speechService?.stop()
-            speechService?.shutdown()
+            audioRecord?.stop()
+            audioRecord?.release()
         } catch (e: Exception) {
-            Log.w(TAG, "Error shutting down speechService", e)
+            // Ignored
         }
-        speechService = null
+        audioRecord = null
+        try {
+            recognizer?.close()
+        } catch (e: Exception) {
+            // Ignored
+        }
+        recognizer = null
         Log.i(TAG, "Wake word detector stopped (model retained in cache)")
     }
 }

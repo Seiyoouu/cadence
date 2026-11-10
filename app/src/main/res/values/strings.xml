@@ -42,9 +42,9 @@
     <string name="voice_service_text">Listening for wake word...</string>
     <string name="tts_toggle_label">Speak feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Auto-start on Bluetooth connect</string>
-    <string name="settings_bluetooth_mic">Bluetooth / TWS Mic Priority</string>
-    <string name="settings_bluetooth_mic_desc_on">Routed to helmet / TWS microphone</string>
-    <string name="settings_bluetooth_mic_desc_off">Using phone built-in microphone</string>
+    <string name="settings_bluetooth_mic">Bluetooth Headset Mic (Call Profile)</string>
+    <string name="settings_bluetooth_mic_desc_on">TWS mic active (music drops to mono call quality)</string>
+    <string name="settings_bluetooth_mic_desc_off">Crystal-clear HD music (A2DP) + Pocket Boost mic</string>
     <string name="settings_vibration">Vibration feedback</string>
     <string name="about_text">Cadence v1.0.1 (Pre-release) · GPL-3.0\nCrafted with care for motorcycle riders\nhttps://github.com/Seiyoouu/cadence</string>
 

@@ -58,7 +58,7 @@ object BluetoothAudioRouter {
 
     fun isBluetoothMicPreferred(context: Context): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return prefs.getBoolean(KEY_BLUETOOTH_MIC, true)
+        return prefs.getBoolean(KEY_BLUETOOTH_MIC, false)
     }
 
     fun setBluetoothMicPreferred(context: Context, enabled: Boolean) {

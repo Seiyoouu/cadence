@@ -1,11 +1,13 @@
 package dev.cadence.app.service
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Handler
@@ -15,6 +17,7 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
+import androidx.core.content.ContextCompat
 import dev.cadence.app.R
 import dev.cadence.app.engine.CommandParser
 import dev.cadence.app.engine.SearchEngine
@@ -86,27 +89,37 @@ class VoiceService : Service() {
         createNotificationChannel()
 
         val notif = buildNotification()
+        val hasBtConnect = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+        } else true
+
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                ServiceCompat.startForeground(
-                    this,
-                    NOTIF_ID,
-                    notif,
+                val fgsType = if (hasBtConnect) {
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE or ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
-                )
+                } else {
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
+                }
+                ServiceCompat.startForeground(this, NOTIF_ID, notif, fgsType)
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ServiceCompat.startForeground(
-                    this,
-                    NOTIF_ID,
-                    notif,
+                val fgsType = if (hasBtConnect) {
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE
-                )
+                } else 0
+                ServiceCompat.startForeground(this, NOTIF_ID, notif, fgsType)
             } else {
                 startForeground(NOTIF_ID, notif)
             }
         } catch (e: Exception) {
-            Log.w(TAG, "Fallback startForeground", e)
-            startForeground(NOTIF_ID, notif)
+            Log.w(TAG, "Fallback startForeground with microphone only", e)
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    ServiceCompat.startForeground(this, NOTIF_ID, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+                } else {
+                    startForeground(NOTIF_ID, notif)
+                }
+            } catch (e2: Exception) {
+                Log.e(TAG, "Fatal startForeground failure", e2)
+            }
         }
 
         tts = TtsFeedback(this)
