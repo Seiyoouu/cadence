@@ -1,6 +1,7 @@
 package dev.cadence.app
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.session.PlaybackState
@@ -8,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -155,6 +157,45 @@ class MainActivity : AppCompatActivity() {
             intent.data = Uri.parse("package:$packageName")
             startActivity(intent)
         }
+
+        binding.btnHeaderQuit.setOnClickListener {
+            confirmAndQuit()
+        }
+
+        binding.cardQuitApp.setOnClickListener {
+            confirmAndQuit()
+        }
+    }
+
+    private fun confirmAndQuit() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_quit_title)
+            .setMessage(R.string.dialog_quit_message)
+            .setPositiveButton(R.string.dialog_quit_confirm) { _, _ ->
+                quitApplication()
+            }
+            .setNegativeButton(R.string.dialog_quit_cancel, null)
+            .show()
+    }
+
+    private fun quitApplication() {
+        Log.i("MainActivity", "Quitting application: stopping services, detaching controllers, and terminating process")
+        // 1. Stop voice service
+        stopService(Intent(this, VoiceService::class.java))
+
+        // 2. Detach transport engine
+        TransportEngine.detachController()
+
+        // 3. Clear any active notifications
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as? android.app.NotificationManager
+        nm?.cancelAll()
+
+        // 4. Finish all activities
+        finishAffinity()
+
+        // 5. Hard kill process to guarantee zero residue
+        android.os.Process.killProcess(android.os.Process.myPid())
+        kotlin.system.exitProcess(0)
     }
 
     private fun observeSearchState() {

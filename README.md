@@ -121,10 +121,10 @@ Playback Controls:
 ## Installation
 
 ### 1. Download the Package
-Grab the latest release from the [GitHub Releases](https://github.com/Seiyoouu/cadence/releases/tag/v1.0.0) page:
-- **File**: `Cadence-v1.0.0.apk`
+Grab the latest release from the [GitHub Releases](https://github.com/Seiyoouu/cadence/releases/tag/v1.0.1) page:
+- **File**: `Cadence-v1.0.1.apk`
 
-> **Note**: If you had an older prototype build installed, please uninstall it first to ensure clean certificate signature verification.
+> **Important**: If you see **"App not installed as package appears to be invalid"**, this occurs because an older build with a different signature is currently installed on your phone. Simply **uninstall (hapus instalan)** the old Cadence app first, then install `Cadence-v1.0.1.apk`. It will install seamlessly.
 
 ### 2. Sideloading Guidance
 
@@ -156,7 +156,7 @@ cd cadence
 ```
 
 The release package will be generated at:
-`app/build/outputs/apk/release/Cadence-v1.0.0.apk`
+`app/build/outputs/apk/release/Cadence-v1.0.1.apk`
 
 ---
 

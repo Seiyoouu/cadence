@@ -43,7 +43,7 @@
     <string name="tts_toggle_label">Speak feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Auto-start on Bluetooth connect</string>
     <string name="settings_vibration">Vibration feedback</string>
-    <string name="about_text">Cadence v1.0.0 (Pre-release) · GPL-3.0\nCrafted with care for motorcycle riders\nhttps://github.com/Seiyoouu/cadence</string>
+    <string name="about_text">Cadence v1.0.1 (Pre-release) · GPL-3.0\nCrafted with care for motorcycle riders\nhttps://github.com/Seiyoouu/cadence</string>
 
     <!-- Onboarding strings -->
     <string name="onboard_step1_title">Welcome to Cadence</string>
@@ -90,4 +90,12 @@
     <string name="lang_auto">System Default (Auto)</string>
     <string name="select_target_player">Select Target Music App</string>
     <string name="select_voice_language">Select Voice Language</string>
+
+    <!-- Cockpit Quit / Shutdown -->
+    <string name="btn_quit_app">Shut Down &amp; Exit</string>
+    <string name="quit_app_hint">Stops all background processes and terminates Cadence completely</string>
+    <string name="dialog_quit_title">Shut Down Cadence?</string>
+    <string name="dialog_quit_message">This will stop all background voice listening, release microphone locks, and close Cadence completely.</string>
+    <string name="dialog_quit_confirm">Shut Down</string>
+    <string name="dialog_quit_cancel">Cancel</string>
 </resources>

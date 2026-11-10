@@ -23,6 +23,9 @@
     <color name="emerald">#10B981</color>
     <color name="emeraldMuted">#0A2E20</color>
     <color name="amber">#F59E0B</color>
+    <color name="danger">#FF4D6D</color>
+    <color name="dangerSurface">#1A0D11</color>
+    <color name="dangerBorder">#3D1822</color>
 
     <!-- Typography Hierarchy -->
     <color name="textPrimary">#F8FAFC</color>

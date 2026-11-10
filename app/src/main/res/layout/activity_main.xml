@@ -14,7 +14,7 @@
         android:paddingTop="28dp"
         android:paddingBottom="40dp">
 
-        <!-- Top Header: Brand + Active System Badge -->
+        <!-- Top Header: Brand + Active System Badge + Quick Quit -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                     android:singleLine="true"
                     android:text="CADENCE"
                     android:textColor="@color/textPrimary"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -71,13 +71,33 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:maxWidth="130dp"
+                    android:maxWidth="110dp"
                     android:singleLine="true"
                     android:text="@string/target_disconnected"
                     android:textColor="@color/textSecondary"
                     android:textSize="11sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            <!-- Quick Header Quit Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnHeaderQuit"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text=""
+                app:backgroundTint="#1A1116"
+                app:cornerRadius="18dp"
+                app:icon="@drawable/ic_power"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="16dp"
+                app:iconTint="@color/danger"
+                app:strokeColor="#381822"
+                app:strokeWidth="1dp" />
         </LinearLayout>
 
         <!-- 1. HERO NOW PLAYING CARD -->
@@ -737,7 +757,66 @@
                 app:cornerRadius="18dp" />
         </LinearLayout>
 
-        <!-- 6. FOOTER -->
+        <!-- 6. COCKPIT SHUTDOWN CARD (QUIT) -->
+        <LinearLayout
+            android:id="@+id/cardQuitApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_card_danger"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp">
+
+            <FrameLayout
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_icon_squircle"
+                android:backgroundTint="#2D1219">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_power"
+                    app:tint="@color/danger" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_quit_app"
+                    android:textColor="@color/danger"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/quit_app_hint"
+                    android:textColor="@color/textMuted"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/danger" />
+        </LinearLayout>
+
+        <!-- 7. FOOTER -->
         <TextView
             android:id="@+id/tvAbout"
             android:layout_width="match_parent"

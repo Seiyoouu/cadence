@@ -121,10 +121,10 @@ Kontrol Pemutaran:
 ## Panduan Instalasi
 
 ### 1. Unduh File APK
-Ambil rilis terbaru dari halaman [GitHub Releases](https://github.com/Seiyoouu/cadence/releases/tag/v1.0.0):
-- **File**: `Cadence-v1.0.0.apk`
+Ambil rilis terbaru dari halaman [GitHub Releases](https://github.com/Seiyoouu/cadence/releases/tag/v1.0.1):
+- **File**: `Cadence-v1.0.1.apk`
 
-> **Catatan**: Jika Anda memiliki instalasi Cadence versi uji sebelumnya, hapus (*uninstall*) terlebih dahulu agar verifikasi tanda tangan paket berjalan lancar.
+> **Penting**: Jika muncul notifikasi **"Aplikasi tidak terinstal karena paket tampaknya tidak valid"** (*"App not installed as package appears to be invalid"*), ini terjadi karena versi Cadence sebelumnya yang terpasang di HP Anda menggunakan kunci sertifikat lama/debug yang berbeda. Cukup **Hapus/Uninstall Cadence lama** terlebih dahulu dari HP Anda, lalu pasang `Cadence-v1.0.1.apk`. Instalasi dijamin 100% langsung berhasil.
 
 ### 2. Panduan Sideloading
 
@@ -156,7 +156,7 @@ cd cadence
 ```
 
 File APK rilis akan dihasilkan di:
-`app/build/outputs/apk/release/Cadence-v1.0.0.apk`
+`app/build/outputs/apk/release/Cadence-v1.0.1.apk`
 
 ---
 

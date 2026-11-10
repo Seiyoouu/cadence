@@ -43,7 +43,7 @@
     <string name="tts_toggle_label">Suara feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Mulai otomatis saat Bluetooth terhubung</string>
     <string name="settings_vibration">Feedback getar</string>
-    <string name="about_text">Cadence v1.0.0 (Pre-release) · GPL-3.0\nDibuat dengan teliti untuk pengendara motor\nhttps://github.com/Seiyoouu/cadence</string>
+    <string name="about_text">Cadence v1.0.1 (Pre-release) · GPL-3.0\nDibuat dengan teliti untuk pengendara motor\nhttps://github.com/Seiyoouu/cadence</string>
 
     <!-- Onboarding strings -->
     <string name="onboard_step1_title">Selamat Datang di Cadence</string>
@@ -90,4 +90,12 @@
     <string name="lang_auto">Ikuti Bahasa Sistem (Auto)</string>
     <string name="select_target_player">Pilih Aplikasi Musik Target</string>
     <string name="select_voice_language">Pilih Bahasa Pengenalan Suara</string>
+
+    <!-- Cockpit Quit / Shutdown -->
+    <string name="btn_quit_app">Matikan &amp; Keluar Cadence</string>
+    <string name="quit_app_hint">Hentikan semua proses latar belakang dan keluar seutuhnya</string>
+    <string name="dialog_quit_title">Matikan Cadence?</string>
+    <string name="dialog_quit_message">Layanan pengenalan suara latar belakang, wakelock, dan pemantau musik akan langsung dihentikan.</string>
+    <string name="dialog_quit_confirm">Ya, Matikan</string>
+    <string name="dialog_quit_cancel">Batal</string>
 </resources>
