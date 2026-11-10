@@ -50,7 +50,7 @@ Pengendara: "Hai Kadi, putar Dewa 19 Kangen"
 | Fitur Unggulan | Mekanisme Teknis | Pengalaman Pengendara |
 |:---|:---|:---|
 | **Eksekusi di Saku &amp; Layar Mati** | Foreground Service dengan `PARTIAL_WAKE_LOCK` serta tipe `microphone` + `connectedDevice`. | Terus aktif tanpa terbunuh oleh sistem penghemat baterai agresif bawaan HP Android. |
-| **Routing Mic Helm Bluetooth** | Routing komunikasi audio via `AudioManager.setCommunicationDevice` (API 31+) &amp; Bluetooth SCO. | Suara ditangkap langsung dari mikrofon earbud/interkom di helm, bukan mic HP yang teredam di saku jaket. |
+| **Routing Mic Helm On-Demand** | Alih jalur komunikasi dinamis Bluetooth SCO via `AudioManager.setCommunicationDevice` (API 31+). | Mic TWS helm aktif otomatis *hanya* selama 2–3 detik saat menyebut judul lagu. Musik Anda dijamin 100% tetap jernih HD Stereo 24 jam! |
 | **Aman Saat Nyanyi &amp; Ngobrol** | Model kata kunci akustik majemuk (`Hai Kadi`, `Hey Cade`, `Cadence`) dengan filter batas kata. | **0% False Trigger.** Bebas bernyanyi mengikuti lagu atau mengobrol santai tanpa takut musik tiba-tiba terputus atau pause sendiri. |
 | **Proteksi Otomatisasi Play (Auto-Resume)** | Pelacak status cerdas (`wasPlayingBeforeWake`). | Jika desau angin kencang menyebabkan perintah suara tidak terdeteksi, musik otomatis langsung berputar kembali tanpa jeda. |
 | **Pencarian Lagu Bahasa Alami** | Resolusi kueri terdesentralisasi via REST API Piped &amp; Invidious langsung ke deep link YouTube Music. | Cukup sebutkan judul lagu atau artis langsung (misal *"Dewa 19 Kangen"*, *"Sheila On 7 Dan"*, *"Coldplay Yellow"*), dengan atau tanpa kata *"putar"*. |

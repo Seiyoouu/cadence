@@ -42,9 +42,9 @@
     <string name="voice_service_text">Menunggu kata kunci...</string>
     <string name="tts_toggle_label">Suara feedback (TTS)</string>
     <string name="settings_auto_start_bluetooth">Mulai otomatis saat Bluetooth terhubung</string>
-    <string name="settings_bluetooth_mic">Mic Headset Bluetooth (Profil Telepon)</string>
-    <string name="settings_bluetooth_mic_desc_on">Mic TWS aktif (suara musik turun ke kualitas panggilan)</string>
-    <string name="settings_bluetooth_mic_desc_off">Musik jernih HD Stereo (A2DP) + Pocket Boost HP</string>
+    <string name="settings_bluetooth_mic">Mic TWS Helm Otomatis (On-Demand)</string>
+    <string name="settings_bluetooth_mic_desc_on">Aktif saat sebut judul lagu • Musik tetap HD jernih</string>
+    <string name="settings_bluetooth_mic_desc_off">Hanya pakai mic HP (Pocket Boost)</string>
     <string name="settings_vibration">Feedback getar</string>
     <string name="about_text">Cadence v1.0.1 (Pre-release) · GPL-3.0\nDibuat dengan teliti untuk pengendara motor\nhttps://github.com/Seiyoouu/cadence</string>
 

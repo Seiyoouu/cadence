@@ -80,14 +80,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateBluetoothMicUi() {
         val preferred = dev.cadence.app.voice.BluetoothAudioRouter.isBluetoothMicPreferred(this)
-        val isActive = dev.cadence.app.voice.BluetoothAudioRouter.isBluetoothMicActive.value
+        val isHeadsetConnected = dev.cadence.app.voice.BluetoothAudioRouter.isBluetoothHeadsetConnected.value
         val deviceName = dev.cadence.app.voice.BluetoothAudioRouter.activeDeviceName.value
 
         if (!preferred) {
             binding.tvBluetoothMicStatus.text = getString(R.string.settings_bluetooth_mic_desc_off)
             binding.tvBluetoothMicStatus.setTextColor(ContextCompat.getColor(this, R.color.textMuted))
-        } else if (isActive && deviceName != null) {
-            binding.tvBluetoothMicStatus.text = "Aktif: $deviceName"
+        } else if (isHeadsetConnected && deviceName != null) {
+            binding.tvBluetoothMicStatus.text = "Tersambung: $deviceName (On-Demand HD)"
             binding.tvBluetoothMicStatus.setTextColor(ContextCompat.getColor(this, R.color.primary))
         } else {
             binding.tvBluetoothMicStatus.text = getString(R.string.settings_bluetooth_mic_desc_on)
@@ -115,9 +115,9 @@ class MainActivity : AppCompatActivity() {
                 val isId = java.util.Locale.getDefault().language.lowercase() in listOf("id", "in")
                 Toast.makeText(
                     this,
-                    if (isId) "Perhatian: Mode Mic Bluetooth menurunkan kualitas musik ke mono telepon (limitasi Bluetooth A2DP). Matikan agar musik tetap HD jernih."
-                    else "Notice: Bluetooth Mic Mode drops music to mono telephone quality. Turn off to keep HD stereo music.",
-                    Toast.LENGTH_LONG
+                    if (isId) "Mode On-Demand aktif: Mic TWS helm aktif otomatis saat sebut perintah, musik tetap HD jernih!"
+                    else "On-Demand mode active: Helmet TWS mic auto-routes during commands, music stays HD stereo!",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }

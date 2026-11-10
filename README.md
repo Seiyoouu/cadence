@@ -50,7 +50,7 @@ Rider: "Hai Kadi, putar Dewa 19 Kangen"
 | Feature | Engineering Behind It | Rider Experience |
 |:---|:---|:---|
 | **Pocket &amp; Screen-Off Engine** | Foreground Service with `PARTIAL_WAKE_LOCK` and dual `microphone` + `connectedDevice` flags. | Works continuously while phone stays locked in your pocket. Will not get killed by OEM battery savers. |
-| **Bluetooth Helmet Mic Routing** | Explicit communication routing via `AudioManager.setCommunicationDevice` (API 31+) &amp; Bluetooth SCO. | Audio is captured straight from your helmet TWS/intercom microphone, never muffled by jacket fabric in your pocket. |
+| **On-Demand Helmet Mic Routing** | Dynamic Bluetooth SCO communication routing via `AudioManager.setCommunicationDevice` (API 31+). | Automatically engages your helmet TWS microphone *only* during the 2–3s command window, keeping music 100% crystal-clear A2DP HD stereo 24/7! |
 | **Singing &amp; Chatter Safe** | Strict compound acoustic wake model (`Hai Kadi`, `Hey Cade`, `Cadence`) with word-boundary debouncing. | **Zero false triggers.** Sing along to lyrics or chat with friends without music suddenly pausing or cutting out. |
 | **Auto-Resume Protection** | Intelligent state tracker (`wasPlayingBeforeWake`). | If ambient highway wind noise causes a command timeout, your music immediately resumes playing automatically. |
 | **Direct Natural Song Search** | Decoupled query resolution via Piped &amp; Invidious REST APIs straight into YouTube Music deep links. | Simply say any title or artist directly (e.g. *"Dewa 19 Kangen"* or *"Coldplay Yellow"*), with or without saying *"play"*. |

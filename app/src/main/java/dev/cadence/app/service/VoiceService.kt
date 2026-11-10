@@ -174,9 +174,18 @@ class VoiceService : Service() {
                 if (detected) {
                     wasPlayingBeforeWake = TransportEngine.playbackInfo.value.isPlaying
                     Log.i(TAG, "Wake word detected -> transitioning to STT (wasPlaying=$wasPlayingBeforeWake)")
+                    // Immediately pause music if playing so audio does not bleed into the mic and rider knows wake word hit
+                    if (wasPlayingBeforeWake) {
+                        TransportEngine.pause()
+                    }
+                    // Vibration 1: Wake word caught
                     VibrationFeedback.shortTap(this@VoiceService)
                     stopWakeListening()
-                    startStt()
+
+                    // Dynamically acquire Bluetooth SCO for helmet TWS mic, then open STT
+                    dev.cadence.app.voice.BluetoothAudioRouter.acquireScoForCommand(this@VoiceService) {
+                        startStt()
+                    }
                 }
             }
         }
@@ -195,6 +204,7 @@ class VoiceService : Service() {
         stt = SpeechRecognizerEngine(this, languageTag)
         if (!stt!!.isAvailable()) {
             Log.e(TAG, "SpeechRecognizer not available on this device")
+            dev.cadence.app.voice.BluetoothAudioRouter.releaseSco(this)
             _voiceState.value = VoiceState.Idle
             if (isTtsEnabled()) {
                 tts?.speak(
@@ -202,15 +212,21 @@ class VoiceService : Service() {
                     else "Speech recognition not available"
                 )
             }
+            if (wasPlayingBeforeWake) {
+                TransportEngine.play()
+            }
             startWakeListening()
             return
         }
         stt?.startWithCandidates(
             onReady = {
+                // Vibration 2: Mic is live and ready for command!
                 VibrationFeedback.shortTap(this@VoiceService)
             },
             onResults = { candidates ->
                 Log.i(TAG, "STT candidates: $candidates")
+                // Immediately release SCO so music returns to crystal-clear A2DP HD Stereo!
+                dev.cadence.app.voice.BluetoothAudioRouter.releaseSco(this@VoiceService)
                 val primary = candidates.firstOrNull() ?: ""
                 _lastTranscript.value = primary
                 _voiceState.value = VoiceState.Processing
@@ -219,6 +235,7 @@ class VoiceService : Service() {
             },
             onError = { err ->
                 Log.e(TAG, "STT error: $err")
+                dev.cadence.app.voice.BluetoothAudioRouter.releaseSco(this@VoiceService)
                 stopStt()
                 if (wasPlayingBeforeWake && !TransportEngine.playbackInfo.value.isPlaying) {
                     Log.i(TAG, "Restoring playback after STT error")
@@ -230,6 +247,7 @@ class VoiceService : Service() {
             },
             onTimeout = {
                 Log.i(TAG, "STT timeout")
+                dev.cadence.app.voice.BluetoothAudioRouter.releaseSco(this@VoiceService)
                 stopStt()
                 if (wasPlayingBeforeWake && !TransportEngine.playbackInfo.value.isPlaying) {
                     Log.i(TAG, "Restoring playback after STT timeout")
@@ -345,11 +363,13 @@ class VoiceService : Service() {
     private fun stopStt() {
         stt?.destroy()
         stt = null
+        dev.cadence.app.voice.BluetoothAudioRouter.releaseSco(this)
     }
 
     private fun stopAll() {
         stopWakeListening()
         stopStt()
+        dev.cadence.app.voice.BluetoothAudioRouter.releaseSco(this)
         _voiceState.value = VoiceState.Idle
     }
 
