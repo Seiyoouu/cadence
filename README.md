@@ -140,11 +140,11 @@ Media Playback:
 ## 🚀 Installation &amp; Sideloading
 
 ### 1. Download Binary
-Grab the latest release from the [GitHub Releases](https://github.com/Seiyoouu/cadence/releases/tag/v1.0.1) page:
-* 📦 **Asset**: **`Cadence-v1.0.1.apk`** (99 MB)
+Grab the latest release from the [GitHub Releases](https://github.com/Seiyoouu/cadence/releases/tag/v1.0.2) page:
+* 📦 **Asset**: **`Cadence-v1.0.2.apk`** (99 MB)
 
 > 💡 **Upgrading from older test builds?**  
-> If Android displays *"App not installed as package appears to be invalid"*, simply **uninstall (hapus instalan)** the older version first, then install `Cadence-v1.0.1.apk`. It will install seamlessly!
+> If Android displays *"App not installed as package appears to be invalid"*, simply **uninstall (hapus instalan)** the older version first, then install `Cadence-v1.0.2.apk`. It will install seamlessly!
 
 ---
 
@@ -182,7 +182,7 @@ cd cadence
 ```
 
 The APK binary will be output at:
-`app/build/outputs/apk/release/Cadence-v1.0.1.apk`
+`app/build/outputs/apk/release/Cadence-v1.0.2.apk`
 
 ---
 

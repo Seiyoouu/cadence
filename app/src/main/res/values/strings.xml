@@ -46,7 +46,7 @@
     <string name="settings_bluetooth_mic_desc_on">Auto-routes during speech • Music stays HD stereo</string>
     <string name="settings_bluetooth_mic_desc_off">Use phone microphone only (Pocket Boost)</string>
     <string name="settings_vibration">Vibration feedback</string>
-    <string name="about_text">Cadence v1.0.1 (Pre-release) · GPL-3.0\nCrafted with care for motorcycle riders\nhttps://github.com/Seiyoouu/cadence</string>
+    <string name="about_text">Cadence v1.0.2 (Pre-release) · GPL-3.0\nCrafted with care for motorcycle riders\nhttps://github.com/Seiyoouu/cadence</string>
 
     <!-- Onboarding strings -->
     <string name="onboard_step1_title">Welcome to Cadence</string>
